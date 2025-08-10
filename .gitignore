@@ -1,0 +1,135 @@
+# Python
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.tox/
+.coverage
+.pytest_cache/
+.mypy_cache/
+.python-version
+
+# Virtual environments
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+.venv/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+*/.ipynb_checkpoints/*
+*.ipynb
+
+# IPython
+profile_default/
+ipython_config.py
+
+# Data files (보안상 중요)
+*.csv
+*.json
+*.pkl
+*.pickle
+*.h5
+*.hdf5
+*.parquet
+*.feather
+data/
+datasets/
+raw_data/
+processed_data/
+
+# Models and weights (용량이 큰 파일들)
+*.model
+*.bin
+*.pt
+*.pth
+*.ckpt
+*.safetensors
+models/
+checkpoints/
+weights/
+saved_models/
+
+# Logs
+*.log
+logs/
+.log
+
+# Environment variables
+.env
+.env.local
+.env.production
+.env.test
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Windows
+*.tmp
+*.bak
+
+# MLflow
+mlruns/
+mlartifacts/
+
+# Tensorboard
+runs/
+logs/tensorboard/
+
+# Wandb
+wandb/
+
+# Cache directories
+.cache/
+*.cache
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.temp
+
+# Config files with secrets
+config.json
+secrets.yaml
+credentials.json
+
+# Large files and databases
+*.db
+*.sqlite
+*.sqlite3
+
+# Compressed files
+*.zip
+*.tar.gz
+*.rar
+*.7z
+
+# Output directories
+output/
+results/
+submissions/
+
+# Test outputs
+test_output/
