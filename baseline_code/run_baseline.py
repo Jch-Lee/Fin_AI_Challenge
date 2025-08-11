@@ -96,7 +96,7 @@ def main():
     
     # 데이터 로드
     print("테스트 데이터 로딩 중...")
-    test = pd.read_csv('./test.csv')
+    test = pd.read_csv('../data/competition/test.csv', encoding='utf-8')
     print(f"테스트 데이터 크기: {len(test)} 샘플")
     
     # 모델 로드 (GPU 최적화)
@@ -163,7 +163,7 @@ def main():
     
     # 제출 파일 생성
     print("제출 파일 생성 중...")
-    sample_submission = pd.read_csv('./sample_submission.csv')
+    sample_submission = pd.read_csv('../data/competition/sample_submission.csv', encoding='utf-8')
     
     # 예측 결과가 sample_submission보다 많을 경우, 처음 부분만 사용
     if len(preds) > len(sample_submission):

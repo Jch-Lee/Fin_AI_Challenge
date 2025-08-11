@@ -1,0 +1,26 @@
+# 요구사항 정의서
+
+## Table of Contents
+
+- [요구사항 정의서](#table-of-contents)
+  - [1. Goals and Background Context (목표 및 배경)](./1-goals-and-background-context-목표-및-배경.md)
+    - [Goals (목표)](./1-goals-and-background-context-목표-및-배경.md#goals-목표)
+    - [Background Context (배경)](./1-goals-and-background-context-목표-및-배경.md#background-context-배경)
+  - [2. Requirements (요구사항)](./2-requirements-요구사항.md)
+    - [Functional Requirements (기능 요구사항 - FR)](./2-requirements-요구사항.md#functional-requirements-기능-요구사항-fr)
+    - [Non-Functional Requirements (비기능 요구사항 - NFR)](./2-requirements-요구사항.md#non-functional-requirements-비기능-요구사항-nfr)
+  - [3. Technical Assumptions (기술적 가정)](./3-technical-assumptions-기술적-가정.md)
+  - [4. Epic List (에픽 목록)](./4-epic-list-에픽-목록.md)
+  - [5. Epic 1: 기반 구축 및 데이터 파이프라인 (상세)](./5-epic-1-기반-구축-및-데이터-파이프라인-상세.md)
+    - [Story 1.1: ](./5-epic-1-기반-구축-및-데이터-파이프라인-상세.md#story-11)
+    - [Story 1.2: ](./5-epic-1-기반-구축-및-데이터-파이프라인-상세.md#story-12)
+    - [Story 1.3: ](./5-epic-1-기반-구축-및-데이터-파이프라인-상세.md#story-13)
+    - [Story 1.4: ](./5-epic-1-기반-구축-및-데이터-파이프라인-상세.md#story-14)
+  - [6. Epic 2: 핵심 모델 파인튜닝 및 MVP 구현 (상세)](./6-epic-2-핵심-모델-파인튜닝-및-mvp-구현-상세.md)
+    - [Story 2.1: ](./6-epic-2-핵심-모델-파인튜닝-및-mvp-구현-상세.md#story-21)
+  - [7. Epic 3: 성능 최적화 및 최종화 (상세)](./7-epic-3-성능-최적화-및-최종화-상세.md)
+    - [Story 3.1: ](./7-epic-3-성능-최적화-및-최종화-상세.md#story-31)
+    - [Story 3.2: ](./7-epic-3-성능-최적화-및-최종화-상세.md#story-32)
+    - [Story 3.3: ](./7-epic-3-성능-최적화-및-최종화-상세.md#story-33)
+    - [Story 3.4: ](./7-epic-3-성능-최적화-및-최종화-상세.md#story-34)
+    - [Story 3.5: ](./7-epic-3-성능-최적화-및-최종화-상세.md#story-35)

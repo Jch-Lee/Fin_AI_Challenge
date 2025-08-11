@@ -89,7 +89,7 @@ def main():
     
     # 데이터 로드
     print("테스트 데이터 로딩 중...")
-    test = pd.read_csv('./test.csv')
+    test = pd.read_csv('./test.csv', encoding='utf-8')
     print(f"전체 테스트 데이터 크기: {len(test)} 샘플")
     
     # 첫 10개 샘플만 사용

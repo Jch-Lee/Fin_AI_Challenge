@@ -1,3 +1,7 @@
+# FSKU LLM Challenge - 통일된 의존성 관리
+# 날짜: August 10, 2025
+# 기준: 대회 환경 (Ubuntu 22.04, Python 3.10, PyTorch 2.1.0, CUDA 11.8)
+
 # -- Core ML & Frameworks (대회 지정 및 필수 라이브러리) --
 torch==2.1.0
 transformers==4.41.2
@@ -28,4 +32,9 @@ konlpy==0.6.0
 # -- Monitoring & Testing --
 tqdm==4.66.4
 wandb==0.17.0
-pytest==8.2.0 
+pytest==8.2.0
+
+# -- Development Tools --
+black==23.7.0
+ruff==0.0.285
+pre-commit==3.3.3

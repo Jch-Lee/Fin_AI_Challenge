@@ -6,15 +6,17 @@ prd:
   prdShardedLocation: docs/prd
   epicFilePattern: epic-{n}*.md
 architecture:
-  architectureFile: docs/architecture.md
-  architectureVersion: v4
+  architectureFile: docs/Architecture.md
+  architectureVersion: v7
   architectureSharded: true
   architectureShardedLocation: docs/architecture
 customTechnicalDocuments: null
 devLoadAlwaysFiles:
-  - docs/architecture/coding-standards.md
-  - docs/architecture/tech-stack.md
-  - docs/architecture/source-tree.md
+  - docs/architecture/2-tech-stack.md
+  - docs/architecture/4-components-interface-definitions.md
+  - docs/architecture/7-source-tree.md
+  - docs/competition-info/2-critical-rules.md
+  - docs/pipeline/1-5-training-data-preparation.md
 devDebugLog: .ai/debug-log.md
 devStoryLocation: docs/stories
 slashPrefix: BMad
