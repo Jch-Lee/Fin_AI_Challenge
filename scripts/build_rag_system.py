@@ -34,7 +34,7 @@ class RAGSystemBuilder:
     
     def __init__(self, 
                  data_dir: str = "data",
-                 model_name: str = "jhgan/ko-sroberta-multitask"):
+                 model_name: str = "nlpai-lab/KURE-v1"):
         """
         Args:
             data_dir: 데이터 저장 디렉토리
@@ -200,7 +200,8 @@ class RAGSystemBuilder:
             # 저장된 인덱스 로드
             index_path = self.data_dir / "knowledge_base" / "faiss.index"
             if index_path.exists():
-                self.knowledge_base = KnowledgeBase(embedding_dim=768)
+                # KURE-v1의 임베딩 차원은 1024
+                self.knowledge_base = KnowledgeBase(embedding_dim=1024)
                 self.knowledge_base.load(str(index_path))
             else:
                 raise ValueError("Knowledge base not built. Run build_full_pipeline first.")
@@ -313,7 +314,7 @@ def main():
     # RAG 시스템 빌더 초기화
     builder = RAGSystemBuilder(
         data_dir="data",
-        model_name="jhgan/ko-sroberta-multitask"
+        model_name="nlpai-lab/KURE-v1"
     )
     
     # PDF 파일 처리

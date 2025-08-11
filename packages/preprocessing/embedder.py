@@ -18,7 +18,7 @@ class EmbeddingGenerator:
     """텍스트 임베딩 생성 클래스"""
     
     def __init__(self, 
-                 model_name: str = "jhgan/ko-sroberta-multitask",
+                 model_name: str = "nlpai-lab/KURE-v1",
                  device: Optional[str] = None,
                  batch_size: int = 32,
                  show_progress: bool = True):
@@ -53,11 +53,18 @@ class EmbeddingGenerator:
             logger.info(f"Model loaded. Embedding dimension: {self.embedding_dim}")
         except Exception as e:
             logger.error(f"Failed to load model: {e}")
-            # 대체 모델 사용
-            logger.info("Falling back to multilingual model")
-            self.model_name = "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
-            self.model = SentenceTransformer(self.model_name, device=self.device)
-            self.embedding_dim = self.model.get_sentence_embedding_dimension()
+            # 대체 모델 사용 (한국어 특화 모델 우선)
+            logger.info("Falling back to Korean multilingual model")
+            self.model_name = "jhgan/ko-sroberta-multitask"
+            try:
+                self.model = SentenceTransformer(self.model_name, device=self.device)
+                self.embedding_dim = self.model.get_sentence_embedding_dimension()
+            except Exception:
+                # 최후 대체 모델
+                logger.info("Falling back to base multilingual model")
+                self.model_name = "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
+                self.model = SentenceTransformer(self.model_name, device=self.device)
+                self.embedding_dim = self.model.get_sentence_embedding_dimension()
     
     def generate_embedding(self, text: Union[str, List[str]]) -> np.ndarray:
         """단일 텍스트 또는 텍스트 리스트의 임베딩 생성"""
@@ -153,7 +160,7 @@ class HybridEmbedding:
     """하이브리드 임베딩 (Dense + Sparse)"""
     
     def __init__(self, 
-                 dense_model_name: str = "jhgan/ko-sroberta-multitask",
+                 dense_model_name: str = "nlpai-lab/KURE-v1",
                  use_bm25: bool = True):
         """
         Args:
@@ -207,7 +214,7 @@ TextEmbedder = EmbeddingGenerator
 class TextEmbedder:
     """간단한 텍스트 임베딩 인터페이스"""
     
-    def __init__(self, model_name: str = "jhgan/ko-sroberta-multitask"):
+    def __init__(self, model_name: str = "nlpai-lab/KURE-v1"):
         self.generator = EmbeddingGenerator(model_name=model_name)
         self.embedding_dim = self.generator.embedding_dim
     

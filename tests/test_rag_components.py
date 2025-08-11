@@ -192,13 +192,13 @@ class TestRAGComponents:
         try:
             # 지식베이스 생성
             kb = KnowledgeBase(
-                embedding_dim=768,
+                embedding_dim=1024,
                 index_type="Flat"
             )
             
             # 테스트 데이터 생성
             n_docs = 1000
-            embeddings = np.random.randn(n_docs, 768).astype('float32')
+            embeddings = np.random.randn(n_docs, 1024).astype('float32')
             documents = [f"Document {i}: 금융 AI 관련 내용" for i in range(n_docs)]
             metadata = [{"doc_id": f"doc_{i}", "source": "test"} for i in range(n_docs)]
             

@@ -95,8 +95,8 @@ class InferenceOrchestrator:
         
         # 컴포넌트 초기화
         self.classifier = QuestionClassifier()
-        self.embedder = TextEmbedder(model_name="jhgan/ko-sroberta-multitask")
-        self.knowledge_base = KnowledgeBase(embedding_dim=384, index_type="Flat")
+        self.embedder = TextEmbedder(model_name="nlpai-lab/KURE-v1")
+        self.knowledge_base = KnowledgeBase(embedding_dim=1024, index_type="Flat")
         self.retriever = MultiStageRetriever(
             knowledge_base=self.knowledge_base,
             embedder=self.embedder
