@@ -132,4 +132,6 @@ results/
 submissions/
 
 # Test outputs
-test_output/
+test_output/nul
+*.tmp
+__pycache__/
