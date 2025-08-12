@@ -60,8 +60,8 @@ python baseline_code/run_baseline.py
 #### 2. Model Architecture Strategy
 **Current Baseline**: Single model approach using `beomi/gemma-ko-7b`
 **Planned Architecture** (from 아키텍처.md):
-- **Student Models**: Mistral-7B-Instruct, Solar-10.7B-Instruct, Qwen2.5-1.5B-Instruct
-- **Teacher Models**: Llama-3.1-70B-Instruct, Qwen2.5-7B-Instruct
+- **Student Models**: Mistral-7B-Instruct, Qwen2.5-1.5B-Instruct (검증 완료)
+- **Teacher Models**: Llama-3.1-70B-Instruct, Qwen2.5-7B-Instruct, Qwen2.5-14B-Instruct (검증 완료)
 - **Training Method**: Distill-M 2 contrastive distillation
 - **Optimization**: 4-bit quantization with BitsAndBytesConfig
 
@@ -109,6 +109,45 @@ pad_token_id=tokenizer.eos_token_id
 ```
 
 ## Development Workflow
+
+### 0. Git Workflow Requirements
+**MANDATORY**: All development must follow the GitFlow workflow as defined in `docs/git-workflow/`:
+
+#### Branch Strategy
+- **main**: Production-ready releases only
+- **develop**: Integration branch for features
+- **feature branches**: `feat/story-[번호]/[기능명]` (e.g., `feat/story-1.1/init-project`)
+- **bugfix branches**: `fix/[이슈번호]/[버그명]`
+- **hotfix branches**: `hotfix/[버전]/[수정내용]`
+
+#### Development Process
+1. **Start New Feature**: Always branch from `develop`
+   ```bash
+   git checkout develop
+   git pull origin develop
+   git checkout -b feat/story-1.1/feature-name
+   ```
+
+2. **Development**: Make small, frequent commits with conventional messages
+   ```bash
+   git add .
+   git commit -m "feat: add new functionality"
+   ```
+
+3. **Integration**: Create PR to merge feature → develop
+   - Required: Code review before merge
+   - Clean up: Delete feature branch after successful merge
+
+4. **Release**: Merge develop → main for stable releases
+
+#### Commit Message Convention
+- `feat:` 새로운 기능 추가
+- `fix:` 버그 수정
+- `docs:` 문서 수정
+- `style:` 코드 포맷팅
+- `refactor:` 코드 리팩토링
+- `test:` 테스트 추가/수정
+- `chore:` 빌드 업무, 패키지 관리
 
 ### 1. Model Development Pipeline
 Based on 상세파이프라인.md, follow this sequence:

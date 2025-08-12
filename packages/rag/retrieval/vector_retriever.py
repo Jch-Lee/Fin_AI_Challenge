@@ -7,10 +7,16 @@ from typing import List, Dict, Any, Optional, Tuple
 import numpy as np
 from dataclasses import dataclass
 import logging
-import bm25s
 import re
 from collections import Counter
-import Stemmer  # for bm25s
+
+# Optional imports for BM25 functionality
+try:
+    import bm25s
+    import Stemmer  # for bm25s
+    BM25_AVAILABLE = True
+except ImportError:
+    BM25_AVAILABLE = False
 
 logger = logging.getLogger(__name__)
 
