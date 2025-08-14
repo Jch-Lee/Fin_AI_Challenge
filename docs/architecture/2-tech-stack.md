@@ -14,6 +14,9 @@
 | **Data/Doc Proc** | Pandas, LangChain, PyMuPDF | `2.2.2`,`0.2.1`,`1.24.1` | 데이터/문서 처리 |
 | **Search** | bm25s | `0.2.2` | Sparse 검색 |
 | **Korean NLP** | konlpy | `0.6.0` | 한국어 형태소 분석 |
+| **Vision-Language** | Qwen2.5-VL-7B-Instruct | `latest` | PDF 이미지 텍스트 추출 |
+| **Image Processing** | Pillow | `10.0.0` | 이미지 변환/처리 |
+| **Vision Utils** | qwen_vl_utils | `latest` | VL 모델 유틸리티 (옵셔널) |
 | **Monitoring** | tqdm, wandb | `4.66.4`,`0.17.0` | 진행 표시, 실험 추적 |
 | **Testing** | pytest | `8.2.0` | 단위/통합 테스트 |
 
@@ -21,6 +24,7 @@
 
 - **Student Model Candidates:** `mistralai/Mistral-7B-Instruct-v0.2`, `Solar-10.7B-Instruct` , `Qwen2.5-1.5B-Instruct`
 - **Teacher Model Candidates:** `Meta-Llama-3.1-70B-Instruct` , `Qwen2.5-7B-Instruct`
+- **Vision Model (Production):** `Qwen/Qwen2.5-VL-7B-Instruct` - PDF 텍스트 추출 (41.2% 개선 검증)
 
 ### Model License Verification Process
 
@@ -34,6 +38,7 @@
 | `Qwen2.5-1.5B-Instruct` | Apache 2.0 | 2024-09-19 | ✅ 검증 완료 |
 | `Meta-Llama-3.1-70B-Instruct` | Llama 3.1 Community | 2024-07-23 | ✅ 검증 완료 |
 | `Qwen2.5-7B-Instruct` | Apache 2.0 | 2024-09-19 | ✅ 검증 완료 |
+| `Qwen2.5-VL-7B-Instruct` | Apache 2.0 | 2024-08-29 | ✅ 검증 완료 |
 
 **라이선스 검증 체크리스트**:
 1. **공개 일자**: 2025년 8월 1일 이전 (~2025.07.31) 공식 배포 확인

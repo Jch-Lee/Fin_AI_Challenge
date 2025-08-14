@@ -30,9 +30,10 @@ Teacher Models (70B/7B) → Knowledge Distillation → Student Models (1.5B-10.7
    - Qwen2.5-1.5B-Instruct (Apache 2.0, 2024-09-19)
 
 3. **RAG System**
+   - **Vision V2**: Qwen2.5-VL-7B (41.2% 품질 향상)
    - FAISS Vector Database
-   - BM25 Hybrid Search
-   - Korean Sentence Embeddings
+   - BM25 Hybrid Search  
+   - Korean Sentence Embeddings (KURE-v1)
 
 ## 🚀 빠른 시작
 

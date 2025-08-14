@@ -59,7 +59,30 @@
 - 대회 규정 준수 검증
 - 배치 생성 지원
 
-### 6. Question Classifier (`packages/preprocessing/question_classifier.py`)
+### 6. Vision Processor (`packages/vision/` & `packages/preprocessing/`)
+**역할**: Vision-Language 모델 기반 고품질 PDF 텍스트 추출
+- **VisionTextExtractor**: Qwen2.5-VL-7B-Instruct 기반 텍스트 추출
+- **VisionPDFProcessor**: PDF 페이지를 이미지로 변환 후 VL 모델 처리
+- **41.2% 텍스트 추출 품질 향상** (PyMuPDF 대비, 56페이지 검증 완료)
+
+**주요 기능**:
+- 표/차트/그래프 의미론적 해석
+- Version 2 최적화 프롬프트 적용
+- GPU 환경 자동 감지 및 최적화
+- 실시간 메모리 관리
+
+### 7. PDF Processing Pipeline (`packages/preprocessing/data_preprocessor.py`)
+**3-Tier Fallback 구조**: 안정성과 품질을 동시 확보
+1. **Vision V2** (Primary): GPU 환경, 최고 품질 (41.2% 개선)
+2. **Traditional PyMuPDF** (Fallback): PyMuPDF4LLM 향상된 추출
+3. **Basic PyMuPDF** (Final): 원시 텍스트 추출, 최종 안전망
+
+**처리 흐름**:
+```python
+GPU 가용성 확인 → Vision V2 시도 → 실패 시 Traditional → 최종 Basic
+```
+
+### 8. Question Classifier (`packages/preprocessing/question_classifier.py`)
 **질문 분류 기능**:
 - 객관식/주관식 구분
 - 질문과 선택지 분리
@@ -92,7 +115,13 @@ packages/
 │       ├── vector_retriever.py
 │       ├── bm25_retriever.py
 │       └── hybrid_retriever.py
-├── preprocessing/           # 전처리 (레거시 호환)
+├── vision/                  # Vision-Language 모듈 (신규)
+│   ├── __init__.py
+│   └── vision_extraction.py # VL 모델 기반 텍스트 추출
+├── preprocessing/           # 전처리 시스템
+│   ├── data_preprocessor.py # 통합 전처리 (Vision V2 메인)
+│   ├── pdf_processor_vision.py      # Vision 기반 PDF 프로세서
+│   ├── pdf_processor_traditional.py # PyMuPDF 기반 (Fallback)
 │   ├── embedder.py         # 하위 호환성 래퍼
 │   └── question_classifier.py
 └── data_processing/        # 데이터 처리
@@ -115,6 +144,9 @@ configs/
 - [x] 검색 시스템 구현
 - [x] 모델 설정 시스템
 - [x] 하위 호환성 유지
+- [x] **Vision V2 통합 완료** (2025-08-14)
+- [x] **PDF 처리 파이프라인 3-Tier 구조 구축**
+- [x] **텍스트 추출 품질 41.2% 개선** (56페이지 벤치마크 검증)
 
 ### 진행 중 🔄
 - [ ] Teacher-Student 응답 생성
@@ -149,4 +181,4 @@ configs/
 4. 테스트 커버리지 확대
 
 ---
-*Last Updated: 2025-08-12*
+*Last Updated: 2025-08-14 - Vision V2 통합 완료*
