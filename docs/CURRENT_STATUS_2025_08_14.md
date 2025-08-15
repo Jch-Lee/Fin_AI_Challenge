@@ -12,17 +12,21 @@
 - 하위 호환성 유지 (레거시 import 경로 지원)
 
 #### 2. 임베딩 시스템
-- **KURE-v1** (Kistec/KURE-v1) 임베딩 모델 통합
-  - 1024차원 벡터 생성
-  - 한국 금융 도메인 특화
+- **KURE-v1** (nlpai-lab/KURE-v1) 임베딩 모델 통합
+  - SentenceTransformer 기반
+  - 한국어 특화 임베딩
+  - 내장 토크나이저 사용 (SentencePiece, 476배 빠른 속도)
 - **E5** (multilingual-e5-large) 대체 모델 지원
   - 768차원 벡터
   - 다국어 지원
 
 #### 3. 검색 시스템
-- **VectorRetriever**: FAISS 기반 밀집 벡터 검색
-- **BM25Retriever**: 희소 벡터 키워드 매칭
-- **HybridRetriever**: 앙상블 검색 전략
+- **VectorRetriever**: FAISS 기반 밀집 벡터 검색 (KURE 임베딩)
+- **KiwiBM25Retriever**: Kiwipiepy 형태소 분석 기반 BM25 검색
+  - 10-30배 빠른 토크나이징
+  - 품사 필터링: 명사, 동사, 형용사, 외국어
+  - 띤어쓰기 교정 기능
+- **HybridRetriever**: Vector(KURE) + BM25(Kiwi) 최적 조합
 
 #### 4. 지식 베이스
 - FAISS 인덱스 구축 (Flat, IVF, HNSW 지원)
@@ -72,10 +76,14 @@
 
 ## 🔑 주요 기술적 결정사항
 
-### 1. 임베딩 모델 변경
-- **변경 전**: BGE-M3 (문서)
-- **변경 후**: KURE-v1 (실제)
-- **이유**: 한국 금융 도메인 특화 성능
+### 1. 토크나이저 최적화 전략
+- **벡터 임베딩**: KURE-v1 (nlpai-lab/KURE-v1)
+  - SentenceTransformer 내장 토크나이저
+  - 476배 빠른 처리 속도
+- **BM25 검색**: Kiwipiepy
+  - 형태소 분석 기반 정확한 키워드 추출
+  - 한국어 문법 구조 고려
+- **이유**: 각 방식의 강점 최대화 (속도 vs 정확도)
 
 ### 2. 모델 선택 변경
 - **변경 전**: Mistral-7B (Student), Llama-3.1-70B (Teacher)
