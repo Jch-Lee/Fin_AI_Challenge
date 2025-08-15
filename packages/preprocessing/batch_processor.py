@@ -16,8 +16,10 @@ import torch
 logger = logging.getLogger(__name__)
 
 # 조건부 imports
-from . import TextProcessor, KIWI_AVAILABLE
+from . import TextProcessor, KIWI_AVAILABLE, LANGCHAIN_AVAILABLE
 from .chunker import DocumentChunker
+if LANGCHAIN_AVAILABLE:
+    from .hierarchical_chunker import HierarchicalMarkdownChunker
 from .embedder import EmbeddingGenerator
 from ..rag.knowledge_base import KnowledgeBase
 
@@ -83,10 +85,19 @@ class BatchPDFProcessor:
             self.using_kiwi = False
         
         # 청킹 및 임베딩
-        self.chunker = DocumentChunker(
-            chunk_size=chunk_size,
-            chunk_overlap=chunk_overlap
-        )
+        # Vision V2는 마크다운을 생성하므로 계층적 청킹 우선 사용
+        if LANGCHAIN_AVAILABLE and VISION_AVAILABLE:
+            logger.info("Using HierarchicalMarkdownChunker for Vision V2 markdown output")
+            self.chunker = HierarchicalMarkdownChunker(
+                use_chunk_cleaner=True,
+                enable_semantic=False
+            )
+        else:
+            logger.info(f"Using basic DocumentChunker (langchain: {LANGCHAIN_AVAILABLE}, vision: {VISION_AVAILABLE})")
+            self.chunker = DocumentChunker(
+                chunk_size=chunk_size,
+                chunk_overlap=chunk_overlap
+            )
         self.embedder = EmbeddingGenerator()
         
         # 지식 베이스

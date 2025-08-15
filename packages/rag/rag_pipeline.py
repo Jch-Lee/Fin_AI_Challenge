@@ -36,18 +36,22 @@ class RAGPipeline:
                  retriever_type: str = "hybrid",
                  knowledge_base_path: Optional[str] = None,
                  device: Optional[str] = None,
-                 enable_reranking: bool = False,
-                 reranker_config: Optional[Union[RerankerConfig, Dict]] = None):
+                 enable_reranking: bool = True,  # Changed default to True
+                 reranker_config: Optional[Union[RerankerConfig, Dict]] = None,
+                 initial_retrieve_k: int = 30,  # Number of docs to retrieve initially
+                 final_k: int = 5):  # Final number of docs after reranking
         """
-        Initialize the RAG pipeline
+        Initialize the RAG pipeline with mandatory reranking
         
         Args:
             embedder: Embedding model to use (default: KUREEmbedder)
             retriever_type: Type of retriever ("vector", "bm25", "hybrid")
             knowledge_base_path: Path to existing knowledge base
             device: Device for computation
-            enable_reranking: Whether to enable reranking with Qwen3-Reranker-4B
+            enable_reranking: Whether to enable reranking (default: True)
             reranker_config: Configuration for the reranker
+            initial_retrieve_k: Number of documents to retrieve initially (default: 30)
+            final_k: Final number of documents after reranking (default: 5)
         """
         # Initialize embedder
         if embedder is None:
@@ -61,6 +65,8 @@ class RAGPipeline:
         self.enable_reranking = enable_reranking
         self.reranker_config = reranker_config
         self.reranker = None
+        self.initial_retrieve_k = initial_retrieve_k
+        self.final_k = final_k
         
         # Initialize knowledge base
         if knowledge_base_path:
@@ -79,7 +85,7 @@ class RAGPipeline:
             self._init_reranker()
         
         logger.info(f"RAG Pipeline initialized with {self.embedder.model_name} embedder and {retriever_type} retriever" + 
-                   (" with reranking" if enable_reranking else ""))
+                   (f" with reranking ({self.initial_retrieve_k}→{self.final_k})" if enable_reranking else ""))
     
     def _init_retriever(self):
         """Initialize the retriever based on type"""
@@ -195,34 +201,49 @@ class RAGPipeline:
     
     def retrieve(self,
                  query: str,
-                 top_k: int = 5,
-                 threshold: float = 0.0) -> List[Dict]:
+                 top_k: int = None,
+                 threshold: float = 0.0,
+                 use_reranking: bool = None) -> List[Dict]:
         """
-        Retrieve relevant documents for a query
+        Retrieve relevant documents with mandatory reranking
+        
+        Pipeline: Hybrid Search (30 docs) → Reranking → Final (5 docs)
         
         Args:
             query: Query text
-            top_k: Number of documents to retrieve
+            top_k: Final number of documents (default: self.final_k = 5)
             threshold: Minimum similarity threshold
+            use_reranking: Override reranking setting (default: self.enable_reranking)
         
         Returns:
             List of retrieved documents with scores
         """
+        # Use default values if not specified
+        if top_k is None:
+            top_k = self.final_k
+        if use_reranking is None:
+            use_reranking = self.enable_reranking
+        
+        # Determine initial retrieval count
+        initial_k = self.initial_retrieve_k if use_reranking else top_k
+        
         logger.info(f"Retrieving documents for query: {query[:100]}...")
+        if use_reranking:
+            logger.info(f"Using reranking pipeline: {initial_k} → {top_k}")
         
         # Generate query embedding
         query_embedding = self.embedder.embed(query, is_query=True)
         
-        # Retrieve documents
+        # Step 1: Initial retrieval (get more documents for reranking)
         if self.retriever_type == "vector":
-            results = self.knowledge_base.search(query_embedding, top_k=top_k)
+            results = self.knowledge_base.search(query_embedding, top_k=initial_k)
         else:
             # HybridRetriever 또는 다른 retriever 사용
             try:
                 # HybridRetriever의 search 메서드 사용
                 if hasattr(self.retriever, 'search'):
                     # HybridRetriever는 search 메서드를 가지고 있음
-                    hybrid_results = self.retriever.search(query, k=top_k)
+                    hybrid_results = self.retriever.search(query, k=initial_k)
                     # HybridResult를 일반 딕셔너리로 변환
                     results = []
                     for hr in hybrid_results:
@@ -233,20 +254,50 @@ class RAGPipeline:
                         })
                 # 일반 retrieve 메서드 사용
                 elif hasattr(self.retriever, 'retrieve'):
-                    results = self.retriever.retrieve(query, query_embedding, top_k)
+                    results = self.retriever.retrieve(query, query_embedding, initial_k)
                 else:
                     # 폴백: 벡터 검색 사용
                     logger.warning(f"Retriever {type(self.retriever)} has no retrieve/search method, using vector search")
-                    results = self.knowledge_base.search(query_embedding, top_k=top_k)
+                    results = self.knowledge_base.search(query_embedding, top_k=initial_k)
             except Exception as e:
                 logger.error(f"Retriever failed: {e}, falling back to vector search")
-                results = self.knowledge_base.search(query_embedding, top_k=top_k)
+                results = self.knowledge_base.search(query_embedding, top_k=initial_k)
         
         # Filter by threshold
         if threshold > 0:
             results = [r for r in results if r.get('score', 0) >= threshold]
         
-        logger.info(f"Retrieved {len(results)} documents")
+        # Step 2: Reranking (if enabled and reranker is available)
+        if use_reranking and self.reranker and len(results) > top_k:
+            logger.info(f"Reranking {len(results)} documents to select top {top_k}")
+            
+            try:
+                # Prepare documents for reranking
+                documents = [doc.get('content', '') for doc in results]
+                
+                # Perform reranking
+                reranked_scores = self.reranker.rerank(query, documents)
+                
+                # Combine scores with original results
+                for i, score in enumerate(reranked_scores):
+                    if i < len(results):
+                        results[i]['rerank_score'] = score
+                        # Combine original and rerank scores (weighted average)
+                        original_score = results[i].get('score', 0.0)
+                        results[i]['final_score'] = 0.3 * original_score + 0.7 * score
+                
+                # Sort by final score and select top-k
+                results = sorted(results, key=lambda x: x.get('final_score', 0), reverse=True)[:top_k]
+                logger.info(f"Reranking complete: selected top {len(results)} documents")
+                
+            except Exception as e:
+                logger.error(f"Reranking failed: {e}, using initial results")
+                results = results[:top_k]
+        else:
+            # No reranking, just limit to top_k
+            results = results[:top_k]
+        
+        logger.info(f"Final retrieved documents: {len(results)}")
         return results
     
     def generate_context(self,
@@ -370,21 +421,27 @@ def create_rag_pipeline(embedder_type: str = "kure",
                        retriever_type: str = "hybrid",
                        knowledge_base_path: Optional[str] = None,
                        device: Optional[str] = None,
-                       enable_reranking: bool = False,
-                       reranker_config: Optional[Union[RerankerConfig, Dict]] = None) -> RAGPipeline:
+                       enable_reranking: bool = True,  # Changed default to True
+                       reranker_config: Optional[Union[RerankerConfig, Dict]] = None,
+                       initial_retrieve_k: int = 30,
+                       final_k: int = 5) -> RAGPipeline:
     """
-    Factory function to create RAG pipeline with specified configuration
+    Factory function to create RAG pipeline with mandatory reranking
+    
+    Default Pipeline: Hybrid Search (30 docs) → Qwen3 Reranker → Final (5 docs)
     
     Args:
         embedder_type: Type of embedder ("kure" or "e5")
         retriever_type: Type of retriever ("vector", "bm25", "hybrid")
         knowledge_base_path: Path to existing knowledge base
         device: Device for computation
-        enable_reranking: Whether to enable reranking with Qwen3-Reranker-4B
+        enable_reranking: Whether to enable reranking (default: True)
         reranker_config: Configuration for the reranker
+        initial_retrieve_k: Number of docs to retrieve initially (default: 30)
+        final_k: Final number of docs after reranking (default: 5)
     
     Returns:
-        Configured RAG pipeline
+        Configured RAG pipeline with reranking
     """
     # Select embedder
     if embedder_type == "kure":
@@ -403,7 +460,9 @@ def create_rag_pipeline(embedder_type: str = "kure",
         knowledge_base_path=knowledge_base_path,
         device=device,
         enable_reranking=enable_reranking,
-        reranker_config=reranker_config
+        reranker_config=reranker_config,
+        initial_retrieve_k=initial_retrieve_k,
+        final_k=final_k
     )
     
     return pipeline

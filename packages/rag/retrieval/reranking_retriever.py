@@ -201,15 +201,28 @@ class RerankingRetriever(BaseRetriever):
         """
         return self.retrieve(query, top_k, **kwargs)
     
-    def update_index(self, documents: List[Dict[str, Any]]):
+    def update_index(self, texts: List[str], documents: Optional[List[Dict[str, Any]]] = None):
         """
         Update the base retriever's index.
         
         Args:
-            documents: Documents to add to index
+            texts: Text content to add (for compatibility)
+            documents: Documents to add to index (if None, uses texts)
         """
+        # Use documents if provided, otherwise create from texts
+        if documents is None:
+            documents = [{"content": text} for text in texts]
+            
         if hasattr(self.base_retriever, "update_index"):
-            self.base_retriever.update_index(documents)
+            # Check what the base retriever expects
+            import inspect
+            sig = inspect.signature(self.base_retriever.update_index)
+            params = list(sig.parameters.keys())
+            
+            if len(params) == 2:  # Expects (texts, documents)
+                self.base_retriever.update_index(texts, documents)
+            else:  # Expects just documents
+                self.base_retriever.update_index(documents)
         else:
             logger.warning(f"{self.base_retriever.__class__.__name__} does not support index updates")
     

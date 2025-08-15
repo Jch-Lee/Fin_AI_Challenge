@@ -5,22 +5,21 @@
 모든 컴포넌트의 정확한 작동 확인
 """
 
-import os
+import io
 import sys
 import json
 import time
+from pathlib import Path
+from datetime import datetime
+
 import numpy as np
 import faiss
 import torch
-from pathlib import Path
-from typing import List, Dict, Tuple
-from datetime import datetime
 
 # 프로젝트 경로 추가 (../../ 상대경로 사용)
 sys.path.append(str(Path(__file__).parent.parent.parent))
 
 # UTF-8 출력 설정
-import io
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 
 
@@ -110,11 +109,11 @@ class CompleteRAGValidator:
             
             # 문서 임베딩
             chunk_texts = [c.content for c in chunks]
-            doc_embeddings = embedder.encode(chunk_texts, is_query=False, batch_size=32)
+            doc_embeddings = embedder.embed(chunk_texts, is_query=False)
             
             # 쿼리 임베딩
             test_query = "AI 보안"
-            query_embedding = embedder.encode([test_query], is_query=True)
+            query_embedding = embedder.embed([test_query], is_query=True)
             
             self.results['embeddings'] = {
                 'success': True,
@@ -144,22 +143,22 @@ class CompleteRAGValidator:
         try:
             dimension = embeddings.shape[1]
             index = faiss.IndexFlatIP(dimension)
-            index.add(embeddings.astype('float32'))
+            index.add(embeddings.astype('float32'))  # pylint: disable=no-value-for-parameter
             
             # 검색 테스트
             test_vector = embeddings[0:1]
-            D, I = index.search(test_vector, k=5)
+            distances, indices = index.search(test_vector, k=5)  # pylint: disable=no-value-for-parameter
             
             self.results['faiss'] = {
                 'success': True,
                 'num_vectors': index.ntotal,
                 'dimension': dimension,
-                'search_test': {'distances': D[0].tolist(), 'indices': I[0].tolist()}
+                'search_test': {'distances': distances[0].tolist(), 'indices': indices[0].tolist()}
             }
             
             print(f"✅ FAISS 인덱스 성공")
             print(f"   - 인덱싱된 벡터: {index.ntotal}개")
-            print(f"   - 검색 테스트: Top-1 거리 = {D[0][0]:.4f}")
+            print(f"   - 검색 테스트: Top-1 거리 = {distances[0][0]:.4f}")
             
             return index
             
@@ -219,9 +218,9 @@ class CompleteRAGValidator:
             print(f"   BM25 검색: {len(bm25_results)}개 결과")
             
             # Vector 검색
-            query_embedding = embedder.encode([test_query], is_query=True)
-            D, I = faiss_index.search(query_embedding.astype('float32'), k=10)
-            print(f"   Vector 검색: {len(I[0])}개 결과")
+            query_embedding = embedder.embed([test_query], is_query=True)
+            distances, indices = faiss_index.search(query_embedding.astype('float32'), k=10)
+            print(f"   Vector 검색: {len(indices[0])}개 결과")
             
             # 점수 결합 (간단한 방식)
             alpha = 0.3  # BM25 가중치
@@ -236,7 +235,7 @@ class CompleteRAGValidator:
                 combined_scores[doc_idx] = alpha * normalized_score
             
             # Vector 점수 추가
-            for i, (idx, score) in enumerate(zip(I[0], D[0])):
+            for i, (idx, score) in enumerate(zip(indices[0], distances[0])):
                 if idx not in combined_scores:
                     combined_scores[idx] = 0
                 normalized_score = score  # 이미 코사인 유사도
@@ -248,7 +247,7 @@ class CompleteRAGValidator:
             self.results['hybrid'] = {
                 'success': True,
                 'bm25_results': len(bm25_results),
-                'vector_results': len(I[0]),
+                'vector_results': len(indices[0]),
                 'combined_results': len(top_results),
                 'top_score': top_results[0][1] if top_results else 0
             }
@@ -371,7 +370,7 @@ class CompleteRAGValidator:
         
         # 7. LLM 답변 생성
         contexts = [doc for doc, score in search_results]
-        answer = self.validate_qwen_llm(test_query, contexts)
+        _ = self.validate_qwen_llm(test_query, contexts)
         
         total_time = time.time() - start_time
         
@@ -469,12 +468,12 @@ def test_multiple_questions():
         print(f"\n질문 {i}: {question}")
         
         # 검색
-        query_embedding = embedder.encode([question], is_query=True)
-        D, I = index.search(query_embedding.astype('float32'), k=3)
+        query_embedding = embedder.embed([question], is_query=True)
+        distances, indices = index.search(query_embedding.astype('float32'), k=3)
         
-        print(f"  최고 유사도: {D[0][0]:.4f}")
-        if I[0][0] < len(chunks_data):
-            print(f"  관련 내용: {chunks_data[I[0][0]]['content'][:100]}...")
+        print(f"  최고 유사도: {distances[0][0]:.4f}")
+        if indices[0][0] < len(chunks_data):
+            print(f"  관련 내용: {chunks_data[indices[0][0]]['content'][:100]}...")
 
 
 if __name__ == "__main__":

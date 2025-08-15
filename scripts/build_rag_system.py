@@ -16,6 +16,9 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from packages.preprocessing.data_preprocessor import DataPreprocessor, ProcessedDocument
 from packages.preprocessing.chunker import DocumentChunker, DocumentChunk
+from packages.preprocessing import LANGCHAIN_AVAILABLE
+if LANGCHAIN_AVAILABLE:
+    from packages.preprocessing.hierarchical_chunker import HierarchicalMarkdownChunker
 from packages.preprocessing.embedder import TextEmbedder
 from packages.rag.knowledge_base import KnowledgeBase
 
@@ -48,10 +51,21 @@ class RAGSystemBuilder:
         
         # 컴포넌트 초기화
         self.preprocessor = DataPreprocessor(str(self.data_dir / "processed"))
-        self.chunker = DocumentChunker(
-            chunk_size=512,  # Pipeline.md 1.3.1 요구사항
-            chunk_overlap=50
-        )
+        
+        # 계층적 마크다운 청킹을 우선 사용, 없으면 기본 청킹 사용
+        if LANGCHAIN_AVAILABLE:
+            logger.info("Using HierarchicalMarkdownChunker for optimal markdown processing")
+            self.chunker = HierarchicalMarkdownChunker(
+                use_chunk_cleaner=True,
+                enable_semantic=False
+            )
+        else:
+            logger.info("Using basic DocumentChunker (install langchain for better chunking)")
+            self.chunker = DocumentChunker(
+                chunk_size=512,  # Pipeline.md 1.3.1 요구사항
+                chunk_overlap=50
+            )
+        
         self.embedder = TextEmbedder(model_name=model_name)
         self.knowledge_base = None
         
