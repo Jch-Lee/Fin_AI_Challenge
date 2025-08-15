@@ -28,6 +28,7 @@ lxml==5.2.2
 ftfy==6.2.0
 chardet==5.2.0
 konlpy==0.6.0
+kiwipiepy>=0.17.0  # 고성능 한국어 형태소 분석기 (C++ 기반)
 
 # -- Image Processing --
 Pillow>=10.0.0

@@ -8,16 +8,16 @@
     2. `requirements.txt` 파일에 초기 라이브러리 목록과 버전이 명시된다.
     3. 기본 린터(linter) 및 포매터(formatter) 설정이 완료된다.
 
-## **Story 1.2: `외부 데이터 수집 및 정제 파이프라인 구축`**
+## **Story 1.2: `PDF 데이터 전처리 파이프라인 구축`**
 
-- **As a** data engineer, **I want** to 원본 외부 데이터를 불러와 정제하고, 데이터의 출처를 기록하는 스크립트를 작성하여, **so that** 깨끗하고 신뢰성 있는 데이터를 확보할 수 있다.
+- **As a** data engineer, **I want** to `/data/raw`의 PDF 파일들을 고품질로 파싱하고 정제하여, **so that** 깨끗하고 신뢰성 있는 텍스트 데이터를 확보할 수 있다.
 - **Acceptance Criteria:**
-    1. 스크립트는 `/data/raw`에서 원본 데이터를 읽는다.
-    2. 스크립트는 기본 정제 작업을 수행하고 결과를 `/data/processed`에 저장한다.
-    3. 데이터 처리 과정을 추적할 수 있는 로그 또는 메타데이터가 생성된다.
+    1. **Vision V2 PDF 파서**가 41.2% 개선된 텍스트 추출을 수행한다.
+    2. **3-Tier Fallback** 시스템이 구현된다 (Vision V2 → Traditional → Basic PyMuPDF).
+    3. **배치 처리 파이프라인**이 `/data/raw`의 모든 PDF를 순차 처리한다.
     4. `KoreanEnglishTextProcessor` 로직에 기반한 국영문 혼합 텍스트 정제 기능이 구현된다.
-    5. 저작권이 엄격한 ISO 표준 문서는 수집 대상에서 제외된다.
-    6. KOGL(공공누리) 데이터는 유형별 라이선스를 확인하고 기록한다.
+    5. 메모리 효율적인 대용량 파일 처리가 가능하다.
+    6. 데이터 처리 과정을 추적할 수 있는 로그 또는 메타데이터가 생성된다.
 
 ## **Story 1.3: `RAG 지식 베이스(FAISS) 구축`**
 

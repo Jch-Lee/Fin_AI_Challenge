@@ -1,0 +1,24 @@
+제3장. AI 학습 데이터 및 모델 보안 관리●●●
+27
+적대적 공격은 화이트박스와 블랙박스 기반의 공격으로 분류한다.
+- 화이트박스 공격은 모델의 아키텍처, 입･출력값, 가중치, 파라미터 등 모델에 대한 
+정보를 사전에 파악한 상태에서 적대적 예제를 생성한다.
+- 블랙박스 공격은 무작위적으로 적대적 예제를 생성하는 방식으로 FGSM2), 
+Deepfool3), JSMA4), CW5), BPDA6) 등의 연구가 있다.
+적대적 예제를 생성하여 학습*하는 것은 AI 모델의 강건성을 확보할 수 있는 방안으로써 
+적대적 공격을 사전에 예방한다.
+* 일종의 데이터 증강(Data Augmentation) 방식으로 다량 데이터 학습으로 AI 모델의 
+강건성을 높일 수 있음
+이미지 데이터의 경우 회전･패딩･필터 등의 방식으로 데이터를 변환해서 적대적 
+예제를 생성하고 학습할 수 있다.
+□
+4 (데이터 확장･학습) 재현 데이터* 등의 기법을 활용하여 확장한 데이터를 학습할 수 있다.
+* 원본 데이터의 통계적 특성을 활용하거나 AI 기법 등을 이용하여 생성한 모의 데이터
+확장한 데이터를 학습하는 방식을 통해 AI 모델의 강건성을 개선할 수 있다.
+2) lan J. Goodfellow et. al., “Explaining and Harnessing Adversarial Examples”, 2015.
+3) Moosavi-Dezfooli, Seyed-Mohsen, Alhussein Fawzi and Pascal Frossard, “DeepFool: a simple and 
+accurate method to fool deep neural networks”, 2016.
+4) Papernot, Nicolas, et al., “The Limitations of Deep Learning in Adversarial Settings”, 2016.
+5) Carlini, Nicolas, and David Wagnet, “Towards Evaluating the Robustness of Neural Networks”, 2017.
+6) Anish Athalye at al., “Obfuscated Gradients Give a False Sense of Security : Circumventing Defenses 
+to Adversarial Examples”, 2018.
