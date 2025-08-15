@@ -40,10 +40,7 @@ ipython_config.py
 *.hdf5
 *.parquet
 *.feather
-data/
-datasets/
-raw_data/
-processed_data/
+
 
 # Models and weights (용량이 큰 파일들)
 *.model
@@ -135,3 +132,4 @@ submissions/
 test_output/nul
 *.tmp
 __pycache__/
+powerline-fonts/

@@ -5,4 +5,4 @@
 - develop 브랜치에서 새로운 feature 브랜치를 생성합니다.
 
 - 예시: feat/story-1.1/init-project
-
+

@@ -1,0 +1,27 @@
+### 추출된 정보
+
+#### 1 급 (반드시 추출):
+- **AI 모델이 오염된 데이터를 학습하면 모델의 정확도가 저하된다는 것은 다수의 연구(16)를 통해 증명된 바 있다.(17)**
+- **오염된 데이터 학습으로 인하여 경계 면 변경 및 탐지 성능 저하(17)**
+- **데이터 오염 공격은이 상치 처리 등의 방법을 통해서 예방하거나 차단할 수 있다. **
+- **(이상치 처리) 임계치를 이상 점수(Outlier Score)로 정하고 이상 점수 밖에 위치하는 오염된 데이터를 찾거나(18), 클러스터링 기법을 활용하여 클러스터 밖에 위치하는 오염된 데이터를 찾는 방식을 활용할 수 있다.(19)**
+
+#### 2 급 (요약하여 추출):
+- **그림: 공격 전과 공격 후의 데이터 분포 **
+  - **측정 항목 **: y = +1, y = -1
+  - **기간/ 범위 **: 공격 전과 공격 후
+  - **핵심 발견 **: 공격 전에는 두 집단 사이의 경계가 명확하지만, 공격 후에는 경계가 흐려지고 오염 데이터가 추가됨
+  - **주요 수치 **: 공격 전 경계선이 선명하며, 공격 후에는 경계선이 희미해짐
+
+#### 3 급 (제외):
+- **그림 1 **, **표 2 **
+- **출처 **: Shafahi Ali et al., "Poison frogs! targeted clean-label poisoning attacks on neural networks", 2018.
+- **출처 **: https://towardsdatascience.com/poisoning-attacks-on-machine-learning-1ff247c254db
+- **출처 **: Paudice, Andrea, et al., "Detection of Adversarial Training Examples in Poisoning Attacks through Anomaly Detection.", 2018.
+- **출처 **: Steinhardt, Jacob, Pang Wei W. Koh, and Percy S. Liang., "Certified Defenses for Data Poisoning Attacks.", 2017.
+
+---
+
+### 검증
+- 각 추출 항목이 독립적으로 의미가 있으며, 컨 텍스트 없이도 이해 가능하다.
+- RAG 검색 시 유용한 정보로 인식된다.

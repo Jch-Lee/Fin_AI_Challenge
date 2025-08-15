@@ -4,7 +4,7 @@
 
 # -- Core ML & Frameworks (대회 지정 및 필수 라이브러리) --
 torch==2.1.0
-transformers==4.41.2
+transformers>=4.51.0
 accelerate==0.30.1
 peft==0.11.1
 trl==0.9.6
@@ -28,6 +28,11 @@ lxml==5.2.2
 ftfy==6.2.0
 chardet==5.2.0
 konlpy==0.6.0
+kiwipiepy>=0.17.0  # 고성능 한국어 형태소 분석기 (C++ 기반)
+
+# -- Image Processing --
+Pillow>=10.0.0
+qwen-vl-utils
 
 # -- Monitoring & Testing --
 tqdm==4.66.4

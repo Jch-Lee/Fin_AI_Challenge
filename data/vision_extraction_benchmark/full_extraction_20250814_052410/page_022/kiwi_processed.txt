@@ -1,0 +1,51 @@
+## AI 모델 평가 지표
+
+| 평가 지표 | 설명 |
+| --- | --- |
+| 정확도 (Accuracy) | 예측한 데이터 셋 중에서 정확하게 예측한 비율 |
+| 오차 행렬 (Confusion Matrix) | 예측 값과 실제 값 사이에 탐지 값을 측정한 표 |
+| 정밀도 (Precision) | True 예측 결과에서 실제 True를 탐지한 비율 |
+| 재현율 (Recall) | 실제 True 값에서 True를 탐지한 비율 |
+| F-점수 (F-score) | 정밀도와 재현율의 조화 평균 |
+| AUC-ROC 곡선 (AUC-ROC Curve) | 재현율과 특이 도를 기준으로 그려지는 곡선 |
+| 평균 절대 오차 (MAE) | 정답과 예측 간의 절대 거리를 평균한 거리 |
+
+### 정확도 (Accuracy)
+- 예측한 데이터 셋 중에서 정확하게 예측한 비율
+
+### 오차 행렬 (Confusion Matrix)
+- 예측 값과 실제 값 사이에 탐지 값을 측정한 표
+- **실제 값 **
+  - **긍정 (Positive)**
+    - 참 양성(TP) (True Positive)
+    - 거짓 양성(FP) (False Positive)
+  - **부정 (Negative)**
+    - 참음성(TN) (True Negative)
+    - 거짓 음성(FN) (False Negative)
+
+### 정밀도 (Precision)
+- True 예측 결과에서 실제 True를 탐지한 비율
+- TP / (TP +FP)
+
+### 재현율 (Recall)
+- 실제 True 값에서 True를 탐지한 비율
+- TP / (TP +FN)
+
+### F-점수 (F-score)
+- 정밀도와 재현율의 조화 평균
+- 2 × 정밀도 × 재현율 / (정밀도 +재현율)
+
+### AUC-ROC 곡선 (AUC-ROC Curve)
+- 재현율과 특이 도를 기준으로 그려지는 곡선
+- TN/(TN +FP)
+- AUC 수치가 높을수록 모델의 성능이 좋음
+
+### 평균 절대 오차 (MAE)
+- 정답과 예측 간의 절대 거리를 평균한 거리
+- 평균 절대 오차 수치가 작을수록 모델의 성능이 좋음
+
+---
+
+## AUC-ROC 곡선 (AUC-ROC Curve)
+- 재현율을 Y 축으로, 민감 도를 X 축으로 그리는 곡선
+- AUC =0.5: 랜덤 모델, AUC =0.7: 중간 수준 모델, AUC =1: 완벽한 모델

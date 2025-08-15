@@ -7,7 +7,7 @@ import numpy as np
 import pickle
 import json
 from pathlib import Path
-from typing import List, Dict, Optional, Tuple, Any
+from typing import List, Dict, Optional, Tuple, Any, Union
 import logging
 from dataclasses import dataclass
 
@@ -30,7 +30,7 @@ class KnowledgeBase:
     
     def __init__(self, 
                  embedding_dim: int = 768,
-                 index_type: str = "IVF",
+                 index_type: str = "Flat",  # Default to Flat for small datasets
                  nlist: int = 100,
                  nprobe: int = 10):
         """
@@ -84,10 +84,19 @@ class KnowledgeBase:
     
     def add_documents(self, 
                      embeddings: np.ndarray,
-                     documents: List[str],
+                     documents: List[Any],
                      metadata: Optional[List[Dict]] = None):
         """문서 추가"""
-        if len(embeddings) != len(documents):
+        # Handle both string documents and dict documents
+        if documents and isinstance(documents[0], dict):
+            # Extract content from dict documents
+            actual_documents = [doc.get('content', str(doc)) for doc in documents]
+            if metadata is None:
+                metadata = [doc.get('metadata', {}) for doc in documents]
+        else:
+            actual_documents = documents
+        
+        if len(embeddings) != len(actual_documents):
             raise ValueError("Number of embeddings and documents must match")
         
         if metadata and len(metadata) != len(documents):
@@ -96,28 +105,34 @@ class KnowledgeBase:
         # 임베딩 정규화 (코사인 유사도를 위해)
         faiss.normalize_L2(embeddings)
         
-        # IVF 인덱스는 학습이 필요
+        # IVF 인덱스는 학습이 필요하며, 충분한 데이터가 필요함
         if self.index_type == "IVF" and not self.index.is_trained:
-            logger.info("Training IVF index...")
-            self.index.train(embeddings)
+            if len(embeddings) < self.nlist:
+                logger.warning(f"Not enough documents ({len(embeddings)}) for IVF with nlist={self.nlist}. Switching to Flat index.")
+                self.index_type = "Flat"
+                self._build_index()
+            else:
+                logger.info("Training IVF index...")
+                self.index.train(embeddings)
         
         # 인덱스에 추가
         self.index.add(embeddings)
         
         # 문서와 메타데이터 저장
-        self.documents.extend(documents)
+        self.documents.extend(actual_documents)
         if metadata:
             self.metadata.extend(metadata)
         else:
-            self.metadata.extend([{} for _ in documents])
+            self.metadata.extend([{} for _ in actual_documents])
         
-        self.doc_count += len(documents)
-        logger.info(f"Added {len(documents)} documents. Total: {self.doc_count}")
+        self.doc_count += len(actual_documents)
+        logger.info(f"Added {len(actual_documents)} documents. Total: {self.doc_count}")
     
     def search(self, 
               query_embedding: np.ndarray,
               k: int = 5,
-              threshold: Optional[float] = None) -> List[SearchResult]:
+              top_k: Optional[int] = None,  # Support both k and top_k
+              threshold: Optional[float] = None) -> List[Union[SearchResult, Dict]]:
         """벡터 검색"""
         if self.doc_count == 0:
             logger.warning("Knowledge base is empty")
@@ -131,8 +146,11 @@ class KnowledgeBase:
         if self.index_type == "IVF":
             self.index.nprobe = self.nprobe
         
+        # Support both k and top_k parameters
+        k_value = top_k if top_k is not None else k
+        
         # 검색 수행
-        scores, indices = self.index.search(query_embedding, min(k, self.doc_count))
+        scores, indices = self.index.search(query_embedding, min(k_value, self.doc_count))
         
         results = []
         for score, idx in zip(scores[0], indices[0]):
@@ -144,13 +162,15 @@ class KnowledgeBase:
             
             metadata = self.metadata[idx] if idx < len(self.metadata) else {}
             
-            result = SearchResult(
-                content=self.documents[idx],
-                score=float(score),
-                metadata=metadata,
-                chunk_id=metadata.get('chunk_id', str(idx)),
-                doc_id=metadata.get('doc_id', 'unknown')
-            )
+            # Return dict format for compatibility
+            result = {
+                'content': self.documents[idx],
+                'score': float(score),
+                'metadata': metadata,
+                'chunk_id': metadata.get('chunk_id', str(idx)),
+                'doc_id': metadata.get('doc_id', 'unknown'),
+                'id': idx
+            }
             results.append(result)
         
         return results
@@ -201,8 +221,11 @@ class KnowledgeBase:
         save_path.mkdir(parents=True, exist_ok=True)
         
         # FAISS 인덱스 저장
-        index_path = save_path / "faiss.index"
-        faiss.write_index(self.index, str(index_path))
+        if self.index is not None:
+            index_path = save_path / "faiss.index"
+            faiss.write_index(self.index, str(index_path))
+        else:
+            logger.warning("No index to save")
         
         # 문서와 메타데이터 저장
         data = {
@@ -223,13 +246,29 @@ class KnowledgeBase:
     
     @classmethod
     def load(cls, save_dir: str) -> 'KnowledgeBase':
-        """지식 베이스 로드"""
+        """지식 베이스 로드 (새 형식 및 레거시 형식 지원)"""
         save_path = Path(save_dir)
         
-        # 데이터 로드
+        # Check for new format first
         data_path = save_path / "knowledge_base.pkl"
-        with open(data_path, 'rb') as f:
-            data = pickle.load(f)
+        
+        if data_path.exists():
+            # New format with pickle file
+            with open(data_path, 'rb') as f:
+                data = pickle.load(f)
+        else:
+            # Legacy format - only FAISS index exists
+            logger.warning("Loading legacy format (FAISS index only)")
+            # Create minimal data structure for legacy support
+            data = {
+                'documents': [],
+                'metadata': [],
+                'doc_count': 0,
+                'embedding_dim': 1024,  # Assume KURE default
+                'index_type': 'Flat',  # Assume Flat for legacy
+                'nlist': 100,
+                'nprobe': 10
+            }
         
         # 인스턴스 생성
         kb = cls(
@@ -241,12 +280,24 @@ class KnowledgeBase:
         
         # FAISS 인덱스 로드
         index_path = save_path / "faiss.index"
-        kb.index = faiss.read_index(str(index_path))
+        if index_path.exists():
+            kb.index = faiss.read_index(str(index_path))
+            # For legacy format, update doc_count from index
+            if not data_path.exists() and hasattr(kb.index, 'ntotal'):
+                data['doc_count'] = kb.index.ntotal
+        else:
+            logger.warning(f"No FAISS index found at {index_path}")
         
         # 데이터 복원
-        kb.documents = data['documents']
-        kb.metadata = data['metadata']
-        kb.doc_count = data['doc_count']
+        kb.documents = data.get('documents', [])
+        kb.metadata = data.get('metadata', [])
+        kb.doc_count = data.get('doc_count', 0)
+        
+        # For legacy format with empty documents, create placeholders
+        if kb.doc_count > 0 and len(kb.documents) == 0:
+            logger.info(f"Creating placeholder documents for {kb.doc_count} legacy entries")
+            kb.documents = [f"Legacy document {i}" for i in range(kb.doc_count)]
+            kb.metadata = [{'legacy': True, 'index': i} for i in range(kb.doc_count)]
         
         logger.info(f"Loaded knowledge base from {save_dir}")
         return kb

@@ -20,19 +20,20 @@ Teacher Models (70B/7B) → Knowledge Distillation → Student Models (1.5B-10.7
 ```
 
 ### 주요 구성요소
-1. **Teacher Models**
-   - Llama-3.1-70B-Instruct
-   - Qwen2.5-7B-Instruct
+1. **Teacher Models** (검증 완료)
+   - Llama-3.1-70B-Instruct (Llama Community, 2024-07-23)
+   - Qwen2.5-7B-Instruct (Apache 2.0, 2024-09-19)
+   - Qwen2.5-14B-Instruct (Apache 2.0, 2024-09-19)
 
-2. **Student Models**
-   - Mistral-7B-Instruct
-   - Solar-10.7B-Instruct  
-   - Qwen2.5-1.5B-Instruct
+2. **Student Models** (검증 완료)
+   - Mistral-7B-Instruct-v0.2 (Apache 2.0, 2024-03-24)
+   - Qwen2.5-1.5B-Instruct (Apache 2.0, 2024-09-19)
 
 3. **RAG System**
+   - **Vision V2**: Qwen2.5-VL-7B (41.2% 품질 향상)
    - FAISS Vector Database
-   - BM25 Hybrid Search
-   - Korean Sentence Embeddings
+   - BM25 Hybrid Search  
+   - Korean Sentence Embeddings (KURE-v1)
 
 ## 🚀 빠른 시작
 
