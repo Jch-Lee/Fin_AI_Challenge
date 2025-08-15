@@ -19,7 +19,7 @@ _issue_warning()
 
 # Import from new location
 from ..rag.embeddings import KUREEmbedder as _KUREEmbedder
-from ..rag.embeddings import E5Embedder
+# E5Embedder는 더 이상 사용하지 않음
 
 # Create backward-compatible wrapper
 class EmbeddingGenerator(_KUREEmbedder):
@@ -54,6 +54,6 @@ __all__ = [
     'EmbeddingGenerator',
     'TextEmbedder', 
     'KUREEmbedder',
-    'E5Embedder',
+    # 'E5Embedder',  # 더 이상 사용하지 않음
     'HybridEmbedding'
 ]

@@ -1,1 +1,0 @@
-금융분야 AI 보안 가이드라인 온라인 학습 Online Learning 경우 AI 모델 학습 동일 입력 대하 출력 변화 수집 학습 사용 학습데이터 복구 사례 존재 참고 Updates Leak 공격 Updates Leak 공격 식도 모델 버전 공격 모델추출 공격 마찬가지 출력 보호 통하 예방 차단 Ahmed Salem Update Leak Data Set Inference and Reconstruction Attacks in Online Learning

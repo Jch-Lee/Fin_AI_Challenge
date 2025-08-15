@@ -1,164 +1,0 @@
-20:36:00 | INFO     | PyTorch version 2.5.1+cu118 available.
-20:36:00 | INFO     | Loading faiss with AVX512 support.
-20:36:00 | INFO     | Could not load library with AVX512 support due to:
-ModuleNotFoundError("No module named 'faiss.swigfaiss_avx512'")
-20:36:00 | INFO     | Loading faiss with AVX2 support.
-20:36:00 | INFO     | Successfully loaded faiss with AVX2 support.
-20:36:00 | INFO     | Failed to load GPU Faiss: name 'GpuIndexIVFFlat' is not defined. Will not load constructor refs for GPU indexes. This is only an error if you're trying to use GPU Faiss.
-20:36:00 | INFO     | ============================================================
-20:36:00 | INFO     | E5 한국어 모델 RAG 시스템 테스트
-20:36:00 | INFO     | ============================================================
-20:36:00 | INFO     | 
-[INIT] E5 임베더 초기화...
-20:36:00 | INFO     | Loading E5 model: dragonkue/multilingual-e5-small-ko
-20:36:04 | INFO     | E5 model loaded. Embedding dimension: 384
-20:36:04 | INFO     | \u2705 E5 모델 로드 성공 (차원: 384)
-20:36:04 | INFO     | 
-[DATA] 금융 문서 준비...
-20:36:04 | INFO     | 
-[CHUNK] 문서 청킹...
-20:36:04 | INFO     | 생성된 청크: 4개
-20:36:04 | INFO     | 
-[EMBED] E5 임베딩 생성...
-20:36:04 | INFO     | \u2705 임베딩 완료
-20:36:04 | INFO     |   - Shape: (4, 384)
-20:36:04 | INFO     |   - 시간: 0.035초
-20:36:04 | INFO     |   - 속도: 114.7 chunks/sec
-20:36:04 | INFO     | 
-[INDEX] 지식베이스 구축...
-20:36:04 | INFO     | Created Flat index with dimension 384
-20:36:04 | INFO     | Added 4 documents. Total: 4
-20:36:04 | INFO     | 
-[SEARCH] 하이브리드 검색 테스트...
-20:36:04 | DEBUG    | Building index from tokens
-resource module not available on Windows
-BM25S Create Vocab:   0%|          | 0/4 [00:00<?, ?it/s]                                                         BM25S Convert tokens to indices:   0%|          | 0/4 [00:00<?, ?it/s]                                                                      BM25S Count Tokens:   0%|          | 0/4 [00:00<?, ?it/s]                                                         BM25S Compute Scores:   0%|          | 0/4 [00:00<?, ?it/s]                                                           20:36:04 | INFO     | BM25s index built with 4 documents
-20:36:04 | INFO     | --------------------------------------------------
-20:36:04 | INFO     | 
-쿼리: 'ISMS 인증 심사 기준은 무엇인가요?'
-BM25S Retrieve:   0%|          | 0/1 [00:00<?, ?it/s]                                                     20:36:04 | INFO     | Dense 검색 (E5 + FAISS):
-20:36:04 | INFO     |   1. (점수: 0.490)  준수해야 합니다.
-    개인정보보호법(PIPA)의 요구사항을 충족해야 합니다.
-     준수해야 합니다....
-20:36:04 | INFO     |   2. (점수: 0.357) odule)에 보관되어야 합니다.
-    키 로테이션은 최소 90일마다 수행되어야 합니다.odule)에 보관...
-20:36:04 | INFO     | Sparse 검색 (BM25):
-20:36:04 | INFO     |   1. (점수: 3.000) odule)에 보관되어야 합니다.
-    키 로테이션은 최소 90일마다 수행되어야 합니다.odule)에 보관...
-20:36:04 | INFO     |   2. (점수: 1.000) 
-    금융 AI 보안 가이드라인
-    
-    제1장: 데이터 보안
-    1.1 암호화 표준
-    ...
-20:36:04 | INFO     | 
-쿼리: '암호화 알고리즘은 무엇을 사용해야 하나요?'
-BM25S Retrieve:   0%|          | 0/1 [00:00<?, ?it/s]                                                     20:36:04 | INFO     | Dense 검색 (E5 + FAISS):
-20:36:04 | INFO     |   1. (점수: 0.552) 
-    금융 AI 보안 가이드라인
-    
-    제1장: 데이터 보안
-    1.1 암호화 표준
-    ...
-20:36:04 | INFO     |   2. (점수: 0.423) 원칙을 적용해야 합니다.
-    
-    제3장: AI 모델 보안
-    3.1 모델 보호원칙을 적용해야 합...
-20:36:04 | INFO     | Sparse 검색 (BM25):
-20:36:04 | INFO     |   1. (점수: 3.000) 
-    금융 AI 보안 가이드라인
-    
-    제1장: 데이터 보안
-    1.1 암호화 표준
-    ...
-20:36:04 | INFO     |   2. (점수: 2.000) 
-    금융 AI 보안 가이드라인
-    
-    제1장: 데이터 보안
-    1.1 암호화 표준
-    ...
-20:36:04 | INFO     | 
-쿼리: '보안 사고 발생 시 보고 기한은?'
-BM25S Retrieve:   0%|          | 0/1 [00:00<?, ?it/s]                                                     20:36:04 | INFO     | Dense 검색 (E5 + FAISS):
-20:36:04 | INFO     |   1. (점수: 0.493)  준수해야 합니다.
-    개인정보보호법(PIPA)의 요구사항을 충족해야 합니다.
-     준수해야 합니다....
-20:36:04 | INFO     |   2. (점수: 0.373) 
-    금융 AI 보안 가이드라인
-    
-    제1장: 데이터 보안
-    1.1 암호화 표준
-    ...
-20:36:04 | INFO     | Sparse 검색 (BM25):
-20:36:04 | INFO     |   1. (점수: 3.000) odule)에 보관되어야 합니다.
-    키 로테이션은 최소 90일마다 수행되어야 합니다.odule)에 보관...
-20:36:04 | INFO     |   2. (점수: 2.000) 
-    금융 AI 보안 가이드라인
-    
-    제1장: 데이터 보안
-    1.1 암호화 표준
-    ...
-20:36:04 | INFO     | 
-쿼리: 'AI 모델 보안 위협에는 무엇이 있나요?'
-BM25S Retrieve:   0%|          | 0/1 [00:00<?, ?it/s]                                                     20:36:04 | INFO     | Dense 검색 (E5 + FAISS):
-20:36:04 | INFO     |   1. (점수: 0.623) 원칙을 적용해야 합니다.
-    
-    제3장: AI 모델 보안
-    3.1 모델 보호원칙을 적용해야 합...
-20:36:04 | INFO     |   2. (점수: 0.464) 
-    금융 AI 보안 가이드라인
-    
-    제1장: 데이터 보안
-    1.1 암호화 표준
-    ...
-20:36:04 | INFO     | Sparse 검색 (BM25):
-20:36:04 | INFO     |   1. (점수: 2.000) 
-    금융 AI 보안 가이드라인
-    
-    제1장: 데이터 보안
-    1.1 암호화 표준
-    ...
-20:36:04 | INFO     |   2. (점수: 1.000) 
-    금융 AI 보안 가이드라인
-    
-    제1장: 데이터 보안
-    1.1 암호화 표준
-    ...
-20:36:04 | INFO     | 
-============================================================
-20:36:04 | INFO     | 하이브리드 가중치 최적화
-20:36:04 | INFO     | ============================================================
-20:36:04 | INFO     | 
-가중치: Dense=0.7, Sparse=0.3 (Dense 우선)
-BM25S Retrieve:   0%|          | 0/1 [00:00<?, ?it/s]                                                     20:36:04 | INFO     |   최고 점수: 0.393
-20:36:04 | INFO     |   내용:  준수해야 합니다.
-    개인정보보호법(PIPA)의 요구사항을 충족해야 합니다.
-     준수해야 합니다.
-    개인정보보호법(PIPA)의 ...
-20:36:04 | INFO     | 
-가중치: Dense=0.5, Sparse=0.5 (균등)
-BM25S Retrieve:   0%|          | 0/1 [00:00<?, ?it/s]                                                     20:36:04 | INFO     |   최고 점수: 0.354
-20:36:04 | INFO     |   내용: odule)에 보관되어야 합니다.
-    키 로테이션은 최소 90일마다 수행되어야 합니다.odule)에 보관되어야 합니다.
-    키 로테이션은...
-20:36:04 | INFO     | 
-가중치: Dense=0.3, Sparse=0.7 (BM25 우선)
-BM25S Retrieve:   0%|          | 0/1 [00:00<?, ?it/s]                                                     20:36:04 | INFO     |   최고 점수: 0.332
-20:36:04 | INFO     |   내용: odule)에 보관되어야 합니다.
-    키 로테이션은 최소 90일마다 수행되어야 합니다.odule)에 보관되어야 합니다.
-    키 로테이션은...
-20:36:04 | INFO     | 
-============================================================
-20:36:04 | INFO     | 테스트 완료 요약
-20:36:04 | INFO     | ============================================================
-20:36:04 | INFO     | \u2705 E5 한국어 모델: dragonkue/multilingual-e5-small-ko
-20:36:04 | INFO     | \u2705 임베딩 차원: 384 (네이티브)
-20:36:04 | INFO     | \u2705 문서 수: 4개
-20:36:04 | INFO     | \u2705 임베딩 속도: 114.7 chunks/sec
-20:36:04 | INFO     | \u2705 Query/Passage prefix 적용 완료
-20:36:04 | INFO     | \u2705 하이브리드 검색 정상 작동
-20:36:04 | INFO     | 
-권장 설정:
-20:36:04 | INFO     |   - Dense 가중치: 0.6
-20:36:04 | INFO     |   - Sparse 가중치: 0.4
-20:36:04 | INFO     |   - 한국어 금융 문서에 최적화됨

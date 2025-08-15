@@ -1,1 +1,0 @@
-markdown AI 서비스구성 AI 모델 성능 측정 적합 과과소적합 방지 위하 검증 절차 수행 적합 Overfitting AI 모델 주어지 학습데이터 과하 학습 학습 데이터 대하 예측 떨어지 현상 적합 Underfitting AI 모델 학습데이터 학습 예측 자체 떨어지 현상 홀드 아웃 검증 Holdout Validation 전체 데이터 분할 학습 테스트 검증 데이터 통하 진행 의미 K폴드 교체 검증 K fold Cross Validation 학습데이터 K 분할 차례 하나 검증 데이터 활용 K 회의 검증 실시 의미

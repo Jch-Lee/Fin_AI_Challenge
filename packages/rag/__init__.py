@@ -11,7 +11,7 @@ from .rag_pipeline import RAGPipeline, create_rag_pipeline
 from .embeddings import (
     BaseEmbedder,
     KUREEmbedder,
-    E5Embedder,
+    # E5Embedder,  # 더 이상 사용하지 않음
     EmbeddingGenerator,  # Backward compatibility
     TextEmbedder  # Backward compatibility
 )
@@ -32,7 +32,7 @@ __all__ = [
     # Embeddings
     'BaseEmbedder',
     'KUREEmbedder',
-    'E5Embedder',
+    # 'E5Embedder',  # 더 이상 사용하지 않음
     'EmbeddingGenerator',
     'TextEmbedder',
     

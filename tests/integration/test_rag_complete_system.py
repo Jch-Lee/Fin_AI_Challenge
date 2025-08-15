@@ -38,14 +38,14 @@ class CompleteRAGValidator:
         print("="*80)
         
         try:
-            from packages.preprocessing.pdf_processor_advanced import AdvancedPDFProcessor
+            from packages.preprocessing.pdf_processor_vision import VisionPDFProcessor
             
             pdf_path = "금융분야 AI 보안 가이드라인.pdf"
             if not Path(pdf_path).exists():
                 self.errors.append(f"PDF 파일 없음: {pdf_path}")
                 return None
                 
-            processor = AdvancedPDFProcessor()
+            processor = VisionPDFProcessor()
             result = processor.extract_pdf(pdf_path)
             
             text = result.text
@@ -98,13 +98,13 @@ class CompleteRAGValidator:
     def validate_e5_embeddings(self, chunks):
         """E5 임베딩 검증"""
         print("\n" + "="*80)
-        print("3. E5 임베딩 검증")
+        print("3. KURE 임베딩 검증")
         print("="*80)
         
         try:
-            from packages.preprocessing.embedder_e5 import E5Embedder
+            from packages.rag.embeddings import KUREEmbedder
             
-            embedder = E5Embedder()
+            embedder = KUREEmbedder()
             print(f"   모델: {embedder.model_name}")
             print(f"   차원: {embedder.embedding_dim}")
             
@@ -124,15 +124,15 @@ class CompleteRAGValidator:
                 'query_shape': query_embedding.shape
             }
             
-            print(f"✅ E5 임베딩 성공")
+            print(f"✅ KURE 임베딩 성공")
             print(f"   - 문서 임베딩: {doc_embeddings.shape}")
             print(f"   - 쿼리 임베딩: {query_embedding.shape}")
             
             return embedder, doc_embeddings
             
         except Exception as e:
-            self.errors.append(f"E5 임베딩 실패: {e}")
-            print(f"❌ E5 임베딩 실패: {e}")
+            self.errors.append(f"KURE 임베딩 실패: {e}")
+            print(f"❌ KURE 임베딩 실패: {e}")
             return None, None
     
     def validate_faiss_index(self, embeddings):
@@ -344,10 +344,10 @@ class CompleteRAGValidator:
             print("\n⚠️ 청킹 실패로 검증 중단")
             return False
         
-        # 3. E5 임베딩
+        # 3. KURE 임베딩
         embedder, embeddings = self.validate_e5_embeddings(chunks)
         if embedder is None or embeddings is None:
-            print("\n⚠️ E5 임베딩 실패로 검증 중단")
+            print("\n⚠️ KURE 임베딩 실패로 검증 중단")
             return False
         
         # 4. FAISS 인덱스
@@ -441,17 +441,17 @@ def test_multiple_questions():
     print("="*80)
     
     # 기존 인덱스 로드
-    from packages.preprocessing.embedder_e5 import E5Embedder
+    from packages.rag.embeddings import KUREEmbedder
     from packages.retrieval.bm25_retriever import BM25Retriever
     import faiss
     
-    index_dir = Path("data/e5_embeddings/latest")
+    index_dir = Path("data/kure_embeddings/latest")
     if not index_dir.exists():
         print("인덱스를 찾을 수 없습니다")
         return
     
     # 컴포넌트 로드
-    embedder = E5Embedder()
+    embedder = KUREEmbedder()
     index = faiss.read_index(str(index_dir / "faiss_index.bin"))
     
     with open(index_dir / "chunks.json", "r", encoding="utf-8") as f:

@@ -7,7 +7,7 @@ from typing import List, Dict, Optional, Tuple, Union
 import numpy as np
 from pathlib import Path
 
-from .embeddings import KUREEmbedder, E5Embedder, BaseEmbedder
+from .embeddings import KUREEmbedder, BaseEmbedder
 from .retrieval import HybridRetriever, VectorRetriever, BM25Retriever
 from .retrieval.reranking_retriever import RerankingRetriever
 from .knowledge_base import KnowledgeBase
@@ -389,8 +389,10 @@ def create_rag_pipeline(embedder_type: str = "kure",
     # Select embedder
     if embedder_type == "kure":
         embedder = KUREEmbedder(device=device)
+    # E5Embedder는 더 이상 사용하지 않음 - KURE로 대체
     elif embedder_type == "e5":
-        embedder = E5Embedder(device=device)
+        logger.warning("E5 embedder is deprecated, using KURE instead")
+        embedder = KUREEmbedder(device=device)
     else:
         raise ValueError(f"Unknown embedder type: {embedder_type}")
     
