@@ -37,15 +37,23 @@
 
 ### 3. Embedders (`packages/rag/embeddings/`)
 **구현된 임베딩 모델**:
-- **KUREEmbedder**: Kistec/KURE-v1 (1024차원)
+- **KUREEmbedder**: nlpai-lab/KURE-v1 (한국어 특화 임베딩, SentenceTransformer 기반)
 - **E5Embedder**: intfloat/multilingual-e5-large (768차원)
 - **BaseEmbedder**: 추상 기본 클래스
 
+**토크나이저 전략**:
+- **벡터 임베딩**: KURE 내장 토크나이저 (SentencePiece 기반, 476배 빠른 속도)
+- **BM25 검색**: Kiwipiepy 형태소 분석기 (의미 단위 정확도 우선)
+
 ### 4. Retrievers (`packages/rag/retrieval/`)
 **검색 전략**:
-- **VectorRetriever**: FAISS 기반 밀집 벡터 검색
-- **BM25Retriever**: 희소 벡터 기반 키워드 매칭
-- **HybridRetriever**: Vector + BM25 앙상블
+- **VectorRetriever**: FAISS 기반 밀집 벡터 검색 (KURE 임베딩 사용)
+- **KiwiBM25Retriever**: Kiwipiepy 형태소 분석 기반 BM25 검색
+  - 품사 필터링: 명사(N), 동사(V), 형용사(VA), 외국어(SL)
+  - 띤어쓰기 교정 포함
+  - 10-30배 빠른 토크나이징 속도
+- **HybridRetriever**: Vector(KURE) + BM25(Kiwi) 앙상블
+  - 각 방식의 강점 결합: 벗터 유사도 + 키워드 매칭
 
 ### 5. Model Loaders (`models/model_loader.py`)
 **모델 관리 시스템**:

@@ -1,0 +1,1 @@
+추출 정보 제목 참고 모델 버전 공격 본문 모델 버전 공격 모델 출력 입력 유추 공격 공격자 모델 종류 파라미터 알리 정보 기반 대리 모델 제작 공격 활용 원본 모델 예측 정답 지도 학습 통하 학습 유사 모델 공격자 쿼리 통하 출력 신뢰 점수 Cosidence Score 추측 통하 학습데이터 추측 신뢰구간 모집단 실제 평균값 포함 확률 신뢰 점수 기반 공격 입력 원본 이미지 가깝 이미지 생성 사례 존재 참고 원본 이미지 기반 복구 이미지 예시 원본 이미지 복구 이미지 참고 문헌 Fredrikson et.al. Model Inversion Attacks that Exploit Confidence Information and Basic Countermea sures.

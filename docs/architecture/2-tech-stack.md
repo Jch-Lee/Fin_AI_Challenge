@@ -8,12 +8,12 @@
 | **Optimization** | Accelerate | `0.30.1` | 학습/추론 최적화 |
 | **Response Gen** | vllm | `0.5.4` | 교사/학생 응답 생성 |
 | **Fine-Tuning** | TRL | `0.9.6` | `DistiLLMTrainer` 사용 |
-| **Embedding** | sentence-transformers | `2.7.0` | 벡터 임베딩 |
+| **Embedding** | KURE-v1 (nlpai-lab) | `latest` | 한국어 특화 벡터 임베딩 |
 | **Vector DB** | FAISS-CPU | `1.8.0` | 벡터 검색 |
 | **Quantization** | auto-gptq / bitsandbytes | `0.7.1`/`0.43.1` | GPTQ/QLoRA 양자화 |
 | **Data/Doc Proc** | Pandas, LangChain, PyMuPDF | `2.2.2`,`0.2.1`,`1.24.1` | 데이터/문서 처리 |
-| **Search** | bm25s | `0.2.2` | Sparse 검색 |
-| **Korean NLP** | konlpy | `0.6.0` | 한국어 형태소 분석 |
+| **Search** | bm25s + Kiwipiepy | `0.2.2` | Sparse 검색 (Kiwi 토크나이저 사용) |
+| **Korean NLP** | Kiwipiepy | `0.15.0` | 한국어 형태소 분석 (BM25용) |
 | **Vision-Language** | Qwen2.5-VL-7B-Instruct | `latest` | PDF 이미지 텍스트 추출 |
 | **Image Processing** | Pillow | `10.0.0` | 이미지 변환/처리 |
 | **Vision Utils** | qwen_vl_utils | `latest` | VL 모델 유틸리티 (옵셔널) |
