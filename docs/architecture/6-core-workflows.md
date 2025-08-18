@@ -32,14 +32,15 @@ sequenceDiagram
     Optim-->>User: 경량화된 최종 모델
 ```
 
-## Workflow 2: RAG 추론
+## Workflow 2: RAG 추론 (Enhanced with Reranking)
 
 ```python
 sequenceDiagram
     participant Runner as Competition Runner
     participant Orchestrator as Inference Orchestrator
     participant Cache as Cache Layer
-    participant Retriever as Multi-Stage Retriever
+    participant Retriever as Hybrid Retriever
+    participant Reranker as Qwen3-Reranker-4B
     participant Model as Fine-tuned Model
     participant Fallback as Fallback Handler
 
@@ -49,7 +50,10 @@ sequenceDiagram
         Orchestrator->>Cache: 쿼리
         alt Cache Miss
             Cache->>Retriever: 검색 요청
-            Retriever-->>Cache: 컨텍스트
+            Retriever->>Retriever: BM25(Kiwi) + Vector(KURE) 하이브리드 검색
+            Retriever-->>Reranker: Top-30 후보 문서
+            Reranker->>Reranker: Cross-encoder 재순위화
+            Reranker-->>Cache: Top-5 최종 컨텍스트
             Cache->>Cache: 저장
         end
         

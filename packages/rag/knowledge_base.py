@@ -177,43 +177,144 @@ class KnowledgeBase:
     
     def batch_search(self, 
                     query_embeddings: np.ndarray,
-                    k: int = 5) -> List[List[SearchResult]]:
-        """배치 검색"""
+                    k: int = 5,
+                    use_kure_similarity: bool = False,
+                    embedder=None) -> List[List[SearchResult]]:
+        """
+        Batch search for multiple queries simultaneously
+        Optimized for large-scale retrieval
+        
+        Args:
+            query_embeddings: Multiple query embeddings (shape: [n_queries, dim])
+            k: Number of results per query
+            use_kure_similarity: Whether to use KURE's native similarity
+            embedder: KUREEmbedder instance (required if use_kure_similarity=True)
+        
+        Returns:
+            List of search results for each query
+        """
         if self.doc_count == 0:
             return [[] for _ in range(len(query_embeddings))]
         
-        # 쿼리 임베딩 정규화
-        query_embeddings = query_embeddings.astype('float32')
-        faiss.normalize_L2(query_embeddings)
-        
-        # IVF 인덱스의 경우 nprobe 설정
-        if self.index_type == "IVF":
-            self.index.nprobe = self.nprobe
-        
-        # 배치 검색
-        scores, indices = self.index.search(query_embeddings, min(k, self.doc_count))
-        
         all_results = []
-        for query_scores, query_indices in zip(scores, indices):
-            results = []
-            for score, idx in zip(query_scores, query_indices):
-                if idx == -1:
-                    continue
-                
-                metadata = self.metadata[idx] if idx < len(self.metadata) else {}
-                
-                result = SearchResult(
-                    content=self.documents[idx],
-                    score=float(score),
-                    metadata=metadata,
-                    chunk_id=metadata.get('chunk_id', str(idx)),
-                    doc_id=metadata.get('doc_id', 'unknown')
-                )
-                results.append(result)
+        
+        if use_kure_similarity and embedder is not None:
+            # Use KURE's optimized batch similarity search
+            # Get all document embeddings from FAISS index
+            doc_embeddings = self.index.reconstruct_n(0, self.doc_count)
             
-            all_results.append(results)
+            # Perform batch similarity search
+            top_k_results = embedder.batch_similarity_search(
+                query_embeddings,
+                doc_embeddings,
+                top_k=k
+            )
+            
+            # Convert to SearchResult objects
+            for query_results in top_k_results:
+                results = []
+                for doc_idx, score in query_results:
+                    if doc_idx < len(self.documents):
+                        # Handle both string and dict documents
+                        if isinstance(self.documents[doc_idx], dict):
+                            content = self.documents[doc_idx].get('content', '')
+                            doc_metadata = self.documents[doc_idx].get('metadata', {})
+                        else:
+                            content = self.documents[doc_idx]
+                            doc_metadata = self.metadata[doc_idx] if doc_idx < len(self.metadata) else {}
+                        
+                        result = SearchResult(
+                            content=content,
+                            score=score,
+                            metadata=doc_metadata,
+                            chunk_id=doc_metadata.get('chunk_id', str(doc_idx)),
+                            doc_id=doc_metadata.get('doc_id', 'unknown')
+                        )
+                        results.append(result)
+                all_results.append(results)
+        else:
+            # Use standard FAISS batch search
+            # 쿼리 임베딩 정규화
+            query_embeddings = query_embeddings.astype('float32')
+            faiss.normalize_L2(query_embeddings)
+            
+            # IVF 인덱스의 경우 nprobe 설정
+            if self.index_type == "IVF":
+                self.index.nprobe = self.nprobe
+            
+            # 배치 검색
+            scores, indices = self.index.search(query_embeddings, min(k, self.doc_count))
+            
+            for query_scores, query_indices in zip(scores, indices):
+                results = []
+                for score, idx in zip(query_scores, query_indices):
+                    if idx == -1:
+                        continue
+                    
+                    metadata = self.metadata[idx] if idx < len(self.metadata) else {}
+                    
+                    result = SearchResult(
+                        content=self.documents[idx],
+                        score=float(score),
+                        metadata=metadata,
+                        chunk_id=metadata.get('chunk_id', str(idx)),
+                        doc_id=metadata.get('doc_id', 'unknown')
+                    )
+                    results.append(result)
+                
+                all_results.append(results)
         
         return all_results
+    
+    def similarity_search_with_kure(self,
+                                   query_embedding: np.ndarray,
+                                   k: int = 5,
+                                   embedder=None) -> List[SearchResult]:
+        """
+        Search using KURE's native similarity computation
+        
+        Args:
+            query_embedding: Query embedding
+            k: Number of results
+            embedder: KUREEmbedder instance
+        
+        Returns:
+            List of search results
+        """
+        if embedder is None:
+            logger.warning("KUREEmbedder not provided, falling back to standard search")
+            return self.search(query_embedding, k)
+        
+        # Get all document embeddings
+        doc_embeddings = self.index.reconstruct_n(0, self.doc_count)
+        
+        # Compute similarities using KURE
+        similarities = embedder.compute_similarity_scores(query_embedding, doc_embeddings)
+        
+        # Get top-k indices
+        top_k_indices = np.argsort(similarities)[-k:][::-1]
+        
+        results = []
+        for idx in top_k_indices:
+            if idx < len(self.documents):
+                # Handle both string and dict documents
+                if isinstance(self.documents[idx], dict):
+                    content = self.documents[idx].get('content', '')
+                    doc_metadata = self.documents[idx].get('metadata', {})
+                else:
+                    content = self.documents[idx]
+                    doc_metadata = self.metadata[idx] if idx < len(self.metadata) else {}
+                
+                result = SearchResult(
+                    content=content,
+                    score=float(similarities[idx]),
+                    metadata=doc_metadata,
+                    chunk_id=doc_metadata.get('chunk_id', str(idx)),
+                    doc_id=doc_metadata.get('doc_id', 'unknown')
+                )
+                results.append(result)
+        
+        return results
     
     def save(self, save_dir: str):
         """지식 베이스 저장"""

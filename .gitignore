@@ -32,7 +32,6 @@ profile_default/
 ipython_config.py
 
 # Data files (보안상 중요)
-*.csv
 *.json
 *.pkl
 *.pickle
@@ -40,7 +39,9 @@ ipython_config.py
 *.hdf5
 *.parquet
 *.feather
-
+*.tar.xz
+*.txt
+*.csv
 
 # Models and weights (용량이 큰 파일들)
 *.model
@@ -53,6 +54,7 @@ models/
 checkpoints/
 weights/
 saved_models/
+data/raw
 
 # Logs
 *.log

@@ -4,7 +4,7 @@ Korean specialized embedding model implementation
 """
 import torch
 import numpy as np
-from typing import List, Optional, Union, Dict
+from typing import List, Optional, Union, Dict, Tuple
 from sentence_transformers import SentenceTransformer
 import logging
 from tqdm import tqdm
@@ -166,6 +166,188 @@ class KUREEmbedder(BaseEmbedder):
         """Save model cache for offline use"""
         self.model.save(cache_dir)
         logger.info(f"Saved model cache to {cache_dir}")
+    
+    def compute_similarity_matrix(self, 
+                                 embeddings1: Union[np.ndarray, torch.Tensor],
+                                 embeddings2: Optional[Union[np.ndarray, torch.Tensor]] = None) -> np.ndarray:
+        """
+        Compute similarity matrix using KURE-v1's native similarity method
+        Optimized for GPU acceleration and large-scale processing
+        
+        Args:
+            embeddings1: First set of embeddings
+            embeddings2: Second set of embeddings (if None, computes self-similarity)
+        
+        Returns:
+            Similarity matrix as numpy array
+        """
+        # Convert to torch tensors if needed
+        if isinstance(embeddings1, np.ndarray):
+            embeddings1 = torch.from_numpy(embeddings1).to(self.device)
+        else:
+            embeddings1 = embeddings1.to(self.device)
+            
+        if embeddings2 is None:
+            embeddings2 = embeddings1
+        elif isinstance(embeddings2, np.ndarray):
+            embeddings2 = torch.from_numpy(embeddings2).to(self.device)
+        else:
+            embeddings2 = embeddings2.to(self.device)
+        
+        # Check if model has similarity method (newer versions)
+        if hasattr(self.model, 'similarity'):
+            # Use KURE's optimized similarity computation
+            with torch.no_grad():
+                similarities = self.model.similarity(embeddings1, embeddings2)
+            return similarities.cpu().numpy()
+        else:
+            # Fallback to manual computation for older versions
+            # Normalize embeddings if not already normalized
+            embeddings1_norm = torch.nn.functional.normalize(embeddings1, p=2, dim=1)
+            embeddings2_norm = torch.nn.functional.normalize(embeddings2, p=2, dim=1)
+            
+            # Compute cosine similarity using matrix multiplication
+            with torch.no_grad():
+                similarities = torch.mm(embeddings1_norm, embeddings2_norm.t())
+            
+            return similarities.cpu().numpy()
+    
+    def batch_similarity_search(self,
+                               query_embeddings: Union[np.ndarray, torch.Tensor],
+                               document_embeddings: Union[np.ndarray, torch.Tensor],
+                               top_k: int = 5,
+                               batch_size: int = 100) -> List[List[Tuple[int, float]]]:
+        """
+        Perform batch similarity search for multiple queries
+        Optimized for large-scale retrieval
+        
+        Args:
+            query_embeddings: Query embeddings (shape: [n_queries, dim])
+            document_embeddings: Document embeddings (shape: [n_docs, dim])
+            top_k: Number of top documents to retrieve per query
+            batch_size: Batch size for processing large document sets
+        
+        Returns:
+            List of top-k results for each query [(doc_idx, score), ...]
+        """
+        results = []
+        n_queries = query_embeddings.shape[0]
+        n_docs = document_embeddings.shape[0]
+        
+        # Convert to tensors
+        if isinstance(query_embeddings, np.ndarray):
+            query_embeddings = torch.from_numpy(query_embeddings)
+        if isinstance(document_embeddings, np.ndarray):
+            document_embeddings = torch.from_numpy(document_embeddings)
+        
+        # Process in batches to manage memory
+        for q_start in range(0, n_queries, batch_size):
+            q_end = min(q_start + batch_size, n_queries)
+            query_batch = query_embeddings[q_start:q_end].to(self.device)
+            
+            batch_results = []
+            
+            # Process documents in chunks if needed
+            if n_docs > 10000:  # Large document set
+                chunk_size = 5000
+                all_scores = []
+                
+                for d_start in range(0, n_docs, chunk_size):
+                    d_end = min(d_start + chunk_size, n_docs)
+                    doc_chunk = document_embeddings[d_start:d_end].to(self.device)
+                    
+                    with torch.no_grad():
+                        if hasattr(self.model, 'similarity'):
+                            chunk_scores = self.model.similarity(query_batch, doc_chunk)
+                        else:
+                            # Fallback to manual computation
+                            query_norm = torch.nn.functional.normalize(query_batch, p=2, dim=1)
+                            doc_norm = torch.nn.functional.normalize(doc_chunk, p=2, dim=1)
+                            chunk_scores = torch.mm(query_norm, doc_norm.t())
+                    
+                    # Adjust indices for chunk offset
+                    chunk_scores_with_offset = torch.zeros_like(chunk_scores)
+                    chunk_scores_with_offset[:, :] = chunk_scores
+                    all_scores.append((chunk_scores.cpu(), d_start))
+                
+                # Combine scores from all chunks
+                for q_idx in range(query_batch.shape[0]):
+                    query_scores = []
+                    for chunk_scores, offset in all_scores:
+                        for d_idx, score in enumerate(chunk_scores[q_idx]):
+                            query_scores.append((offset + d_idx, score.item()))
+                    
+                    # Sort and get top-k
+                    query_scores.sort(key=lambda x: x[1], reverse=True)
+                    batch_results.append(query_scores[:top_k])
+            else:
+                # Process all documents at once for smaller sets
+                doc_tensor = document_embeddings.to(self.device)
+                
+                with torch.no_grad():
+                    if hasattr(self.model, 'similarity'):
+                        similarities = self.model.similarity(query_batch, doc_tensor)
+                    else:
+                        # Fallback to manual computation
+                        query_norm = torch.nn.functional.normalize(query_batch, p=2, dim=1)
+                        doc_norm = torch.nn.functional.normalize(doc_tensor, p=2, dim=1)
+                        similarities = torch.mm(query_norm, doc_norm.t())
+                
+                # Get top-k for each query
+                topk_scores, topk_indices = torch.topk(similarities, min(top_k, n_docs), dim=1)
+                
+                for q_idx in range(query_batch.shape[0]):
+                    query_results = []
+                    for k in range(min(top_k, n_docs)):
+                        doc_idx = topk_indices[q_idx, k].item()
+                        score = topk_scores[q_idx, k].item()
+                        query_results.append((doc_idx, score))
+                    batch_results.append(query_results)
+            
+            results.extend(batch_results)
+        
+        return results
+    
+    def compute_similarity_scores(self,
+                                 query_embedding: Union[np.ndarray, torch.Tensor],
+                                 doc_embeddings: Union[np.ndarray, torch.Tensor]) -> np.ndarray:
+        """
+        Compute similarity scores between a single query and multiple documents
+        
+        Args:
+            query_embedding: Single query embedding (1D or 2D with shape [1, dim])
+            doc_embeddings: Document embeddings (shape: [n_docs, dim])
+        
+        Returns:
+            Similarity scores as numpy array
+        """
+        # Reshape query if needed
+        if isinstance(query_embedding, np.ndarray):
+            if len(query_embedding.shape) == 1:
+                query_embedding = query_embedding.reshape(1, -1)
+            query_tensor = torch.from_numpy(query_embedding).to(self.device)
+        else:
+            if len(query_embedding.shape) == 1:
+                query_embedding = query_embedding.unsqueeze(0)
+            query_tensor = query_embedding.to(self.device)
+        
+        # Convert documents to tensor
+        if isinstance(doc_embeddings, np.ndarray):
+            doc_tensor = torch.from_numpy(doc_embeddings).to(self.device)
+        else:
+            doc_tensor = doc_embeddings.to(self.device)
+        
+        # Compute similarities
+        with torch.no_grad():
+            if hasattr(self.model, 'similarity'):
+                similarities = self.model.similarity(query_tensor, doc_tensor)
+            else:
+                # Fallback to manual computation
+                query_norm = torch.nn.functional.normalize(query_tensor, p=2, dim=1)
+                doc_norm = torch.nn.functional.normalize(doc_tensor, p=2, dim=1)
+                similarities = torch.mm(query_norm, doc_norm.t())
+        
+        return similarities.squeeze().cpu().numpy()
     
     @staticmethod
     def load_from_cache(cache_dir: str, device: Optional[str] = None):

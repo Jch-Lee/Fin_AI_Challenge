@@ -10,11 +10,12 @@
 | **Fine-Tuning** | TRL | `0.9.6` | `DistiLLMTrainer` 사용 |
 | **Embedding** | KURE-v1 (nlpai-lab) | `latest` | 한국어 특화 벡터 임베딩 |
 | **Vector DB** | FAISS-CPU | `1.8.0` | 벡터 검색 |
+| **Reranking** | Qwen3-Reranker-4B | `latest` | Cross-encoder 재순위화 |
 | **Quantization** | auto-gptq / bitsandbytes | `0.7.1`/`0.43.1` | GPTQ/QLoRA 양자화 |
-| **Data/Doc Proc** | Pandas, LangChain, PyMuPDF | `2.2.2`,`0.2.1`,`1.24.1` | 데이터/문서 처리 |
+| **Data/Doc Proc** | Pandas, LangChain, PyMuPDF | `2.2.2`,`0.2.1`,`1.24.1` | 데이터/문서 처리 (폴백) |
 | **Search** | bm25s + Kiwipiepy | `0.2.2` | Sparse 검색 (Kiwi 토크나이저 사용) |
 | **Korean NLP** | Kiwipiepy | `0.15.0` | 한국어 형태소 분석 (BM25용) |
-| **Vision-Language** | Qwen2.5-VL-7B-Instruct | `latest` | PDF 이미지 텍스트 추출 |
+| **Vision-Language** | Qwen2.5-VL-7B-Instruct | `latest` | PDF 이미지 텍스트 추출 (주력) |
 | **Image Processing** | Pillow | `10.0.0` | 이미지 변환/처리 |
 | **Vision Utils** | qwen_vl_utils | `latest` | VL 모델 유틸리티 (옵셔널) |
 | **Monitoring** | tqdm, wandb | `4.66.4`,`0.17.0` | 진행 표시, 실험 추적 |
@@ -22,8 +23,8 @@
 
 ## Model Selection Strategy
 
-- **Student Model Candidates:** `mistralai/Mistral-7B-Instruct-v0.2`, `Solar-10.7B-Instruct` , `Qwen2.5-1.5B-Instruct`
-- **Teacher Model Candidates:** `Meta-Llama-3.1-70B-Instruct` , `Qwen2.5-7B-Instruct`
+- **Student Model (Production):** `Qwen2.5-1.5B-Instruct` - 최종 배포용 경량 모델
+- **Teacher Model (Training):** `Qwen2.5-7B-Instruct` - Distill-M 2 학습용
 - **Vision Model (Production):** `Qwen/Qwen2.5-VL-7B-Instruct` - PDF 텍스트 추출 (41.2% 개선 검증)
 
 ### Model License Verification Process

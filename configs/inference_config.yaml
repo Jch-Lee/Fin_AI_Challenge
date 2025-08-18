@@ -1,0 +1,158 @@
+# RAG + LLM 추론 설정 파일
+# Financial Security AI Competition
+
+# 데이터 경로
+paths:
+  test_csv: "data/competition/test.csv"  # 실제 대회용
+  mock_test_csv: "data/mock/mock_test.csv"  # 개발/테스트용
+  submission_dir: "submissions"
+  knowledge_base: "data/rag/knowledge_base"
+  cache_dir: "data/cache/inference"
+  model_cache: "./models"
+
+# RAG 설정
+rag:
+  # 검색 설정
+  retriever_type: "hybrid"  # vector, bm25, hybrid
+  top_k_initial: 30  # 초기 검색 문서 수
+  top_k_final: 5     # 재순위화 후 최종 문서 수
+  enable_reranking: true
+  
+  # 임베딩 설정
+  embedder:
+    model: "nlpai-lab/KURE-v1"
+    batch_size: 32
+    show_progress: false
+  
+  # 재순위화 설정
+  reranker:
+    model: "Qwen/Qwen3-30B-A3B-Instruct-2507"  # 재순위화 모델
+    top_k: 5
+    batch_size: 16
+
+# LLM 설정
+llm:
+  # 모델 설정
+  model_id: "Qwen/Qwen2.5-7B-Instruct"
+  quantization: "4bit"  # none, 4bit, 8bit
+  
+  # 생성 파라미터
+  generation:
+    max_new_tokens: 256  # 주관식 답변용
+    max_new_tokens_mc: 64  # 객관식 답변용
+    temperature: 0.3
+    top_p: 0.9
+    do_sample: true
+    use_cache: true  # KV 캐시 사용
+  
+  # 메모리 관리
+  memory:
+    max_memory_gb: 22  # RTX 4090 24GB 중 22GB 사용
+    offload_to_cpu: false
+
+# 배치 처리 설정
+batch:
+  size: 8  # 배치 크기
+  dynamic_sizing: true  # GPU 메모리에 따른 동적 조정
+  max_concurrent: 2  # 최대 동시 처리 수
+
+# 타임아웃 설정
+timeout:
+  per_question: 30  # 질문당 최대 처리 시간 (초)
+  total_inference: 14400  # 전체 추론 최대 시간 (4시간 = 14400초)
+
+# 캐싱 설정
+cache:
+  enable: true
+  ttl: 3600  # 캐시 유효 시간 (초)
+  max_size: 1000  # 최대 캐시 항목 수
+  
+  # 캐시 전략
+  strategy:
+    embeddings: true  # 임베딩 캐싱
+    rag_results: true  # RAG 검색 결과 캐싱
+    llm_responses: true  # LLM 응답 캐싱
+
+# 폴백 설정
+fallback:
+  # RAG 실패 시
+  on_rag_failure:
+    strategy: "direct_llm"  # direct_llm, default_context, skip
+    default_context: "관련 문서를 찾을 수 없습니다. 일반적인 지식을 바탕으로 답변합니다."
+  
+  # LLM 실패 시
+  on_llm_failure:
+    multiple_choice_default: "1"
+    open_ended_default: "답변 생성 실패"
+  
+  # 타임아웃 시
+  on_timeout:
+    multiple_choice_default: "1"
+    open_ended_default: "시간 초과"
+
+# 로깅 설정
+logging:
+  level: "INFO"  # DEBUG, INFO, WARNING, ERROR
+  file: "logs/inference.log"
+  console: true
+  
+  # 상세 로깅
+  detailed:
+    rag_search: false
+    llm_generation: false
+    memory_usage: true
+    timing: true
+
+# 실험 설정
+experiment:
+  # A/B 테스트
+  ab_test:
+    enable: false
+    variants:
+      - name: "baseline"
+        temperature: 0.3
+      - name: "creative"
+        temperature: 0.7
+  
+  # 성능 모니터링
+  monitoring:
+    track_memory: true
+    track_latency: true
+    save_metrics: true
+
+# 검증 설정
+validation:
+  # 답변 검증
+  check_answer_format: true
+  min_answer_length: 1
+  max_answer_length: 500
+  
+  # 객관식 검증
+  multiple_choice:
+    valid_range: [1, 99]  # 유효한 답변 범위
+    extract_number_only: true
+  
+  # 주관식 검증
+  open_ended:
+    remove_special_chars: false
+    normalize_whitespace: true
+
+# 개발/디버그 설정
+debug:
+  dry_run: false  # 실제 추론 없이 파이프라인만 테스트
+  sample_size: null  # 테스트할 샘플 수 (null이면 전체)
+  save_intermediate: false  # 중간 결과 저장
+  verbose: false  # 상세 출력
+
+# 대회 제출 설정
+competition:
+  # 제출 파일 형식
+  submission:
+    encoding: "utf-8-sig"  # BOM 포함 UTF-8
+    index: false
+    columns: ["ID", "Answer"]
+  
+  # 백업 설정
+  backup:
+    enable: true
+    keep_last_n: 5  # 최근 N개 백업 유지

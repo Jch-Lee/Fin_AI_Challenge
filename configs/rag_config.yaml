@@ -1,0 +1,62 @@
+# RAG System Configuration
+# Version: 2.0 (2300-character hybrid chunking)
+# Updated: 2025-08-17
+
+# Current active version
+version: "2300"
+
+# File paths (relative to data/rag/)
+files:
+  chunks: "chunks_2300.json"
+  embeddings: "embeddings_2300.npy"
+  faiss_index: "faiss_index_2300.index"
+  bm25_index: "bm25_index_2300.pkl"
+  metadata: "metadata_2300.json"
+
+# Chunking configuration
+chunking:
+  method: "hybrid"
+  chunk_size: 2300
+  chunk_overlap: 200
+  boundary_overlap: 300
+  
+# Embedding configuration
+embedding:
+  model: "nlpai-lab/KURE-v1"
+  dimension: 1024
+  batch_size: 16
+  device: "cuda"
+
+# Search configuration
+search:
+  # Retriever weights (must sum to 1.0)
+  bm25_weight: 0.7  # 70% keyword-based
+  vector_weight: 0.3  # 30% vector-based
+  
+  # Normalization method: "min_max", "rank", "softmax"
+  normalization_method: "min_max"
+  
+  # Search parameters
+  initial_k: 30  # Initial retrieval count
+  rerank_k: 10   # After reranking
+  final_k: 5     # Final result count
+  
+# Performance settings
+performance:
+  use_gpu: true
+  batch_size: 16
+  max_memory_gb: 24
+  cache_enabled: true
+
+# Old versions (for reference)
+old_versions:
+  v1:
+    version: "512"
+    files:
+      chunks: "chunks.json"
+      embeddings: "embeddings.npy"
+      faiss_index: "faiss.index"
+      bm25_index: "bm25_index.pkl"
+    chunking:
+      chunk_size: 512
+      chunk_overlap: 50

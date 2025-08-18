@@ -102,8 +102,8 @@ class HybridRetriever:
                  bm25_retriever: Optional[BM25Retriever] = None,
                  vector_retriever = None,  # packages.rag.knowledge_base.KnowledgeBase
                  embedder = None,  # packages.preprocessing.embedder_e5.E5Embedder
-                 bm25_weight: float = 0.3,
-                 vector_weight: float = 0.7,
+                 bm25_weight: float = 0.5,
+                 vector_weight: float = 0.5,
                  normalization_method: str = "min_max"):
         """
         Args:
@@ -151,28 +151,102 @@ class HybridRetriever:
         
         try:
             # 쿼리 임베딩
-            query_embedding = self.embedder.embed(query)
+            query_embedding = self.embedder.embed(query, is_query=True)
             if query_embedding is None:
                 return []
             
             # FAISS 검색
             search_results = self.vector_retriever.search(query_embedding, k)
             
-            # 결과 변환
+            # 결과 변환 - dict 형태로 반환되는 경우와 SearchResult 객체로 반환되는 경우 모두 처리
             results = []
             for result in search_results:
-                results.append({
-                    'doc_id': result.metadata.get('chunk_id', ''),
-                    'content': result.content,
-                    'score': result.score,
-                    'metadata': result.metadata
-                })
+                if isinstance(result, dict):
+                    # 이미 dict 형태인 경우
+                    results.append({
+                        'doc_id': result.get('chunk_id', result.get('id', '')),
+                        'content': result.get('content', ''),
+                        'score': result.get('score', 0.0),
+                        'metadata': result.get('metadata', {})
+                    })
+                else:
+                    # SearchResult 객체인 경우 - dict처럼 처리
+                    try:
+                        # __dict__ 속성이 있는 경우
+                        if hasattr(result, '__dict__'):
+                            result_dict = result.__dict__
+                            results.append({
+                                'doc_id': result_dict.get('metadata', {}).get('chunk_id', ''),
+                                'content': result_dict.get('content', ''),
+                                'score': result_dict.get('score', 0.0),
+                                'metadata': result_dict.get('metadata', {})
+                            })
+                        else:
+                            # 속성으로 직접 접근
+                            doc_id = ''
+                            if hasattr(result, 'metadata') and result.metadata:
+                                doc_id = result.metadata.get('chunk_id', '')
+                            
+                            results.append({
+                                'doc_id': doc_id,
+                                'content': getattr(result, 'content', ''),
+                                'score': getattr(result, 'score', 0.0),
+                                'metadata': getattr(result, 'metadata', {})
+                            })
+                    except Exception as e:
+                        logger.warning(f"Failed to process result: {e}, result type: {type(result)}")
+                        continue
             
             return results
             
         except Exception as e:
             logger.error(f"Vector search failed: {e}")
+            import traceback
+            logger.error(traceback.format_exc())
             return []
+    
+    def retrieve(self,
+                query: str,
+                top_k: int = 5,
+                filters: Optional[Dict[str, Any]] = None,
+                **kwargs) -> List[Dict[str, Any]]:
+        """
+        Retriever interface for compatibility with RerankingRetriever
+        
+        Args:
+            query: Search query
+            top_k: Number of documents to return
+            filters: Optional filters (not used in current implementation)
+            **kwargs: Additional arguments
+            
+        Returns:
+            List of documents with scores
+        """
+        # Call search method and convert results to dict format
+        results = self.search(
+            query=query,
+            k=top_k,
+            bm25_k=kwargs.get('bm25_k'),
+            vector_k=kwargs.get('vector_k'),
+            min_bm25_score=kwargs.get('min_bm25_score', 0.0),
+            min_vector_score=kwargs.get('min_vector_score', 0.0),
+            use_parallel=kwargs.get('use_parallel', True)
+        )
+        
+        # Convert HybridResult to dict format
+        documents = []
+        for result in results:
+            doc = {
+                'id': result.doc_id,
+                'content': result.content,
+                'score': result.hybrid_score,
+                'bm25_score': result.bm25_score,
+                'vector_score': result.vector_score,
+                'metadata': result.metadata or {}
+            }
+            documents.append(doc)
+        
+        return documents
     
     def search(self,
                query: str,

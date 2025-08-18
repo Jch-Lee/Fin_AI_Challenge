@@ -101,9 +101,34 @@ class RAGPipeline:
             if HybridRetriever is not None:
                 # Try to create hybrid retriever with proper arguments
                 try:
-                    base_retriever = HybridRetriever()
+                    # Create BM25 retriever
+                    bm25_retriever = None
+                    if BM25Retriever is not None and hasattr(self.knowledge_base, 'documents'):
+                        bm25_retriever = BM25Retriever(tokenizer_method="simple")
+                        # Build BM25 index from knowledge base documents
+                        doc_ids = [f"doc_{i}" for i in range(len(self.knowledge_base.documents))]
+                        metadata_list = self.knowledge_base.metadata if hasattr(self.knowledge_base, 'metadata') else None
+                        bm25_retriever.build_index(
+                            documents=self.knowledge_base.documents,
+                            doc_ids=doc_ids,
+                            metadata=metadata_list
+                        )
+                        logger.info(f"BM25 index built with {len(self.knowledge_base.documents)} documents")
+                    
+                    # Create hybrid retriever with 5:5 weight balance
+                    base_retriever = HybridRetriever(
+                        bm25_retriever=bm25_retriever,
+                        vector_retriever=self.knowledge_base,
+                        embedder=self.embedder,
+                        bm25_weight=0.5,
+                        vector_weight=0.5,
+                        normalization_method="min_max"
+                    )
+                    logger.info("HybridRetriever initialized successfully")
                 except Exception as e:
                     logger.warning(f"Failed to create hybrid retriever: {e}, falling back to vector")
+                    import traceback
+                    logger.debug(traceback.format_exc())
                     base_retriever = VectorRetriever(self.knowledge_base)
             else:
                 logger.warning("Hybrid retriever not available, falling back to vector retriever")
@@ -272,22 +297,16 @@ class RAGPipeline:
             logger.info(f"Reranking {len(results)} documents to select top {top_k}")
             
             try:
-                # Prepare documents for reranking
-                documents = [doc.get('content', '') for doc in results]
+                # Prepare documents for reranking (pass full dict objects, not just strings)
+                # Qwen3Reranker expects List[Dict], not List[str]
+                documents = results  # Pass the full document dictionaries
                 
-                # Perform reranking
-                reranked_scores = self.reranker.rerank(query, documents)
+                # Perform reranking - returns reranked documents with updated scores
+                reranked_docs = self.reranker.rerank(query, documents, top_k=top_k)
                 
-                # Combine scores with original results
-                for i, score in enumerate(reranked_scores):
-                    if i < len(results):
-                        results[i]['rerank_score'] = score
-                        # Combine original and rerank scores (weighted average)
-                        original_score = results[i].get('score', 0.0)
-                        results[i]['final_score'] = 0.3 * original_score + 0.7 * score
-                
-                # Sort by final score and select top-k
-                results = sorted(results, key=lambda x: x.get('final_score', 0), reverse=True)[:top_k]
+                # Qwen3Reranker already returns sorted and scored documents
+                # Just use the reranked results directly
+                results = reranked_docs
                 logger.info(f"Reranking complete: selected top {len(results)} documents")
                 
             except Exception as e:

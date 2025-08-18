@@ -138,6 +138,8 @@ class BM25Retriever:
         # 문서 저장
         self.documents = documents.copy()
         self.document_ids = doc_ids.copy()
+        # 메타데이터 저장
+        self.metadata = metadata.copy() if metadata else [{} for _ in documents]
         
         # 문서 토크나이제이션
         self.tokenized_documents = []
@@ -196,16 +198,20 @@ class BM25Retriever:
                 
                 # 유효한 인덱스 확인
                 if 0 <= idx < len(self.documents):
+                    # 메타데이터 병합
+                    result_metadata = self.metadata[idx].copy() if hasattr(self, 'metadata') and idx < len(self.metadata) else {}
+                    result_metadata.update({
+                        "method": "bm25s",
+                        "tokenizer": self.tokenizer.method,
+                        "query_tokens": query_tokens
+                    })
+                    
                     result = BM25Result(
                         doc_id=self.document_ids[idx],
                         content=self.documents[idx],
                         score=score,
                         rank=rank + 1,
-                        metadata={
-                            "method": "bm25s",
-                            "tokenizer": self.tokenizer.method,
-                            "query_tokens": query_tokens
-                        }
+                        metadata=result_metadata
                     )
                     results.append(result)
             
