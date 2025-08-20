@@ -7,10 +7,14 @@ Fin_AI_Challenge/
 │
 ├── packages/               # 핵심 구현 모듈
 │   ├── preprocessing/     # 전처리 (PDF, 청킹, 임베딩)
-│   ├── retrieval/        # 검색 (BM25, 하이브리드)
-│   ├── llm/              # LLM 관련 (프롬프트)
 │   ├── rag/              # RAG 시스템
-│   └── vision/           # Vision 처리 (Qwen2.5-VL)
+│   │   ├── embeddings/   # 임베딩 (KURE)
+│   │   ├── retrieval/    # 검색 (BM25, 하이브리드)
+│   │   └── reranking/    # 리랭킹 (Qwen3)
+│   ├── llm/              # LLM 관련 (프롬프트, Qwen2.5)
+│   ├── vision/           # Vision 처리 (Qwen2.5-VL)
+│   ├── training/         # 학습 관련
+│   └── evaluation/       # 평가 도구
 │
 ├── scripts/               # 실행 스크립트
 │   ├── utils/            # 유틸리티 도구
@@ -22,69 +26,107 @@ Fin_AI_Challenge/
 │   │   ├── view_intermediate_results.py # 중간 결과 조회
 │   │   └── process_vision_texts.py   # Vision 텍스트 처리
 │   │
-│   ├── build_rag_system.py           # RAG 시스템 빌드
-│   ├── integrate_qwen_llm.py         # Qwen LLM 통합
-│   └── check_qwen_requirements.py    # Qwen 요구사항 체크
+│   ├── build_hybrid_rag_2300.py      # RAG 시스템 빌드 (2300자)
+│   ├── generate_final_submission_bm25_070.py  # BM25 0.7 최종 제출
+│   ├── load_rag_v2.py                # RAG v2.0 로더
+│   ├── process_all_pdfs.py           # PDF 일괄 처리
+│   ├── add_new_pdfs.py               # PDF 추가
+│   ├── build_vision_knowledge_base.py # Vision KB 구축
+│   └── check_kb.py                   # 지식베이스 확인
 │
-├── tests/                 # 테스트 코드 (체계적으로 재구성됨)
+├── tests/                 # 테스트 코드
 │   ├── unit/             # 단위 테스트
 │   │   ├── preprocessing/
-│   │   │   ├── test_kiwi_tokenizer.py
-│   │   │   ├── test_hierarchical_chunker.py
-│   │   │   └── test_semantic_enhancer.py
 │   │   ├── embeddings/
-│   │   │   └── test_kure_v1.py
 │   │   ├── retrieval/
-│   │   │   └── test_reranker.py
 │   │   └── vision/
-│   │       └── test_vision_processor.py
 │   │
 │   ├── integration/      # 통합 테스트
-│   │   ├── test_rag_complete_system.py
-│   │   ├── test_rag_full_pipeline.py
-│   │   ├── test_rag_simple_pipeline.py
-│   │   ├── test_rag_full_system.py
-│   │   └── test_rag_with_pdf.py
-│   │
 │   ├── experiments/      # 실험 코드
-│   │   ├── rag_pipeline_experiment.py
-│   │   ├── tokenizer_comparison.py
-│   │   └── konlpy_comparison.py
-│   │
+│   │   ├── chunking/     # 청킹 실험 (2300자 개발)
+│   │   └── (기타 실험)
 │   ├── benchmarks/       # 성능 벤치마크
-│   │   ├── kiwi_performance.py
-│   │   ├── embedding_benchmark.py
-│   │   └── vision_benchmark.py
-│   │
 │   ├── fixtures/         # 테스트 데이터
-│   │   ├── sample_pdfs/
-│   │   ├── sample_texts/
-│   │   └── expected_outputs/
-│   │
-│   └── README.md         # 테스트 실행 가이드
+│   │   └── sample_data/  # 샘플 데이터
+│   ├── results/          # 테스트 결과
+│   │   └── chunking/     # 청킹 결과
+│   └── README.md
+│
+├── configs/               # 설정 파일
+│   ├── rag_config.yaml  # RAG 설정 (BM25 0.7)
+│   ├── inference_config.yaml
+│   ├── model_config.py
+│   └── vision/           # Vision 설정
 │
 ├── data/                  # 데이터 및 인덱스
 │   ├── competition/      # 경진대회 데이터
 │   │   ├── test.csv      # 평가 질문 (515개)
-│   │   └── sample_submission.csv  # 제출 형식
-│   └── e5_embeddings/    # E5 임베딩 인덱스
+│   │   └── sample_submission.csv
+│   ├── raw/              # 원본 PDF (60개)
+│   ├── processed/        # 처리된 텍스트
+│   ├── rag/              # RAG 인덱스
+│   │   ├── chunks_2300.json
+│   │   ├── embeddings_2300.npy
+│   │   ├── faiss_index_2300.index
+│   │   └── bm25_index_2300.pkl
+│   └── knowledge_base/   # 지식베이스
 │
 ├── docs/                  # 프로젝트 문서
-│   ├── Architecture.md   # 시스템 아키텍처
-│   ├── Pipeline.md       # 개발 파이프라인
-│   └── PROJECT_PLAN.md   # 프로젝트 계획
+│   ├── architecture/     # 시스템 아키텍처
+│   ├── pipeline/         # 개발 파이프라인
+│   ├── project-plan/     # 프로젝트 계획
+│   ├── git-workflow/     # Git 워크플로우
+│   ├── reports/          # 분석 보고서
+│   │   ├── kiwi_analysis_final_report.md
+│   │   ├── model_comparison_report.md
+│   │   └── vision/       # Vision 보고서
+│   └── 요구사항정의서/
 │
-├── baseline_code/         # 참조 구현
-├── rag_results/          # 실행 결과
+├── models/                # 모델 파일
+│   └── models--Qwen--Qwen2.5-7B-Instruct/
 │
-├── setup.py              # 패키지 설정
-├── requirements.txt      # 의존성
+├── evaluation_results/    # 모델 평가 결과
+├── remote_results/        # 원격 제출 결과
+├── test_results/          # 테스트 실행 결과
+│   ├── 2025-08-17/      # 날짜별 결과
+│   ├── pipeline/         # 파이프라인 결과
+│   │   └── 2025-08-12/
+│   └── rag_validation/   # RAG 검증
+│
+├── logs/                  # 로그 파일
+├── venv/                  # 가상환경
+│
+├── requirements.txt       # 의존성
 ├── pyproject.toml        # 프로젝트 설정
 ├── CLAUDE.md             # Claude Code 가이드
-└── README.md             # 프로젝트 소개
+├── README.md             # 프로젝트 소개
+├── PROJECT_STRUCTURE.md  # 이 문서
+├── activate_env.bat      # 환경 활성화
+└── setup_utf8.bat        # UTF-8 설정
 ```
 
 ## 🚀 실행 방법
+
+### 환경 설정
+```bash
+# 가상환경 활성화
+activate_env.bat
+
+# UTF-8 인코딩 설정
+setup_utf8.bat
+```
+
+### RAG 시스템 구축 및 실행
+```bash
+# RAG 시스템 빌드 (2300자 청킹)
+python scripts/build_hybrid_rag_2300.py
+
+# 최종 제출 생성 (BM25 0.7 가중치)
+python scripts/generate_final_submission_bm25_070.py
+
+# RAG 시스템 로드 테스트
+python scripts/load_rag_v2.py
+```
 
 ### 테스트 실행
 ```bash
@@ -97,8 +139,8 @@ python -m pytest tests/unit/
 # 통합 테스트만 실행
 python -m pytest tests/integration/
 
-# 특정 테스트 파일 실행
-python tests/integration/test_rag_complete_system.py
+# 청킹 실험 실행
+python tests/experiments/chunking/test_chunking_realistic.py
 
 # 벤치마크 실행
 python tests/benchmarks/embedding_benchmark.py
@@ -121,11 +163,31 @@ python scripts/utils/process_vision_texts.py
 
 ## 📌 중요 사항
 
+### 현재 시스템 구성
+- **RAG 버전**: v2.0 (2300자 청킹)
+- **검색 가중치**: BM25 0.7, Vector 0.3
+- **임베딩 모델**: KURE-v1 (1024차원)
+- **LLM**: Qwen2.5-7B-Instruct (16-bit)
+- **리랭킹**: 비활성화 (성능 최적화)
+
+### 개발 가이드라인
 - 모든 테스트 파일은 **상대경로**를 사용하여 프로젝트 루트를 참조합니다
-- `Path(__file__).parent.parent.parent` 패턴으로 루트 경로 설정
+- `Path(__file__).parent.parent` 패턴으로 루트 경로 설정
 - 실행은 어느 위치에서든 가능하도록 설계됨
-- 테스트는 목적별로 체계적으로 분류되어 있습니다:
+- Git 워크플로우는 `docs/git-workflow/` 참조
+
+### 디렉토리 분류
+- **packages/**: 핵심 비즈니스 로직
+- **scripts/**: 실행 가능한 스크립트
+- **tests/**: 테스트 및 실험 코드
   - **unit/**: 개별 컴포넌트 테스트
   - **integration/**: 시스템 통합 테스트
   - **experiments/**: 실험적 코드 및 비교 분석
   - **benchmarks/**: 성능 측정 및 평가
+- **configs/**: 설정 파일
+- **data/**: 데이터 및 인덱스
+- **docs/**: 프로젝트 문서
+- **results 디렉토리**:
+  - **evaluation_results/**: 모델 평가 메트릭
+  - **remote_results/**: 실제 제출 파일
+  - **test_results/**: 개발 중 테스트 결과

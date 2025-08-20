@@ -5,7 +5,7 @@ Unified module for document retrieval and augmented generation
 
 # Core components
 from .knowledge_base import KnowledgeBase
-from .rag_pipeline import RAGPipeline, create_rag_pipeline
+from .rag_pipeline import RAGPipeline, create_rag_pipeline, load_rag_v2_pipeline
 
 # Embeddings
 from .embeddings import (
@@ -28,6 +28,7 @@ __all__ = [
     'KnowledgeBase',
     'RAGPipeline',
     'create_rag_pipeline',
+    'load_rag_v2_pipeline',  # V2 compatibility
     
     # Embeddings
     'BaseEmbedder',

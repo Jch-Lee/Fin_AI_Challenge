@@ -12,16 +12,25 @@
 - Document embedding 관리
 - Knowledge base 연동
 - Query processing
-- Document retrieval
+- Document retrieval (리랭킹 옵션 제거)
 - Context preparation for generation
 
 **주요 메서드**:
 ```python
 - add_documents(): 문서 추가 및 임베딩
-- retrieve(): 관련 문서 검색
+- retrieve(): 관련 문서 검색 (직접 Top-5 반환)
 - generate_context(): LLM용 컨텍스트 생성
 - save/load_knowledge_base(): 지식 베이스 저장/로드
+- load_from_v2_format(): RAGSystemV2 데이터 호환
+- create_simple_hybrid_retriever(): 간소화된 하이브리드 검색기
 ```
+
+**최신 설정** (2025-08-20 업데이트 - 🏆 0.55 점수):
+- **검색 방식**: `retriever_type="combined_top"` (기본값)
+- **BM25+Vector Top3**: 각 방법에서 독립적으로 상위 3개씩 선택
+- **총 6개 문서**: 중복 허용으로 풍부한 컨텍스트
+- **리랭킹 비활성화**: 독립 선택 방식이 더 효과적
+- **설정 자동 로드**: `configs/rag_config.yaml v3.0`
 
 ### 2. Knowledge Base (`packages/rag/knowledge_base.py`)
 **역할**: FAISS 기반 벡터 저장 및 검색
@@ -48,12 +57,19 @@
 ### 4. Retrievers (`packages/rag/retrieval/`)
 **검색 전략**:
 - **VectorRetriever**: FAISS 기반 밀집 벡터 검색 (KURE 임베딩 사용)
-- **KiwiBM25Retriever**: Kiwipiepy 형태소 분석 기반 BM25 검색
+- **BM25Retriever**: BM25S 라이브러리 기반 희소 검색
+  - Kiwipiepy 형태소 분석기 통합
   - 품사 필터링: 명사(N), 동사(V), 형용사(VA), 외국어(SL)
-  - 띤어쓰기 교정 포함
   - 10-30배 빠른 토크나이징 속도
-- **HybridRetriever**: Vector(KURE) + BM25(Kiwi) 앙상블
-  - 각 방식의 강점 결합: 벗터 유사도 + 키워드 매칭
+- **HybridRetriever**: Vector(KURE) + BM25 앙상블 (Legacy)
+  - 가중치 통합: BM25 70%, Vector 30%
+  - Min-Max 정규화 적용
+- **🏆 CombinedTopRetriever**: BM25+Vector 독립 선택 (현재 기본값)
+  - **리더보드 0.55 달성**: 기존 0.46 대비 +19.6% 향상
+  - BM25에서 상위 3개, Vector에서 상위 3개 독립 선택
+  - 중복 허용으로 정보 다양성 극대화
+  - 각 검색 방법의 강점을 희석시키지 않음
+- **RerankingRetriever**: ~~Qwen3 기반 재순위화~~ (비활성화됨)
 
 ### 5. Model Loaders (`models/model_loader.py`)
 **모델 관리 시스템**:
@@ -112,17 +128,23 @@ GPU 가용성 확인 → Vision V2 시도 → 실패 시 Traditional → 최종 
 packages/
 ├── rag/                     # RAG 시스템 (핵심)
 │   ├── __init__.py
-│   ├── rag_pipeline.py      # 메인 파이프라인
+│   ├── rag_pipeline.py      # 메인 파이프라인 (v2 호환성 추가)
 │   ├── knowledge_base.py    # FAISS 지식 베이스
 │   ├── embeddings/          # 임베딩 모델들
 │   │   ├── base_embedder.py
 │   │   ├── kure_embedder.py
-│   │   └── e5_embedder.py
-│   └── retrieval/           # 검색 전략들
-│       ├── base_retriever.py
-│       ├── vector_retriever.py
-│       ├── bm25_retriever.py
-│       └── hybrid_retriever.py
+│   │   └── e5_embedder.py (deprecated)
+│   ├── retrieval/           # 검색 전략들
+│   │   ├── base_retriever.py
+│   │   ├── vector_retriever.py
+│   │   ├── bm25_retriever.py
+│   │   ├── hybrid_retriever.py
+│   │   ├── combined_top_retriever.py # 🏆 0.55 점수 달성
+│   │   └── reranking_retriever.py (비활성화)
+│   └── reranking/           # 리랭킹 시스템 (비활성화)
+│       ├── base_reranker.py
+│       ├── qwen3_reranker.py
+│       └── reranker_config.py
 ├── vision/                  # Vision-Language 모듈 (신규)
 │   ├── __init__.py
 │   └── vision_extraction.py # VL 모델 기반 텍스트 추출
@@ -155,6 +177,12 @@ configs/
 - [x] **Vision V2 통합 완료** (2025-08-14)
 - [x] **PDF 처리 파이프라인 3-Tier 구조 구축**
 - [x] **텍스트 추출 품질 41.2% 개선** (56페이지 벤치마크 검증)
+- [x] **BM25 0.7 파이프라인 마이그레이션** (2025-08-20)
+- [x] **리랭킹 제거로 40-50% 속도 향상**
+- [x] **RAGSystemV2 호환성 메서드 추가**
+- [x] **🏆 BM25+Vector Top3 방식 구현** (2025-08-20)
+- [x] **리더보드 점수 0.55 달성** (기존 0.46 대비 +19.6%)
+- [x] **CombinedTopRetriever 구현 및 통합**
 
 ### 진행 중 🔄
 - [ ] Teacher-Student 응답 생성
@@ -189,4 +217,4 @@ configs/
 4. 테스트 커버리지 확대
 
 ---
-*Last Updated: 2025-08-14 - Vision V2 통합 완료*
+*Last Updated: 2025-08-20 - BM25 0.7 파이프라인 마이그레이션 완료*

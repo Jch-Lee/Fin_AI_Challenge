@@ -6,9 +6,12 @@ import logging
 from typing import List, Dict, Optional, Tuple, Union
 import numpy as np
 from pathlib import Path
+import json
+import pickle
+import yaml
 
 from .embeddings import KUREEmbedder, BaseEmbedder
-from .retrieval import HybridRetriever, VectorRetriever, BM25Retriever
+from .retrieval import HybridRetriever, VectorRetriever, BM25Retriever, CombinedTopRetriever
 from .retrieval.reranking_retriever import RerankingRetriever
 from .knowledge_base import KnowledgeBase
 from .reranking import (
@@ -36,12 +39,13 @@ class RAGPipeline:
                  retriever_type: str = "hybrid",
                  knowledge_base_path: Optional[str] = None,
                  device: Optional[str] = None,
-                 enable_reranking: bool = True,  # Changed default to True
+                 enable_reranking: Optional[bool] = None,  # None means read from config
                  reranker_config: Optional[Union[RerankerConfig, Dict]] = None,
                  initial_retrieve_k: int = 30,  # Number of docs to retrieve initially
-                 final_k: int = 5):  # Final number of docs after reranking
+                 final_k: int = 5,  # Final number of docs after reranking
+                 config_path: str = "configs/rag_config.yaml"):  # Config file path
         """
-        Initialize the RAG pipeline with mandatory reranking
+        Initialize the RAG pipeline with optional reranking based on config
         
         Args:
             embedder: Embedding model to use (default: KUREEmbedder)
@@ -53,6 +57,24 @@ class RAGPipeline:
             initial_retrieve_k: Number of documents to retrieve initially (default: 30)
             final_k: Final number of documents after reranking (default: 5)
         """
+        # Load configuration if enable_reranking is not explicitly set
+        if enable_reranking is None:
+            try:
+                import yaml
+                from pathlib import Path
+                config_file = Path(config_path)
+                if config_file.exists():
+                    with open(config_file, 'r', encoding='utf-8') as f:
+                        config = yaml.safe_load(f)
+                    enable_reranking = config.get('search', {}).get('enable_reranking', False)
+                    logger.info(f"Loaded enable_reranking={enable_reranking} from config")
+                else:
+                    enable_reranking = False  # Default to False if no config
+                    logger.info("Config file not found, defaulting to enable_reranking=False")
+            except Exception as e:
+                logger.warning(f"Failed to load config: {e}, defaulting to enable_reranking=False")
+                enable_reranking = False
+        
         # Initialize embedder
         if embedder is None:
             logger.info("Using default KURE-v1 embedder")
@@ -97,7 +119,22 @@ class RAGPipeline:
             else:
                 logger.warning("BM25 not available, falling back to vector retriever")
                 base_retriever = VectorRetriever(self.knowledge_base)
-        elif self.retriever_type == "hybrid":
+        elif self.retriever_type == "combined_top":
+            # Use CombinedTopRetriever (BM25 top-3 + Vector top-3)
+            if CombinedTopRetriever is not None:
+                from pathlib import Path
+                data_dir = Path("data/rag")
+                base_retriever = CombinedTopRetriever(
+                    data_dir=data_dir,
+                    bm25_k=3,
+                    vector_k=3
+                )
+                logger.info("CombinedTopRetriever initialized (proven 0.55 leaderboard score)")
+            else:
+                logger.warning("CombinedTopRetriever not available, falling back to hybrid")
+                self.retriever_type = "hybrid"  # Fall back to hybrid
+        
+        if self.retriever_type == "hybrid":
             if HybridRetriever is not None:
                 # Try to create hybrid retriever with proper arguments
                 try:
@@ -147,7 +184,13 @@ class RAGPipeline:
             self.retriever = base_retriever
     
     def _init_reranker(self):
-        """Initialize the reranker"""
+        """Initialize the reranker (optional based on configuration)"""
+        # Skip reranker initialization if disabled
+        if not self.enable_reranking:
+            logger.info("Reranking disabled by configuration")
+            self.reranker = None
+            return
+            
         try:
             # Use provided config or get default
             if self.reranker_config is None:
@@ -415,6 +458,26 @@ class RAGPipeline:
         self._init_retriever()
         logger.info("Reranking disabled")
     
+    def evaluate_retrieval_quality(self, query: str, retrieved_docs: List[Dict]) -> Dict:
+        """
+        Evaluate the quality of retrieved documents
+        
+        TODO(human): Implement quality evaluation logic that assesses:
+        - Relevance scores distribution
+        - Minimum document count requirements
+        - Keyword matching ratios
+        - Alternative strategies when quality is low
+        
+        Args:
+            query: The original query
+            retrieved_docs: List of retrieved documents with scores
+            
+        Returns:
+            Dictionary with quality metrics and recommendations
+        """
+        # TODO(human): Implement this method
+        pass
+    
     def get_statistics(self) -> Dict:
         """Get pipeline statistics"""
         stats = {
@@ -433,6 +496,123 @@ class RAGPipeline:
                 stats["reranker_stats"] = self.reranker.get_stats()
         
         return stats
+    
+    # ===== RAGSystemV2 compatibility methods =====
+    def load_from_v2_format(self, rag_dir: str = "data/rag", version: str = "2300") -> 'RAGPipeline':
+        """
+        Load RAG system from v2 format (compatibility with RAGSystemV2)
+        
+        Args:
+            rag_dir: Directory containing RAG data files
+            version: Version identifier (e.g., "2300")
+        
+        Returns:
+            Self for chaining
+        """
+        rag_path = Path(rag_dir)
+        
+        # Load chunks
+        chunks_file = rag_path / f"chunks_{version}.json"
+        if chunks_file.exists():
+            with open(chunks_file, 'r', encoding='utf-8') as f:
+                chunks = json.load(f)
+            logger.info(f"Loaded {len(chunks)} chunks from v2 format")
+            
+            # Convert chunks to documents format
+            documents = []
+            metadata_list = []
+            for chunk in chunks:
+                documents.append(chunk.get('content', ''))
+                meta = chunk.get('metadata', {}).copy()
+                if 'source' not in meta and 'source' in chunk:
+                    meta['source'] = chunk['source']
+                metadata_list.append(meta)
+            
+            # Store as knowledge base documents
+            self.knowledge_base.documents = documents
+            self.knowledge_base.metadata = metadata_list
+            self.knowledge_base.doc_count = len(documents)
+        
+        # Load embeddings
+        embeddings_file = rag_path / f"embeddings_{version}.npy"
+        if embeddings_file.exists():
+            embeddings = np.load(embeddings_file)
+            logger.info(f"Loaded embeddings with shape {embeddings.shape}")
+            
+            # Load into FAISS index
+            if hasattr(self.knowledge_base, 'index'):
+                import faiss
+                faiss.normalize_L2(embeddings)
+                self.knowledge_base.index.add(embeddings)
+                logger.info(f"Added {len(embeddings)} embeddings to index")
+        
+        # Load BM25 index if using hybrid retriever
+        if self.retriever_type in ["bm25", "hybrid"]:
+            bm25_file = rag_path / f"bm25_index_{version}.pkl"
+            if bm25_file.exists():
+                with open(bm25_file, 'rb') as f:
+                    bm25_index = pickle.load(f)
+                logger.info("Loaded BM25 index from v2 format")
+                
+                # Apply to retriever if it's a hybrid retriever
+                if hasattr(self.retriever, 'bm25_retriever'):
+                    self.retriever.bm25_retriever = bm25_index
+        
+        # Load metadata
+        metadata_file = rag_path / f"metadata_{version}.json"
+        if metadata_file.exists():
+            with open(metadata_file, 'r', encoding='utf-8') as f:
+                v2_metadata = json.load(f)
+            logger.info("Loaded v2 metadata")
+        
+        # Reinitialize retriever with loaded data
+        self._init_retriever()
+        
+        return self
+    
+    def create_simple_hybrid_retriever(self, bm25_weight: float = 0.7, vector_weight: float = 0.3):
+        """
+        Create a simplified hybrid retriever (RAGSystemV2 style)
+        
+        Args:
+            bm25_weight: Weight for BM25 search
+            vector_weight: Weight for vector search
+            
+        Returns:
+            HybridRetriever instance
+        """
+        # Create BM25 retriever
+        bm25_retriever = BM25Retriever(tokenizer_method="simple")
+        if hasattr(self.knowledge_base, 'documents'):
+            doc_ids = [f"doc_{i}" for i in range(len(self.knowledge_base.documents))]
+            bm25_retriever.build_index(
+                documents=self.knowledge_base.documents,
+                doc_ids=doc_ids,
+                metadata=self.knowledge_base.metadata
+            )
+        
+        # Create simplified vector retriever (wrapper around knowledge base)
+        class SimpleVectorRetriever:
+            def __init__(self, knowledge_base):
+                self.knowledge_base = knowledge_base
+            
+            def search(self, query_embedding: np.ndarray, k: int = 5):
+                return self.knowledge_base.search(query_embedding, top_k=k)
+        
+        vector_retriever = SimpleVectorRetriever(self.knowledge_base)
+        
+        # Create hybrid retriever
+        hybrid_retriever = HybridRetriever(
+            bm25_retriever=bm25_retriever,
+            vector_retriever=vector_retriever,
+            embedder=self.embedder,
+            bm25_weight=bm25_weight,
+            vector_weight=vector_weight,
+            normalization_method="min_max"
+        )
+        
+        logger.info(f"Created simple hybrid retriever with BM25={bm25_weight:.1%}, Vector={vector_weight:.1%}")
+        return hybrid_retriever
 
 
 # Factory function for easy pipeline creation
@@ -440,10 +620,11 @@ def create_rag_pipeline(embedder_type: str = "kure",
                        retriever_type: str = "hybrid",
                        knowledge_base_path: Optional[str] = None,
                        device: Optional[str] = None,
-                       enable_reranking: bool = True,  # Changed default to True
+                       enable_reranking: Optional[bool] = None,  # None = read from config
                        reranker_config: Optional[Union[RerankerConfig, Dict]] = None,
                        initial_retrieve_k: int = 30,
-                       final_k: int = 5) -> RAGPipeline:
+                       final_k: int = 5,
+                       config_path: str = "configs/rag_config.yaml") -> RAGPipeline:
     """
     Factory function to create RAG pipeline with mandatory reranking
     
@@ -481,7 +662,59 @@ def create_rag_pipeline(embedder_type: str = "kure",
         enable_reranking=enable_reranking,
         reranker_config=reranker_config,
         initial_retrieve_k=initial_retrieve_k,
-        final_k=final_k
+        final_k=final_k,
+        config_path=config_path
     )
     
+    return pipeline
+
+
+# Helper function for v2 compatibility
+def load_rag_v2_pipeline(version: str = "2300",
+                         rag_dir: str = "data/rag",
+                         config_path: str = "configs/rag_config.yaml") -> RAGPipeline:
+    """
+    Load RAG pipeline in v2 format (compatibility with RAGSystemV2)
+    
+    Args:
+        version: Version identifier (e.g., "2300")
+        rag_dir: Directory containing RAG data files
+        config_path: Path to configuration file
+    
+    Returns:
+        Configured RAG pipeline with v2 data loaded
+    """
+    # Create base pipeline
+    pipeline = create_rag_pipeline(
+        retriever_type="hybrid",
+        enable_reranking=None,  # Read from config
+        config_path=config_path
+    )
+    
+    # Load v2 format data
+    pipeline.load_from_v2_format(rag_dir, version)
+    
+    # Read weights from config
+    try:
+        config_file = Path(config_path)
+        if config_file.exists():
+            with open(config_file, 'r', encoding='utf-8') as f:
+                config = yaml.safe_load(f)
+            search_config = config.get('search', {})
+            bm25_weight = search_config.get('bm25_weight', 0.7)
+            vector_weight = search_config.get('vector_weight', 0.3)
+        else:
+            bm25_weight = 0.7
+            vector_weight = 0.3
+    except:
+        bm25_weight = 0.7
+        vector_weight = 0.3
+    
+    # Create simple hybrid retriever with configured weights
+    pipeline.retriever = pipeline.create_simple_hybrid_retriever(
+        bm25_weight=bm25_weight,
+        vector_weight=vector_weight
+    )
+    
+    logger.info(f"Loaded RAG v2 pipeline with {version} data")
     return pipeline

@@ -1,9 +1,10 @@
 # RAG System Configuration
-# Version: 2.0 (2300-character hybrid chunking)
-# Updated: 2025-08-17
+# Version: 3.0 (Combined Top-K Retrieval)
+# Updated: 2025-08-20
+# Leaderboard Score: 0.55 (from 0.46, +19.6%)
 
 # Current active version
-version: "2300"
+version: "2300_combined_top"
 
 # File paths (relative to data/rag/)
 files:
@@ -29,17 +30,30 @@ embedding:
 
 # Search configuration
 search:
-  # Retriever weights (must sum to 1.0)
-  bm25_weight: 0.7  # 70% keyword-based
-  vector_weight: 0.3  # 30% vector-based
+  # Retriever type: "vector", "bm25", "hybrid", "combined_top"
+  retriever_type: "combined_top"  # Best performing approach (0.55 score)
+  
+  # Combined Top-K configuration (proven best performance)
+  combined_top:
+    bm25_k: 3      # Top 3 from BM25
+    vector_k: 3    # Top 3 from Vector
+    deduplicate: false  # Keep duplicates for richer context
+  
+  # Legacy hybrid weights (for backward compatibility)
+  bm25_weight: 0.7  # 70% keyword-based (not used in combined_top)
+  vector_weight: 0.3  # 30% vector-based (not used in combined_top)
   
   # Normalization method: "min_max", "rank", "softmax"
   normalization_method: "min_max"
   
+  # Reranking configuration
+  enable_reranking: false  # Disable reranking for combined_top approach
+  
   # Search parameters
-  initial_k: 30  # Initial retrieval count
-  rerank_k: 10   # After reranking
-  final_k: 5     # Final result count
+  initial_k: 30  # Initial retrieval count (not used when reranking disabled)
+  rerank_k: 10   # After reranking (not used when reranking disabled)
+  final_k: 6     # Final result count (3 BM25 + 3 Vector)
+  direct_k: 6    # Direct retrieval count when reranking is disabled
   
 # Performance settings
 performance:

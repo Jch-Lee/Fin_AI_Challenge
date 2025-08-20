@@ -110,7 +110,13 @@ pad_token_id=tokenizer.eos_token_id
 
 ## Development Workflow
 
-### 0. Git Workflow Requirements
+### 0. File Creation Guidelines
+**IMPORTANT**: When creating any files or directories:
+- **No Emojis**: Never use emojis in file names, directory names, or file contents
+- **Clean Naming**: Use only alphanumeric characters, hyphens, and underscores
+- **Professional Format**: Maintain clean, professional file structure without decorative symbols
+
+### 1. Git Workflow Requirements
 **MANDATORY**: All development must follow the GitFlow workflow as defined in `docs/git-workflow/`:
 
 #### Branch Strategy
@@ -149,7 +155,7 @@ pad_token_id=tokenizer.eos_token_id
 - `test:` 테스트 추가/수정
 - `chore:` 빌드 업무, 패키지 관리
 
-### 1. Model Development Pipeline
+### 2. Model Development Pipeline
 Based on 상세파이프라인.md, follow this sequence:
 1. **Data Preprocessing**: Document parsing, chunking, embedding
 2. **Knowledge Base**: FAISS index construction  
@@ -157,7 +163,7 @@ Based on 상세파이프라인.md, follow this sequence:
 4. **Training**: Distill-M 2 contrastive distillation
 5. **Optimization**: Model quantization and deployment
 
-### 2. Testing Strategy
+### 3. Testing Strategy
 ```bash
 # Always test with quick version first
 python baseline_code/run_baseline_quick.py
@@ -168,7 +174,7 @@ nvidia-smi
 # Validate output format matches sample_submission.csv
 ```
 
-### 3. Competition Submission Format
+### 4. Competition Submission Format
 - **Input**: `test.csv` with columns [ID, Question]
 - **Output**: CSV with columns [ID, Answer] 
 - **Answer Format**: Numbers for MC, Korean text for open-ended

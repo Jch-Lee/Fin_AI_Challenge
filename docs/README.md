@@ -2,6 +2,11 @@
 
 이 디렉토리는 프로젝트 진행에 필요한 핵심 참고 문서들을 보관합니다.
 
+## 📌 최신 상태
+- **[CURRENT_STATUS_2025_08_20.md](./CURRENT_STATUS_2025_08_20.md)** - 🏆 **리더보드 0.55 달성!** BM25+Vector Top3 방식 채택
+  - 이전 점수: 0.46 → 현재 점수: 0.55 (**+19.6%** 향상)
+  - 핵심 기술: BM25 상위 3개 + Vector 상위 3개 독립 선택
+
 ## 📋 완전 분할된 문서들 (Auto-Generated)
 
 ### 🏗️ Architecture (docs/architecture/)
@@ -10,7 +15,7 @@
 - [1. High Level Architecture](./architecture/1-high-level-architecture.md)
 - [2. Tech Stack](./architecture/2-tech-stack.md)  
 - [3. Data Models](./architecture/3-data-models.md)
-- [4. Components & Interface Definitions](./architecture/4-components-interface-definitions.md) ⭐
+- [4. Components - Current Implementation](./architecture/4-components-current-implementation.md) ⭐ **Updated 08-20**
 - [5. External APIs](./architecture/5-external-apis.md)
 - [6. Core Workflows](./architecture/6-core-workflows.md)
 - [7. Source Tree](./architecture/7-source-tree.md)
