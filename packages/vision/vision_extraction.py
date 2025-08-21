@@ -5,12 +5,23 @@ Qwen2.5-VL-7B-Instruct 모델을 사용한 PDF 이미지 텍스트 추출
 
 import os
 import io
+import json
+import time
 import torch
 import logging
 import re
 from PIL import Image
 from typing import Optional, Dict, Any
-import pymupdf
+
+# PyMuPDF는 선택적으로만 사용 (VL 모델 전용이므로)
+try:
+    import pymupdf
+    PYMUPDF_AVAILABLE = True
+except ImportError:
+    import fitz as pymupdf  # 대체 시도
+    PYMUPDF_AVAILABLE = True
+except:
+    PYMUPDF_AVAILABLE = False
 
 logger = logging.getLogger(__name__)
 
@@ -470,3 +481,139 @@ class VisionTextExtractor:
             score += 0.1
         
         return min(score, 1.0)
+    
+    def extract_text_from_pdf(self, pdf_path: str, save_output: bool = False, batch_size: int = None) -> str:
+        """
+        전체 PDF에서 텍스트 추출 (페이지별 이미지 변환 → VL 모델 추출)
+        
+        Args:
+            pdf_path: PDF 파일 경로
+            save_output: 출력 파일 저장 여부
+            batch_size: 페이지 배치 크기 (메모리 제한 시 조정)
+            
+        Returns:
+            추출된 전체 텍스트 (마크다운 형식)
+        """
+        if not PYMUPDF_AVAILABLE:
+            logger.error("PyMuPDF is required for PDF processing but not available")
+            raise ImportError("PyMuPDF (fitz) is required. Install with: pip install PyMuPDF")
+        
+        pdf_path = str(pdf_path)
+        logger.info(f"Starting PDF text extraction: {pdf_path}")
+        
+        try:
+            # PDF 열기
+            doc = pymupdf.open(pdf_path)
+            total_pages = len(doc)
+            logger.info(f"PDF has {total_pages} pages")
+            
+            # 페이지별 텍스트 추출
+            all_text = []
+            extraction_metadata = {
+                'source_pdf': os.path.basename(pdf_path),
+                'total_pages': total_pages,
+                'extraction_time': None,
+                'page_results': []
+            }
+            
+            start_time = torch.cuda.Event(enable_timing=True) if torch.cuda.is_available() else None
+            end_time = torch.cuda.Event(enable_timing=True) if torch.cuda.is_available() else None
+            
+            if start_time:
+                start_time.record()
+            
+            # 컨텍스트 초기화
+            self.last_page_info = {
+                'last_header': None,
+                'last_sentence': None,
+                'incomplete': False
+            }
+            
+            for page_num in range(total_pages):
+                try:
+                    logger.info(f"Processing page {page_num + 1}/{total_pages}")
+                    
+                    # 페이지를 이미지로 변환
+                    page = doc[page_num]
+                    pix = page.get_pixmap(dpi=150)  # DPI 150으로 렌더링
+                    img_data = pix.tobytes("png")
+                    image = Image.open(io.BytesIO(img_data))
+                    
+                    # VL 모델로 텍스트 추출
+                    page_text = self.extract_text_from_image(image, page_num)
+                    
+                    # 페이지 구분자 추가
+                    if page_num > 0:
+                        all_text.append(f"\n\n{'='*60}\n[Page {page_num + 1}]\n{'='*60}\n")
+                    else:
+                        all_text.append(f"[Page {page_num + 1}]\n{'='*60}\n")
+                    
+                    all_text.append(page_text)
+                    
+                    # 메타데이터 저장
+                    extraction_metadata['page_results'].append({
+                        'page': page_num + 1,
+                        'char_count': len(page_text),
+                        'has_content': page_text != "내용 없음"
+                    })
+                    
+                    # GPU 메모리 정리 (필요시)
+                    if torch.cuda.is_available() and (page_num + 1) % 10 == 0:
+                        torch.cuda.empty_cache()
+                        logger.debug(f"GPU cache cleared after page {page_num + 1}")
+                    
+                except Exception as e:
+                    logger.error(f"Failed to extract page {page_num + 1}: {e}")
+                    all_text.append(f"\n[Page {page_num + 1} - 추출 실패: {str(e)}]\n")
+                    extraction_metadata['page_results'].append({
+                        'page': page_num + 1,
+                        'char_count': 0,
+                        'has_content': False,
+                        'error': str(e)
+                    })
+            
+            # PDF 닫기
+            doc.close()
+            
+            # 추출 시간 계산
+            if start_time and end_time:
+                end_time.record()
+                torch.cuda.synchronize()
+                extraction_time = start_time.elapsed_time(end_time) / 1000  # 초 단위
+                extraction_metadata['extraction_time'] = extraction_time
+                logger.info(f"Total extraction time: {extraction_time:.2f} seconds")
+            
+            # 전체 텍스트 결합
+            full_text = '\n'.join(all_text)
+            
+            # 출처 정보를 헤더에 추가
+            source_header = f"""# 문서 정보
+- **파일명**: {os.path.basename(pdf_path)}
+- **총 페이지**: {total_pages}
+- **추출 일시**: {time.strftime('%Y-%m-%d %H:%M:%S')}
+- **추출 방법**: VL Model (Qwen2.5-VL-7B-Instruct)
+
+{'='*60}
+
+"""
+            full_text = source_header + full_text
+            
+            # 저장 옵션
+            if save_output:
+                output_path = pdf_path.replace('.pdf', '_extracted.txt')
+                with open(output_path, 'w', encoding='utf-8') as f:
+                    f.write(full_text)
+                logger.info(f"Extracted text saved to: {output_path}")
+                
+                # 메타데이터도 저장
+                meta_path = pdf_path.replace('.pdf', '_metadata.json')
+                with open(meta_path, 'w', encoding='utf-8') as f:
+                    json.dump(extraction_metadata, f, ensure_ascii=False, indent=2)
+                logger.info(f"Metadata saved to: {meta_path}")
+            
+            logger.info(f"Extraction complete: {len(full_text)} characters extracted")
+            return full_text
+            
+        except Exception as e:
+            logger.error(f"Failed to extract text from PDF: {e}")
+            raise

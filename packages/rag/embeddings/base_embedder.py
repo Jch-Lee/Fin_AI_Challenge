@@ -1,3 +1,4 @@
+
 """
 Base Embedder Interface for RAG System
 Provides a consistent interface for all embedding models

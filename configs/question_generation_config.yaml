@@ -1,0 +1,40 @@
+# 질문 생성 설정 파일
+
+model:
+  name: "Qwen/Qwen2.5-32B-Instruct-AWQ"
+  temperature: 0.8  # 다양성 증가를 위해 높게 설정
+  top_p: 0.95
+  max_tokens: 500
+  device: "cuda"  # GPU 사용
+
+sampling:
+  total_chunks: 1000  # 샘플링할 총 청크 수
+  min_per_document: 10  # 문서당 최소 청크 수
+  similarity_threshold: 0.95  # 유사도 임계값
+  
+diversity:
+  question_types:
+    definition: 6  # 정의/개념 질문
+    process: 6     # 절차/프로세스 질문
+    regulation: 6  # 규정/법률 질문
+    example: 4     # 사례/예시 질문
+    comparison: 4  # 비교/차이점 질문
+    application: 4 # 적용/실무 질문
+    
+output:
+  path: "data/synthetic_questions/"
+  format: "csv"
+  columns: ["id", "question", "source_chunk", "question_type"]
+  encoding: "utf-8-sig"  # Excel 호환성을 위한 BOM 포함
+
+validation:
+  min_question_length: 10
+  max_question_length: 500
+  similarity_threshold: 0.85
+  require_korean: true
+  require_question_mark: true
+
+logging:
+  level: "INFO"
+  file: "question_generation.log"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
