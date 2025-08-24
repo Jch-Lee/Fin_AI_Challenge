@@ -1,19 +1,23 @@
 # 4. Components - Current Implementation Status
 
-## 현재 구현된 컴포넌트 구조
+## 현재 구현된 컴포넌트 구조 (2025-08-23 최종 업데이트)
 
 ### 실제 구현 아키텍처
-현재 프로젝트는 문서에 기술된 10개 독립 컴포넌트 대신, `packages/rag/` 중심의 통합 구조로 구현되어 있습니다.
+현재 프로젝트는 문서에 기술된 10개 독립 컴포넌트 대신, 통합 추론 파이프라인으로 구현되어 있습니다.
 
 ## 구현된 핵심 컴포넌트
 
-### 1. RAG Pipeline (`packages/rag/rag_pipeline.py`)
-**역할**: 전체 RAG 시스템 오케스트레이션
-- Document embedding 관리
-- Knowledge base 연동
-- Query processing
-- Document retrieval (리랭킹 옵션 제거)
-- Context preparation for generation
+### 1. 통합 추론 파이프라인 (`scripts/generate_submission_*.py`)
+**메인 스크립트**:
+- `generate_submission_remote_8bit_fixed.py`: 원격 서버용 (8-bit 양자화)
+- `generate_submission_standalone.py`: 독립 실행 버전 (문서 전체 사용)
+
+**핵심 기능**:
+- Question Classification (is_multiple_choice)
+- Hybrid Retrieval (BM25 + FAISS)
+- Prompt Engineering (Chat Template)
+- 8-bit Quantized Inference
+- Answer Post-processing
 
 **주요 메서드**:
 ```python
@@ -25,163 +29,144 @@
 - create_simple_hybrid_retriever(): 간소화된 하이브리드 검색기
 ```
 
-**최신 설정** (2025-08-20 업데이트 - 🏆 0.55 점수):
-- **검색 방식**: `retriever_type="combined_top"` (기본값)
-- **BM25+Vector Top3**: 각 방법에서 독립적으로 상위 3개씩 선택
-- **총 6개 문서**: 중복 허용으로 풍부한 컨텍스트
-- **리랭킹 비활성화**: 독립 선택 방식이 더 효과적
-- **설정 자동 로드**: `configs/rag_config.yaml v3.0`
+**현재 설정** (2025-08-23 검증 완료):
+- **검색 방식**: Combined Top-3 (BM25 + FAISS 독립 선택)
+- **BM25**: get_top_n() 메서드로 상위 3개
+- **FAISS**: 코사인 유사도 기반 상위 3개
+- **총 6개 컨텍스트**: 중복 허용으로 정보 다양성
+- **청크 크기**: 2,300자 단위 (8,756개 청크)
 
-### 2. Knowledge Base (`packages/rag/knowledge_base.py`)
-**역할**: FAISS 기반 벡터 저장 및 검색
-- FAISS 인덱스 관리 (Flat, IVF, HNSW)
-- 문서 및 메타데이터 저장
-- 벡터 검색 및 배치 검색
-- Legacy 데이터 호환성 지원
+### 2. 지식 베이스 (`data/rag/`)
+**저장된 인덱스 파일**:
+- `chunks_2300.json`: 8,756개 청크 (평균 764.6자)
+- `bm25_index_2300.pkl`: BM25 인덱스 (Kiwi 형태소 기반)
+- `faiss_index_2300.index`: FAISS 벡터 인덱스 (KURE-v1 1024차원)
+- `metadata_2300.json`: 문서 메타데이터
 
 **인덱스 타입**:
 - Flat: 소규모 데이터셋 (기본값)
 - IVF: 중규모 데이터셋
 - HNSW: 대규모 데이터셋
 
-### 3. Embedders (`packages/rag/embeddings/`)
-**구현된 임베딩 모델**:
-- **KUREEmbedder**: nlpai-lab/KURE-v1 (한국어 특화 임베딩, SentenceTransformer 기반)
-- **E5Embedder**: intfloat/multilingual-e5-large (768차원)
-- **BaseEmbedder**: 추상 기본 클래스
+### 3. 임베딩 및 토크나이저
+**임베딩 모델**:
+- **KURE-v1**: nlpai-lab/KURE-v1 (1024차원 한국어 특화)
+- SentenceTransformer 기반
+- CUDA GPU 사용
 
-**토크나이저 전략**:
-- **벡터 임베딩**: KURE 내장 토크나이저 (SentencePiece 기반, 476배 빠른 속도)
-- **BM25 검색**: Kiwipiepy 형태소 분석기 (의미 단위 정확도 우선)
+**토크나이저**:
+- **BM25**: Kiwipiepy 형태소 분석기
+- **Vector**: KURE-v1 내장 토크나이저
 
-### 4. Retrievers (`packages/rag/retrieval/`)
-**검색 전략**:
-- **VectorRetriever**: FAISS 기반 밀집 벡터 검색 (KURE 임베딩 사용)
-- **BM25Retriever**: BM25S 라이브러리 기반 희소 검색
-  - Kiwipiepy 형태소 분석기 통합
-  - 품사 필터링: 명사(N), 동사(V), 형용사(VA), 외국어(SL)
-  - 10-30배 빠른 토크나이징 속도
-- **HybridRetriever**: Vector(KURE) + BM25 앙상블 (Legacy)
-  - 가중치 통합: BM25 70%, Vector 30%
-  - Min-Max 정규화 적용
-- **🏆 CombinedTopRetriever**: BM25+Vector 독립 선택 (현재 기본값)
-  - **리더보드 0.55 달성**: 기존 0.46 대비 +19.6% 향상
-  - BM25에서 상위 3개, Vector에서 상위 3개 독립 선택
-  - 중복 허용으로 정보 다양성 극대화
-  - 각 검색 방법의 강점을 희석시키지 않음
-- **RerankingRetriever**: ~~Qwen3 기반 재순위화~~ (비활성화됨)
+### 4. 검색 시스템 (하이브리드 RAG)
+**현재 구현** (`retrieve_combined_contexts()`):
+- **BM25 검색** (`search_bm25()`):
+  - rank-bm25 라이브러리의 get_top_n() 사용
+  - Kiwi 형태소 분석기로 질문 토크화
+  - 상위 3개 문서 선택
+  
+- **Vector 검색** (`search_vector()`):
+  - FAISS 코사인 유사도 검색
+  - KURE-v1 임베딩 (1024차원)
+  - 상위 3개 문서 선택
+  
+- **결합 전략**: 
+  - 각 방법에서 독립적으로 3개씩 선택
+  - 총 6개 컨텍스트 (중복 허용)
 
-### 5. Model Loaders (`models/model_loader.py`)
-**모델 관리 시스템**:
-- **TeacherModelLoader**: Qwen2.5-7B-Instruct
-- **StudentModelLoader**: Qwen2.5-1.5B-Instruct  
-- **SyntheticDataModelLoader**: Qwen2.5-14B-Instruct (Fallback)
+### 5. 추론 모델 (8-bit 양자화)
+**현재 모델**: Qwen2.5-7B-Instruct
+- **양자화**: BitsAndBytesConfig (8-bit)
+- **메모리 사용**: 10.7GB VRAM (24GB 제한 내)
+- **추론 파라미터**:
+  - temperature: 0.05 (매우 보수적)
+  - top_p: 0.9, top_k: 5
+  - do_sample: False (결정론적)
+  - max_new_tokens: 32(객관식) / 256(주관식)
 
+### 6. 프롬프트 엔지니어링 (`create_prompt()`)
+**Chat Template 형식**:
+- System Role + User Role 구조
+- tokenizer.apply_chat_template() 사용
+
+**객관식 프롬프트**:
+- System: "객관식 문제의 정답 번호만 답하세요"
+- User: 참고자료(전체) + 질문 + 선택지
+- 지침: "1부터 N까지 중 하나의 숫자만"
+
+**주관식 프롬프트 (5가지 지침)**:
+1. 참고 문서 기반 정확한 한국어 답변
+2. 순수 텍스트만 사용
+3. 이미지/URL/링크/마크다운 금지
+4. 도표는 텍스트 설명으로 대체
+5. 핵심 2-3문장 요약
+
+
+### 7. 후처리 시스템 (`extract_answer()`)
 **주요 기능**:
-- 양자화 지원 (4-bit, 8-bit)
-- 메모리 사용량 추정
-- 대회 규정 준수 검증
-- 배치 생성 지원
+- 정규식으로 이미지/URL 패턴 제거
+- 중국어/일본어 문자 제거
+- 객관식: 첫 번째 숫자만 추출
+- 주관식: 최대 500자 제한
+### 8. 성능 메트릭 (실측값)
+**처리 성능**:
+- 속도: 5.75초/질문
+- 메모리: 10.7GB VRAM
+- 전체 시간: 515개 질문 약 49분 예상
+- 대회 제한: 4.5시간 내 충족 (5.5배 여유)
 
-### 6. Vision Processor (`packages/vision/` & `packages/preprocessing/`)
-**역할**: Vision-Language 모델 기반 고품질 PDF 텍스트 추출
-- **VisionTextExtractor**: Qwen2.5-VL-7B-Instruct 기반 텍스트 추출
-- **VisionPDFProcessor**: PDF 페이지를 이미지로 변환 후 VL 모델 처리
-- **41.2% 텍스트 추출 품질 향상** (PyMuPDF 대비, 56페이지 검증 완료)
+## 미구현 컴포넌트
 
-**주요 기능**:
-- 표/차트/그래프 의미론적 해석
-- Version 2 최적화 프롬프트 적용
-- GPU 환경 자동 감지 및 최적화
-- 실시간 메모리 관리
+### Teacher-Student Distillation (계획됨)
+1. **Teacher 모델**: Qwen2.5-14B-Instruct
+2. **Student 모델**: Qwen2.5-1.5B-Instruct
+3. **학습 방법**: Distill-M 2 (Contrastive Distillation)
+4. **학습 데이터**: 3,000개 합성 질문-답변 쌍
 
-### 7. PDF Processing Pipeline (`packages/preprocessing/data_preprocessor.py`)
-**3-Tier Fallback 구조**: 안정성과 품질을 동시 확보
-1. **Vision V2** (Primary): GPU 환경, 최고 품질 (41.2% 개선)
-2. **Traditional PyMuPDF** (Fallback): PyMuPDF4LLM 향상된 추출
-3. **Basic PyMuPDF** (Final): 원시 텍스트 추출, 최종 안전망
+### 캐싱 레이어 (계획됨)
+- 자주 나오는 질문 캐싱
+- 임베딩 결과 재사용
+- 검색 결과 캐싱
 
-**처리 흐름**:
-```python
-GPU 가용성 확인 → Vision V2 시도 → 실패 시 Traditional → 최종 Basic
-```
-
-### 8. Question Classifier (`packages/preprocessing/question_classifier.py`)
-**질문 분류 기능**:
-- 객관식/주관식 구분
-- 질문과 선택지 분리
-- 프롬프트 템플릿 생성
-
-## 계획된 컴포넌트 (미구현)
-
-### 아직 구현되지 않은 컴포넌트들:
-1. **ModelTrainer**: Distill-M 2 학습 컴포넌트
-2. **InferenceOrchestrator**: 통합 추론 오케스트레이터
-3. **ModelOptimizer**: 양자화 및 최적화
-4. **EvaluationMonitor**: 평가 및 모니터링
-5. **CacheLayer**: 추론 캐싱 시스템
-6. **MultiStageRetriever**: 다단계 검색 (현재는 단일 단계)
-
-## 디렉토리 구조
+## 프로젝트 구조 (현재)
 
 ```
-packages/
-├── rag/                     # RAG 시스템 (핵심)
-│   ├── __init__.py
-│   ├── rag_pipeline.py      # 메인 파이프라인 (v2 호환성 추가)
-│   ├── knowledge_base.py    # FAISS 지식 베이스
-│   ├── embeddings/          # 임베딩 모델들
-│   │   ├── base_embedder.py
-│   │   ├── kure_embedder.py
-│   │   └── e5_embedder.py (deprecated)
-│   ├── retrieval/           # 검색 전략들
-│   │   ├── base_retriever.py
-│   │   ├── vector_retriever.py
-│   │   ├── bm25_retriever.py
-│   │   ├── hybrid_retriever.py
-│   │   ├── combined_top_retriever.py # 🏆 0.55 점수 달성
-│   │   └── reranking_retriever.py (비활성화)
-│   └── reranking/           # 리랭킹 시스템 (비활성화)
-│       ├── base_reranker.py
-│       ├── qwen3_reranker.py
-│       └── reranker_config.py
-├── vision/                  # Vision-Language 모듈 (신규)
-│   ├── __init__.py
-│   └── vision_extraction.py # VL 모델 기반 텍스트 추출
-├── preprocessing/           # 전처리 시스템
-│   ├── data_preprocessor.py # 통합 전처리 (Vision V2 메인)
-│   ├── pdf_processor_vision.py      # Vision 기반 PDF 프로세서
-│   ├── pdf_processor_traditional.py # PyMuPDF 기반 (Fallback)
-│   ├── embedder.py         # 하위 호환성 래퍼
-│   └── question_classifier.py
-└── data_processing/        # 데이터 처리
-    └── korean_english_processor.py
-
-models/
-├── model_loader.py         # 모델 로딩 시스템
-└── (모델 가중치 파일들)
-
-configs/
-└── model_config.py         # 모델 설정
+Fin_AI_Challenge/
+├── scripts/
+│   ├── generate_submission_remote_8bit_fixed.py  # 메인 추론
+│   ├── generate_submission_standalone.py         # 독립 버전
+│   ├── generate_bulk_3000.py                     # 합성 데이터 생성
+│   └── build_hybrid_rag_2300.py                  # RAG 구축
+├── data/
+│   ├── rag/
+│   │   ├── chunks_2300.json      # 8,756개 청크
+│   │   ├── bm25_index_2300.pkl   # BM25 인덱스
+│   │   ├── faiss_index_2300.index # FAISS 인덱스  
+│   │   └── metadata_2300.json    # 메타데이터
+│   └── synthetic_questions/
+│       ├── combined_3000_questions.csv  # 3,000개 합성 Q&A
+│       └── generation_report.json       # 생성 보고서
+├── test.csv                      # 515개 질문
+└── sample_submission.csv         # 제출 형식
 ```
 
-## 통합 진행 상황
+## 구현 완료 항목 ✅
 
-### 완료된 작업 ✅
-- [x] RAG 시스템 구조 재편성
-- [x] 임베딩 모델 통합 (KURE-v1)
-- [x] 지식 베이스 구축 (FAISS)
-- [x] 검색 시스템 구현
-- [x] 모델 설정 시스템
-- [x] 하위 호환성 유지
-- [x] **Vision V2 통합 완료** (2025-08-14)
-- [x] **PDF 처리 파이프라인 3-Tier 구조 구축**
-- [x] **텍스트 추출 품질 41.2% 개선** (56페이지 벤치마크 검증)
-- [x] **BM25 0.7 파이프라인 마이그레이션** (2025-08-20)
-- [x] **리랭킹 제거로 40-50% 속도 향상**
-- [x] **RAGSystemV2 호환성 메서드 추가**
-- [x] **🏆 BM25+Vector Top3 방식 구현** (2025-08-20)
-- [x] **리더보드 점수 0.55 달성** (기존 0.46 대비 +19.6%)
+### Epic 1: 데이터 파이프라인
+- [x] 73개 PDF 문서 수집 및 전처리
+- [x] 8,756개 청크 (2,300자 단위) 생성
+- [x] BM25 인덱스 구축 (Kiwi 형태소 분석)
+- [x] FAISS 인덱스 구축 (KURE-v1 1024차원)
+- [x] 3,000개 합성 질문-답변 쌍 생성
+
+### Epic 3: 추론 파이프라인
+- [x] Question Classifier 구현 (객관식/주관식)
+- [x] Multi-Stage Retriever (BM25 + FAISS)
+- [x] Qwen2.5-7B-Instruct 8-bit 양자화
+- [x] Chat Template 프롬프트 엔지니어링
+- [x] 이미지/URL 차단 및 후처리
+- [x] 5.75초/질문 성능 달성
+- [x] 10.7GB VRAM 사용 (24GB 제한 충족)
 - [x] **CombinedTopRetriever 구현 및 통합**
 
 ### 진행 중 🔄
@@ -210,11 +195,51 @@ configs/
 3. **유지보수**: 단순한 구조로 관리 용이
 4. **호환성**: 레거시 코드와의 원활한 통합
 
+## 8-bit 양자화 추론 파이프라인 (2025-08-23 신규)
+
+### QwenUpdatedDBPredictor 클래스
+**위치**: `scripts/generate_submission_remote_8bit_fixed.py`
+
+**핵심 특징**:
+- **8-bit 양자화**: BitsAndBytesConfig로 메모리 75% 절감
+- **이미지 생성 차단**: bad_words_ids로 이미지 토큰 필터링
+- **한국어 최적화**: Kiwi 형태소 분석 + KURE-v1 임베딩
+
+**주요 메서드**:
+```python
+class QwenUpdatedDBPredictor:
+    def setup(self):
+        # 시스템 초기화
+        - 8,756개 청크 로드
+        - BM25 인덱스 (pickle)
+        - FAISS 인덱스 로드
+        - KURE-v1 임베더 초기화
+        - Qwen2.5-7B-Instruct 8-bit 로드
+    
+    def retrieve_combined_contexts(self, question):
+        # BM25 Top-3 + Vector Top-3 독립 검색
+        - BM25: Kiwi 토크나이저 사용
+        - Vector: KURE-v1 임베딩 → FAISS 검색
+        - 총 6개 컨텍스트 반환 (중복 허용)
+    
+    def generate_answer(self, prompt, question):
+        # 8-bit 모델 추론
+        - temperature: 0.05 (결정론적)
+        - top_p: 0.9, top_k: 5
+        - bad_words_ids: 이미지 토큰 차단
+        - max_new_tokens: 32(객관식) / 256(주관식)
+```
+
+**메모리 최적화**:
+- 8-bit 양자화: ~8GB VRAM 사용
+- 100개마다 가비지 컬렉션
+- RTX 4090 24GB 제약 충족
+
 ### 향후 리팩토링 제안
-1. 필요 시 컴포넌트 분리 강화
-2. 인터페이스 정의 추가
-3. 의존성 주입 패턴 도입
-4. 테스트 커버리지 확대
+1. Teacher-Student Distillation 구현
+2. 4-bit 양자화 추가 최적화
+3. 캐싱 시스템 도입
+4. 앙상블 전략 테스트
 
 ---
-*Last Updated: 2025-08-20 - BM25 0.7 파이프라인 마이그레이션 완료*
+*Last Updated: 2025-08-23 - 8-bit 양자화 추론 파이프라인 완성 및 3,000개 합성 데이터 생성*

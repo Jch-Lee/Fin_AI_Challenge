@@ -1,5 +1,23 @@
 # 테스트 구조 및 실행 가이드
 
+*Last Updated: 2025-08-23*
+
+## 📌 현재 테스트 현황
+
+### 구현된 메인 파이프라인 테스트
+- **8-bit 추론 파이프라인**: `generate_submission_standalone.py`에서 자체 테스트 모드 제공
+  ```bash
+  # 10개 샘플 테스트
+  python scripts/generate_submission_standalone.py --test_mode --num_samples 10
+  ```
+- **테스트 커버리지**: 주요 추론 경로 커버, 단위 테스트는 부분적 구현
+- **통합 테스트**: RAG 시스템 통합 테스트 부분 구현
+
+### 테스트 전략
+- 메인 추론 파이프라인은 자체 테스트 모드로 검증
+- 개별 컴포넌트는 단위 테스트로 검증 예정
+- Vision 모듈은 현재 메인 파이프라인에서 미사용
+
 ## 📂 디렉토리 구조
 
 ```

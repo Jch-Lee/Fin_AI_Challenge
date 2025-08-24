@@ -1,25 +1,29 @@
 # 2. Tech Stack
 
-| Category | Technology | Version | Purpose |
-| --- | --- | --- | --- |
-| **Language** | Python | `3.10` | 주요 개발 언어 |
-| **ML Framework** | PyTorch | `2.1.0` | 딥러닝 프레임워크 |
-| **Core ML** | Transformers | `4.41.2` | LLM 로드/사용 |
-| **Optimization** | Accelerate | `0.30.1` | 학습/추론 최적화 |
-| **Response Gen** | vllm | `0.5.4` | 교사/학생 응답 생성 |
-| **Fine-Tuning** | TRL | `0.9.6` | `DistiLLMTrainer` 사용 |
-| **Embedding** | KURE-v1 (nlpai-lab) | `latest` | 한국어 특화 벡터 임베딩 |
-| **Vector DB** | FAISS-CPU | `1.8.0` | 벡터 검색 |
-| **Reranking** | Qwen3-Reranker-4B | `latest` | Cross-encoder 재순위화 |
-| **Quantization** | auto-gptq / bitsandbytes | `0.7.1`/`0.43.1` | GPTQ/QLoRA 양자화 |
-| **Data/Doc Proc** | Pandas, LangChain, PyMuPDF | `2.2.2`,`0.2.1`,`1.24.1` | 데이터/문서 처리 (폴백) |
-| **Search** | bm25s + Kiwipiepy | `0.2.2` | Sparse 검색 (Kiwi 토크나이저 사용) |
-| **Korean NLP** | Kiwipiepy | `0.15.0` | 한국어 형태소 분석 (BM25용) |
-| **Vision-Language** | Qwen2.5-VL-7B-Instruct | `latest` | PDF 이미지 텍스트 추출 (주력) |
-| **Image Processing** | Pillow | `10.0.0` | 이미지 변환/처리 |
-| **Vision Utils** | qwen_vl_utils | `latest` | VL 모델 유틸리티 (옵셔널) |
-| **Monitoring** | tqdm, wandb | `4.66.4`,`0.17.0` | 진행 표시, 실험 추적 |
-| **Testing** | pytest | `8.2.0` | 단위/통합 테스트 |
+## 실제 사용 라이브러리 (2025-08-23 업데이트)
+
+| Category | Technology | Version | Purpose | 상태 |
+| --- | --- | --- | --- | --- |
+| **Language** | Python | `3.10` | 주요 개발 언어 | ✅ 사용중 |
+| **ML Framework** | PyTorch | `2.1.0` | 딥러닝 프레임워크 | ✅ 사용중 |
+| **Core ML** | Transformers | `4.41.2` | LLM 로드/사용 | ✅ 사용중 |
+| **Optimization** | Accelerate | `0.30.1` | 학습/추론 최적화 | ✅ 사용중 |
+| **Quantization** | bitsandbytes | `0.43.1` | 8-bit/4-bit 양자화 | ✅ 사용중 |
+| **Embedding** | sentence-transformers | `2.7.0` | KURE-v1 임베더 | ✅ 사용중 |
+| **Vector DB** | FAISS-CPU | `1.8.0` | 벡터 검색 | ✅ 사용중 |
+| **Search** | rank-bm25 | `0.2.2` | BM25 희소 검색 | ✅ 사용중 |
+| **Korean NLP** | Kiwipiepy | `0.18.0` | 한국어 형태소 분석 | ✅ 사용중 |
+| **Data Processing** | Pandas | `2.2.2` | 데이터프레임 처리 | ✅ 사용중 |
+| **Numeric** | NumPy | `1.26.4` | 수치 연산 | ✅ 사용중 |
+| **Monitoring** | tqdm | `4.66.4` | 진행 표시 | ✅ 사용중 |
+| **Vision-Language** | Qwen2.5-VL-7B-Instruct | `latest` | PDF 이미지 텍스트 추출 | ✅ 사용중 |
+| **Image Processing** | Pillow | `10.3.0` | 이미지 변환/처리 | ✅ 사용중 |
+| **PDF Processing** | PyMuPDF | `1.24.5` | PDF 텍스트 추출 (폴백) | ✅ 사용중 |
+| **Korean Backup** | KoNLPy | `0.6.0` | 한국어 NLP (백업) | ⚠️ 백업용 |
+| **Response Gen** | vllm | `0.5.4` | 교사/학생 응답 생성 | ⏳ 계획됨 |
+| **Fine-Tuning** | TRL | `0.9.6` | `DistiLLMTrainer` 사용 | ⏳ 계획됨 |
+| **Experiment Tracking** | wandb | `0.17.0` | 실험 추적 | ⏳ 계획됨 |
+| **Testing** | pytest | `8.2.0` | 단위/통합 테스트 | ⏳ 계획됨 |
 
 ## Model Selection Strategy
 
