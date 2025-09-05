@@ -1,0 +1,19 @@
+{
+  "scripts": [
+    "generate_submission_qwen_updated_db_remote.py",
+    "load_rag_v2.py"
+  ],
+  "data/rag": [
+    "chunks_2300.json",
+    "metadata_2300.json",
+    "faiss_index_2300.index",
+    "bm25_index_2300.pkl",
+    "embeddings_2300.npy"
+  ],
+  "data/competition": [
+    "test_subjective_10.csv"
+  ],
+  "root": [
+    "requirements_competition.txt"
+  ]
+}

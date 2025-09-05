@@ -1,0 +1,41 @@
+{
+  "timestamp": "2025-08-17T11:43:41.948918",
+  "total_count": 515,
+  "multiple_choice_count": 500,
+  "open_ended_count": 15,
+  "avg_length": 141.0349514563107,
+  "max_length": 317,
+  "min_length": 28,
+  "avg_options": 4.506,
+  "question_types": {
+    "general": 140,
+    "security": 131,
+    "definition": 123,
+    "analysis": 39,
+    "procedure": 65,
+    "compliance": 15,
+    "comparison": 2
+  },
+  "top_keywords": {
+    "것은": 326,
+    "경우": 143,
+    "있는": 113,
+    "한다": 110,
+    "대한": 110,
+    "적절한": 103,
+    "보안": 102,
+    "무엇인가": 98,
+    "있다": 94,
+    "않은": 90,
+    "다음": 90,
+    "가장": 86,
+    "옳은": 85,
+    "개인정보": 77,
+    "설명으로": 76,
+    "또는": 74,
+    "네트워크": 69,
+    "모든": 67,
+    "데이터": 64,
+    "따라": 62
+  }
+}

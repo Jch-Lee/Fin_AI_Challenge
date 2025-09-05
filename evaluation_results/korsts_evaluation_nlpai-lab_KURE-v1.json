@@ -1,0 +1,27 @@
+{
+  "korsts": {
+    "model_name": "nlpai-lab/KURE-v1",
+    "embedding_dim": 1024,
+    "num_pairs": 519,
+    "spearman_correlation": 0.8773669902581479,
+    "spearman_p_value": 5.2363119599409915e-167,
+    "pearson_correlation": 0.8654612377461164,
+    "pearson_p_value": 2.5867687746495405e-157,
+    "mse": 0.11653418124590204,
+    "mae": 0.28877512347032114,
+    "performance_grade": "Excellent (매우 우수)"
+  },
+  "financial": {
+    "model_name": "nlpai-lab/KURE-v1",
+    "embedding_dim": 1024,
+    "num_pairs": 8,
+    "spearman_correlation": 0.848625128695526,
+    "spearman_p_value": 0.007716946759765807,
+    "pearson_correlation": 0.8642850102771316,
+    "pearson_p_value": 0.005630370144227697,
+    "mse": 0.033795592400815054,
+    "mae": 0.16092355251312257,
+    "performance_grade": "Excellent (매우 우수)",
+    "domain": "financial"
+  }
+}

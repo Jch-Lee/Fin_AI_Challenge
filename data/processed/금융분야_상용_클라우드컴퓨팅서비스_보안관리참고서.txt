@@ -1,0 +1,3633 @@
+\n## Page 1\n\n- 주제목: 금융분야 상용 클라우드컴퓨팅서비스 보안 관리 참고서
+- 중제목: ORACLE
+- 소제목: 금융보안원 FINANCIAL SECURITY INSTITUTE
+- 세부: 업무참고 2024 - DT대응지원 - (2) - 42
+
+|-------|-------|-------|
+| 데이터 | 데이터 | 데이터 |
+- 미완성: ...
+- 연속: [이전 페이지에서 계속]
+###
+- 인용: > 사용
+---
+**내용 없음**\n\n## Page 2\n\n```markdown
+# 가상자원 관리
+## 1.1. 가상자원 생성 시 최초 계정에 대한 비밀번호 규칙 수립
+## 1.2. 이용자 가상자원 접근 시 로그인 규칙 적용
+## 1.3. 가상자원 루트 계정 접근 시 추가 인증수단 적용
+## 1.4. 가상자원 생성 시 네트워크 설정 적용
+## 1.5. 가상자원 접속 시 보안 방안 수립
+## 1.6. 이용자 가상자원별 권한 설정
+## 1.7. 이용자 가상자원 내 악성코드 통제방안 수립
+# 네트워크 관리
+## 2.1. 업무 목적에 따른 네트워크 구성
+## 2.2. 내부망 네트워크 보안 통제
+## 2.3. 네트워크 보안 관제 수행
+## 2.4. 공개용 웹서버 네트워크 분리
+## 2.5. 네트워크 사설 IP주소 할당 및 관리
+## 2.6. 네트워크(방화벽 등) 정책 주기적 검토
+# 계정 및 권한 관리
+## 3.1. 클라우드 계정 권한 관리
+## 3.2. 이용자별 인증 수단 부여
+## 3.3. 인사변경 사항 발생 시 계정 관리
+## 3.4. 클라우드 가상자원 관리시스템 관리자 권한 추가인증 적용
+## 3.5. 클라우드 가상자원 관리시스템 로그인 규칙 수립
+## 3.6. 계정 비밀번호 규칙 수립
+## 3.7. 공개용 웹서버 접근 계정 제한
+```\n\n## Page 3\n\n```markdown
+# CONTENTS
+## 4. 암호키 관리
+- 4.1. 암호화 적용 가능 여부 확인
+- 4.2. 암호키 관리 방안 수립
+- 4.3. 암호키 서비스 관리자 권한 통제
+- 4.4. 암호키 호출 권한 관리
+- 4.5. 안전한 암호화 알고리즘 적용
+## 5. 로깅 및 모니터링 관리
+- 5.1. 가상자원 이용(생성, 삭제, 변경 등)에 관한 행위추적성 확보
+- 5.2. 가상자원 이용 행위추적성 증적 모니터링
+- 5.3. 이용자 가상자원 모니터링 기능 확보
+- 5.4. API 사용(호출대상, 호출자, 호출일시 등)에 관한 행위추적성 확보
+- 5.5. 네트워크 관련 서비스(VPC, 보안그룹, ACL 등)에 관한 행위추적성 확보
+- 5.6. 계정 변동사항에 대한 행위추적성 확보
+- 5.7. 계정 변경사항에 관한 모니터링 수행
+```\n\n## Page 4\n\n```markdown
+# 1. 가상자원 관리
+1.1. 가상자원 생성 시 최초 계정에 대한 비밀번호 규칙 수립
+1.2. 이용자 가상자원 접근 시 로그인 규칙 적용
+1.3. 가상자원 루트 계정 접근 시 추가 인증수단
+1.4. 가상자원 생성 시 네트워크 설정 적용
+1.5. 가상자원 접속 시 보안 방안 수립
+1.6. 이용자 가상자원별 권한 설정
+1.7. 이용자 가상자원 내 악성코드 통제방안 수립
+```\n\n## Page 5\n\n```markdown
+# 1. 가상자원 관리
+## 1.1. 가상자원 생성 시 최초 계정에 대한 비밀번호 규칙 수립
+### 1 기준
+| 식별번호 | 기준 | 내용 |
+|----------|------|------|
+| 1.1      | 가상자원 생성 시 최초 계정에 대한 비밀번호 규칙 수립 | 이용자 가상자원 생성 시 최초 계정에 대한 비밀번호 규칙을 수립하여야 한다. |
+### 2 설명
+> 이용자 가상자원에 접근하는 계정에 대한 비밀번호 규칙 보안통제 방안을 수립하여야 한다.
+>
+> 1) 제 3자가 쉽게 유추할 수 없는 비밀번호 작성 규칙 수립
+### 3 우수 사례
+> (가상자원관리시스템) '홈' → 'Compute' → 'Instances' → 'Crete Instance'에서 윈도우 이미지 생성 시 윈도우 패스워드 생성 규칙에 따라 특수문자, 길이, 복잡도 등이 포함된 최초 비밀번호가 생성되며, 이후 변경 시에도 동일한 패스워드 규칙을 적용
+>
+> - [Linux] Private Key 기반의 인증을 통한 접근방식
+>
+> - [Windows] Windows 패스워드 규칙에 따라 안전한 패스워드 생성
+```\n\n## Page 6\n\n
+| General information | Instance access |
+|--------------------|------------------|
+| Availability domain: AD-1 | You connect to a running Windows instance using Remote Desktop. The network that the instance is in must allow Remote Desktop Protocol (RDP) access. Use the instance's initial password to sign in for the first time, and then use the password that you set. |
+| Fault domain: FD-2 | Public IP address: 140.238 |
+| Region: ap-seoul-1 | Username: opc |
+| OCID: ...hdyb6a | Initial password: 4~9Y0{fVY]RnJf |
+| Launched: Sun, Jul 14, 2024, 23:38:40 UTC | Primary VNIC |
+| Compartment: apackrsct (root)/CLOUD/CLOUD-SPECIALISTS/YONGMIN.HAN | Public IPv4 address: 140.238 |
+| Capacity type: On-demand | Private IPv4 address: 10.0.0.95 |
+| Virtual cloud network: Default_VCN(internetgateway) | Network security groups: None Edit |
+| Maintenance reboot: - | Subnet: public subnet-Default_VCN(internetgateway) |
+| Launch mode: NATIVE | Private DNS record: Enable |
+| Instance metadata service: Versions 1 and 2 Edit | Hostname: instance-20240715-0838 |
+| Live migration: Use recommended default Change | Internal FQDN: instance-20240715-0838... Show Copy |
+- 미완성: ... [다음 페이지에 계속]
+###
+- 인용: > 사용
+---
+### 참고 사항
+https://cloud.oracle.com/compute/instances?region=ap-seoul-1\n\n## Page 7\n\n
+| 식별번호 | 기준 | 내용 |
+|----------|------|------|
+| 1.2      | 이용자 가상자원 접근 시 로그인 규칙 적용 | 이용자 가상자원 접근 계정에 대한 안전한 로그인 규칙을 수립하여야 한다. |
+- 미완성: ... [다음 페이지에 계속]
+###
+- 인용: > 사용
+---
+### 텍스트 추출
+#### 1. 기준
+- 식별번호: 1.2
+- 기준: 이용자 가상자원 접근 시 로그인 규칙 적용
+- 내용: 이용자 가상자원 접근 계정에 대한 안전한 로그인 규칙을 수립하여야 한다.
+#### 2. 설명
+- 이용자는 패스워드 무작위 대입 공격 등에 대응하기 위해 가상자원 접근 계정에 대한 안전한 로그인 규칙을 수립하여야 한다.
+- 1) 로그인 오류에 따른 보안통제 방안 수립 등
+#### 3. 우수 사례
+- (가상자원관리시스템) '홈' → 'Compute' → 'Instances' → 'Crete Instance'에서 윈도우 이미지 생성 시 오라클 패스워드 생성 규칙에 따라 특수문자, 길이, 복잡도 등이 포함된 최초 비밀번호가 생성되며, 윈도우 로그인 후 Password reset 과정을 통해 윈도우 패스워드 규칙에 따라 안전한 패스워드 생성
+---
+### 그림 1.2.1
+- **안전한 초기 패스워드 생성**
+---
+- 미완성: ... [다음 페이지에 계속]\n\n## Page 8\n\n
+|-------|-------|-------|
+| 데이터 | 데이터 | 데이터 |
+- 미완성: ... [다음 페이지에 계속]
+- 연속: [이전 페이지에서 계속] ...
+###
+- 인용: > 사용
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...- 미완성: ... [다음 페이지에 계속]
+---
+### 📌 이 페이지 컨텍스트
+- 마지막 문장 일부: > https://cloud.oracle.com/compute/instances?region=ap-seoul-1
+---
+### 마크다운 형식화
+```markdown
+
+|-------|-------|-------|
+| 데이터 | 데이터 | 데이터 |
+- 미완성: ... [다음 페이지에 계속]
+- 연속: [이전 페이지에서 계속] ...
+###
+- 인용: > 사용
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...- 미완성: ... [다음 페이지에 계속]
+---
+### 📌 이 페이지 컨텍스트
+- 마지막 문장 일부: > https://cloud.oracle.com/compute/instances?region=ap-seoul-1
+```\n\n## Page 9\n\n
+| 식별번호 | 기준 | 내용 |
+|----------|------|------|
+| 1.3      | 가상자원 루트 계정 접근 시 추가 인증수단 적용 | 이용자 가상자원 루트 계정(root, administrator 등) 접근 시 추가인증 수단을 확보하여야 한다. |
+### 본문
+- 설명: 2. 설명
+- 일반 사용자 계정에서 루트(관리자) 계정 접근 시 sudo, su 명령어를 실행하여 패스워드 추가 인증
+### 우수 사례
+- 일반 사용자 계정에서 루트(관리자) 계정 접근 시 sudo, su 명령어를 실행하여 패스워드 추가 인증
+- 미완성: ... [다음 페이지에 계속]
+###
+- 인용: > 사용\n\n## Page 10\n\n- 주제목: 금융보안원
+- 중제목: ORACLE
+
+### 텍스트 내용
+- **[그림 1.3.1] 패스워드 추가 인증**
+- [3rd party 솔루션 활용] OCI에서 가상머신의 루트 계정 접근 시 별도 추가 인증 수단은 제공하고 있지 않지만 가상머신에 Google Authenticator와 같은 TOPT기반 2FA 적용하면 사용 가능함
+- 1) Google Authenticator 설치
+- Bash
+```bash
+sudo apt-get update
+sudo apt-get install libpam-google-authenticator
+```
+- 2) Google Authenticator 설정
+- 각 사용자 계정에 대해 Google Authenticator를 설정
+- 설정 과정에서 비밀 키와 QR코드를 받게 됩니다. 이를 Google Authenticator 앱에 추가
+- Bash
+```bash
+google-authenticator
+```
+- 미완성: ... [다음 페이지에 계속]
+###
+- 인용: > 사용\n\n## Page 11\n\n- 주제목: 금융분야 상용 클라우드컴퓨팅서비스 보안 관리 참고서
+- 중제목: 1. 가상자원 관리
+- 소제목: [그림 1.3.2] QR코드 수신 화면
+
+### 텍스트 내용
+#### 3) PAM 구성 파일 수정
+- /etc/pam.d/sshd 파일을 편집하여 다음 줄을 추가
+Bash
+auth required pam_google_authenticator.so
+#### 4) SSH 데몬 설정 수정
+- /etc/ssh/sshd_config 파일을 편집하여 다음 줄을 변경
+Bash
+ChallengeResponseAuthentication yes
+#### 5) SSH 데몬 재시작
+Bash
+sudo systemctl restart sshd
+- 미완성: ... [다음 페이지에 계속]\n\n## Page 12\n\n```markdown
+# 금융보안원 ORACLE
+- 윈도우의 경우 RDP 접근에 대한 2FA 설정을 위해서는 가상자원에 DUO 클라이언트를 별도로 설치해 이용(https://duo.com/solutions)
+1) DUO 계정 생성 및 설정
+DUO Security 웹사이트에서 계정을 생성하고 애플리케이션을 설정
+2) DUO 클라이언트 설치
+윈도우 가상자원에 DUO 클라이언트 설치
+3) DUO 설정
+https://duo.com/product/multi-factor-authentication-mfa
+## 참고 사항
+DUO : <https://duo.com/product/multi-factor-authentication-mfa>
+```\n\n## Page 13\n\n
+| 식별번호 | 기준 | 내용 |
+|----------|------|------|
+| 1.4      | 가상자원 생성 시 네트워크 설정 적용 | 이용자의 가상자원 생성 시 안전한 네트워크 설정을 적용하여야 한다. |
+### 본문
+- **1. 기준**
+- 1.4 가상자원 생성 시 네트워크 설정 적용: 이용자의 가상자원 생성 시 안전한 네트워크 설정을 적용하여야 한다.
+- **2. 설명**
+- 외부에서 직접 접속이 불필요한 경우 내부IP 또는 IP대역에서만 접근할 수 있도록 설정하여야 한다.
+1) 가상자원 접속 가능한 공인IP(외부)대역 점검 및 제거
+2) 접근 가능한 IP 또는 대역대 설정
+3) VPC 및 보안그룹을 통한 내부 네트워크 대역 접근 설정
+- **3. 우수 사례**
+- (가상자원관리시스템) '홈' → 'Compute' → 'Instances' → 'Create Instance'를 통해 인스턴스 생성 시 Private Subnet으로 구성 시 공인IP를 할당할 수 없도록 리소스 구성 가능
+1) 가상자원 접속 가능한 공인IP(외부)대역 점검 및 제거\n\n## Page 14\n\n
+|-------|-------|-------|
+| 데이터 | 데이터 | 데이터 |
+- 미완성: ... [다음 페이지에 계속]
+- 연속: [이전 페이지에서 계속] ...
+###
+- 인용: > 사용
+---
+### 본문
+- **Primary VNIC information**
+- A virtual network interface card (VNIC) connects your instance to a virtual cloud network (VCN) and endpoints in and outside the VCN. Having a public IP address is required to make this instance accessible from the internet.
+- VNIC name: Optional
+- Primary network:
+- Select existing virtual cloud network
+- Create new virtual cloud network
+- Enter subnet OCID
+- VCN in (root) (Change compartment)
+- VCN-B
+- Subnet:
+- An IP address from a public subnet and an internet gateway on the VCN are required to make this instance accessible from the internet.
+- Select existing subnet
+- Create new public subnet
+- Subnet in (root) (Change compartment)
+- private subnet-VCN-B (regional)
+- Private subnets:
+- public subnet-VCN-B (regional)
+- private subnet-VCN-B (regional)
+- Private IPv4 address:
+- Automatically assign private IPv4 address
+- Manually assign private IPv4 address
+- **생성된 Instance VNIC에 공인IP 할당 없이 리소스 구성 완료**
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...1) 가상자원 접속 가능한 공인IP(외부)대역 점검 및 제거\n\n## Page 15\n\n- 주제목: 금융분야 상용 클라우드컴퓨팅서비스 보안 관리 참고서
+- 중제목: 1. 가상자원 관리
+
+|-------|-------|-------|
+| 데이터 | 데이터 | 데이터 |
+- 미완성: ... [다음 페이지에 계속]
+- 연속: [이전 페이지에서 계속] ...
+###
+- 인용: > 사용
+---
+#### [그림 1.4.2] VNIC IP 설정 화면
+- 제목: instance-20240524-1117
+- 소제목: General information, Instance details, Instance access, Launch options, Instances in (root) compartment
+
+|-------|-------|-------|
+| 데이터 | 데이터 | 데이터 |
+| Name | State | Public IP | Private IP | Shape | OCPU count | Memory (GB) |
+|------|-------|-----------|------------|-------|------------|-------------|
+| instance-20240520-1456 | Terminated | - | - | VM.Standard.E4.Flex | 1 | 16 |
+| instance-20240524-1057 | Running | 131. | 172.168.0.123 | VM.Standard.E4.Flex | 1 | 16 |
+| instance-20240524-1117 | Running | - | 172.168.1.233 | VM.Standard.E4.Flex | 1 | 16 |
+| instance-splunk | Stopped | 146. | 10.0.0.76 | VM.Standard.E4.Flex | 1 | 16 |
+---
+- 제목: instance-20240524-1117
+- 소제목: General information, Instance details, Instance access, Launch options, Instances in (root) compartment
+
+|-------|-------|-------|
+| 데이터 | 데이터 | 데이터 |
+| Name | State | Public IP | Private IP | Shape | OCPU count | Memory (GB) |
+|------|-------|-----------|------------|-------|------------|-------------|
+| instance-20240520-1456 | Terminated | - | - | VM.Standard.E4.Flex | 1 | 16 |
+| instance-20240524-1057 | Running | 131. | 172.168.0.123 | VM.Standard.E4.Flex | 1 | 16 |
+| instance-20240524-1117 | Running | - | 172.168.1.233 | VM.Standard.E4.Flex | 1 | 16 |
+| instance-splunk | Stopped | 146. | 10.0.0.76 | VM.Standard.E4.Flex | 1 | 16 |
+---
+- 제목: instance-20240524-1117
+- 소제목: General information, Instance details, Instance access, Launch options, Instances in (root) compartment
+
+|-------|-------|-------|
+| 데이터 | 데이터 | 데이터 |
+| Name | State | Public IP | Private IP | Shape | OCPU count | Memory (GB) |
+|------|-------|-----------|------------|-------|------------|-------------|
+| instance-20240520-1456 | Terminated | - | - | VM.Standard.E4.Flex | 1 | 16 |
+| instance-20240524-1057 | Running | 131. | 172.168.0.123 | VM.Standard.E4.Flex | 1 | 16 |
+| instance-20240524-1117 | Running | - | 172.168.1.233 | VM.Standard.E4.Flex | 1 | 16 |
+| instance-splunk | Stopped | 146. | 10.0.0.76 | VM.Standard.E4.Flex | 1 | 16 |
+---
+- 제목: instance-20240524-1117
+- 소제목: General information, Instance details, Instance access, Launch options, Instances in (root) compartment
+
+|-------|-------|-------|
+| 데이터 | 데이터 | 데이터 |
+| Name | State | Public IP | Private IP | Shape | OCPU count | Memory (GB) |
+|------|-------|-----------|------------|-------|------------|-------------|
+| instance-20240520-1456 | Terminated | - | - | VM.Standard.E4.Flex | 1 | 16 |
+| instance-20240524-1057 | Running | 131. | 172.168.0.123 | VM.Standard.E4.Flex | 1 | 16 |
+| instance-20240524-1117 | Running | - | 172.168.1.233 | VM.Standard.E4.Flex | 1 | 16 |
+| instance-splunk | Stopped | 146. | 10.0.0.76 | VM.Standard.E4.Flex | 1 | 16 |
+---
+- 제목: instance-20240524-1117
+- 소제목: General information, Instance details, Instance access, Launch options, Instances in (root) compartment
+
+|-------|-------|-------|
+| 데이터 | 데이터 | 데이터 |
+| Name | State | Public IP | Private IP | Shape | OCPU count | Memory (GB) |
+|------|-------|-----------|------------|-------|------------|-------------|
+| instance-20240520-1456 | Terminated | - | - | VM.Standard.E4.Flex | 1 | 16 |
+| instance-20240524-1057 | Running | 131. | 172.168.0.123 | VM.Standard.E4.Flex | 1 | 16 |
+| instance-20240524-1117 | Running | - | 172.168.1.233 | VM.Standard.E4.Flex | 1 | 16 |
+| instance-splunk | Stopped | 146. | 10.0.0.76 | VM.Standard.E4.Flex | 1 | 16 |
+---
+- 제\n\n## Page 16\n\n
+| Detector rule | Risk level | Status | Settings configured | Conditional group |
+|---------------|------------|--------|---------------------|--------------------|
+| Instance is publicly accessible | Critical | Enabled | Not allowed | No |
+| Instance is not running an Oracle public image | Low | Enabled | Not allowed | No |
+| Instance has a public IP address | High | Enabled | Not allowed | No |
+| IAM group has too many members | Medium | Enabled | Yes | No |
+- 미완성: ... [다음 페이지에 계속]
+###
+- 인용: > 사용
+---
+### 텍스트 내용
+- 전체 Instance 리소스 중에 Public Subnet으로 구성되어 있는 항목 중 공인IP(외부)로 잘못 할당된 인스턴스를 검색하기 위해서는 OCI Cloud Guard를 통해 확인 및 점검
+- 보안 및 구성 문제로 모니터링하고자 하는 전체 내용 중 조회 쿼리를 Instance has a public IP address로 지정 후 조회하면 공인 IP 할당된 전체 Instance 조회됨\n\n## Page 17\n\n- 주제목: 금융분야 상용 클라우드컴퓨팅서비스 보안 관리 참고서
+- 중제목: 1. 가상자원 관리
+- 소제목: Problems
+- 세부: A problem is any action or setting on a resource that could potentially cause a security threat. All list scope and filter settings are persistent and will remain in place until they are cleared or reset.
+
+| Problem name | Risk level | Detector type | Resource | Target | Regions | Labels |
+|--------------|------------|---------------|----------|--------|---------|--------|
+| Instance has a public IP address | High | Configuration | oradb2405 | YongminHan | South Korea Central (Seoul) | CIS_OCI_V1.0_NETWORK,COMPUTE,CIS_OCI_V1.1_NETWORK |
+| Instance has a public IP address | High | Configuration | win2016 | YongminHan | US East (Ashburn) | CIS_OCI_V1.0_NETWORK,COMPUTE,CIS_OCI_V1.1_NETWORK |
+| Instance has a public IP address | High | Configuration | un-vm | YongminHan | South Korea North (Chuncheon) | CIS_OCI_V1.0_NETWORK,COMPUTE,CIS_OCI_V1.1_NETWORK |
+| Instance has a public IP address | High | Configuration | test1 | YongminHan | South Korea Central (Seoul) | CIS_OCI_V1.0_NETWORK,COMPUTE,CIS_OCI_V1.1_NETWORK |
+| Instance has a public IP address | High | Configuration | 240522_oei89 | YongminHan | South Korea Central (Seoul) | CIS_OCI_V1.0_NETWORK,COMPUTE,CIS_OCI_V1.1_NETWORK |
+| Instance has a public IP address | High | Configuration | centos | YongminHan | Japan Central (Osaka) | CIS_OCI_V1.0_NETWORK,COMPUTE,CIS_OCI_V1.1_NETWORK |
+| Instance has a public IP address | High | Configuration | ...e-20240520-1537 | YongminHan | South Korea Central (Seoul) | CIS_OCI_V1.0_NETWORK,COMPUTE,CIS_OCI_V1.1_NETWORK |
+| Instance has a public IP address | High | Configuration | redis | YongminHan | South Korea Central (Seoul) | CIS_OCI_V1.0_NETWORK,COMPUTE,CIS_OCI_V1.1_NETWORK |
+| Instance has a public IP address | High | Configuration | 23aj_app | YongminHan | US East (Ashburn) | CIS_OCI_V1.0_NETWORK,COMPUTE,CIS_OCI_V1.1_NETWORK |
+| Instance has a public IP address | High | Configuration | un-vm2 | YongminHan | South Korea North (Chuncheon) | CIS_OCI_V1.0_NETWORK,COMPUTE,CIS_OCI_V1.1_NETWORK |
+| Instance has a public IP address | High | Configuration | ...e-20240520-1555 | YongminHan | South Korea Central (Seoul) | CIS_OCI_V1.0_NETWORK,COMPUTE,CIS_OCI_V1.1_NETWORK |
+- 미완성: ... [다음 페이지에 계속]
+###
+- 인용: > 사용\n\n## Page 18\n\n
+| Display name | Resource type | OCID | Compartment | Status | Time created |
+|--------------|---------------|------|-------------|--------|---------------|
+| oradb2405    | Instances     |      | ELIZABETH.KANG | Running | Tue, May 21, 2024, 01:38:51 UTC |
+- 미완성: ... [다음 페이지에 계속]
+###
+- 인용: > 사용
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...- 인용: > 사용
+이 페이지가 이전 내용의 연속이라면 [이전 페이지에서 계속] 표시를 추가해주세요.\n\n## Page 19\n\n- 주제목: 금융분야 상용 클라우드컴퓨팅서비스 보안 관리 참고서
+- 중제목: 1. 가상자원 관리
+
+### 텍스트
+#### 2) 접근 가능한 IP 또는 대역대 설정
+- OCI Security List를 통해 접근 가능한 IP 또는 대역대 설정(Ingress Rules/Egress Rules IP/CIDR, Port, Protocol기반의 접근 정책 설정)
+#### [그림 1.4.8] Ingress Rules 설정 화면
+- **Add Ingress Rules**
+**Ingress Rule 1**
+- Allows TCP traffic for ports: all
+- Stateless (Optional)
+- Source Type: CIDR
+- Source CIDR: Example: 10.0.0.0/16
+- Source Port Range: Optional (All)
+- Destination Port Range: Optional (All)
+- Description: Optional (Maximum 255 characters)
+#### [그림 1.4.9] Ingress Rules 설정 화면
+- VPC 및 보안그룹을 통한 내부 네트워크 대역 접근 설정
+- 2) 접근 가능한 IP 또는 대역대 설정 항목과 동일
+- 미완성: ... [다음 페이지에 계속]\n\n## Page 20\n\n
+|-------|-------|-------|
+| 데이터 | 데이터 | 데이터 |
+- 미완성: ... [다음 페이지에 계속]
+- 연속: [이전 페이지에서 계속] ...
+###
+- 인용: > 사용
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...- 미완성: ... [다음 페이지에 계속]
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...- 미완성: ... [다음 페이지에 계속]
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...- 미완성: ... [다음 페이지에 계속]
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...- 미완성: ... [다음 페이지에 계속]
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...- 미완성: ... [다음 페이지에 계속]
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...- 미완성: ... [다음 페이지에 계속]
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...- 미완성: ... [다음 페이지에 계속]
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...- 미완성: ... [다음 페이지에 계속]
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...- 미완성: ... [다음 페이지에 계속]
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...- 미완성: ... [다음 페이지에 계속]
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...- 미완성: ... [다음 페이지에 계속]
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...- 미완성: ... [다음 페이지에 계속]
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...- 미완성: ... [다음 페이지에 계속]
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...- 미완성: ... [다음 페이지에 계속]
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...- 미완성: ... [다음 페이지에 계속]
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...- 미완성: ... [다음 페이지에 계속]
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...- 미완성: ... [다음 페이지에 계속]
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...- 미완성: ... [다음 페이지에 계속]
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...- 미완성: ... [다음 페이지에 계속]
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...- 미완성: ... [다음 페이지에 계속]
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...- 미완성: ... [다음 페이지에 계속]
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...- 미완성: ... [다음 페이지에 계속]
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...- 미완성: ... [다음 페이지에 계속]
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...- 미완성: ... [다음 페이지에 계속]
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...- 미완성: ... [다음 페이지에 계속]
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...- 미완성: ... [다음 페이지에 계속]
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...- 미완성: ... [다음 페이지에 계속]
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...- 미완성: ... [다음 페이지에 계속]
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...- 미완성: ... [다음 페이지에 계속]
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...- 미완성: ... [다음 페이지에 계속]
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...- 미완성: ... [다음 페이지에 계속]
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 헤더: #### [그림\n\n## Page 21\n\n
+| 식별번호 | 기준 | 내용 |
+|----------|------|------|
+| 1.5      | 가상자원 접속 시 보안 방안 수립 | 이용자 가상자원 접속 시 안전한 인증절차를 통해 접속하여야 한다. |
+- 미완성: ... [다음 페이지에 계속]
+###
+- 인용: > 사용
+---
+### 텍스트 내용
+#### 1. 기준
+- **식별번호:** 1.5
+- **기준:** 가상자원 접속 시 보안 방안 수립
+- **내용:** 이용자 가상자원 접속 시 안전한 인증절차를 통해 접속하여야 한다.
+#### 2. 설명
+- **글머리:** ▶ 이용자의 가상자원(인스턴스) 접속 시 안전한 방식을 통해 접근하여야 한다.
+1. SSH를 통한 접속 시 안전한 계정관리 수행(ex. ID/PW 기반이 아닌 Certificate 기반 인증 방식 적용)
+2. 클라우드 웹 콘솔에서 직접 실행 시 안전한 인증 방식 적용(해당 인스턴스를 호출할 수 있는 권한을 지닌 이용자인지 검증 등)
+#### 3. 우수 사례
+- **글머리:** ▶ (가상자원관리시스템) ‘홈’ → ‘Compute’ → ‘Instances’ → ‘Create Instance’에서 인스턴스 생성 시 제공하는 SSH Private Key를 저장하여 가상자원 접속 시 ID/PW기반이 아닌 Key 인증 방식을 통해 접속이 가능
+- **그림 1.5.1** 가상자원 접속 시 Private Key 기반 사용자 인증
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...- 마지막 헤더: #### [그림\n\n## Page 22\n\n### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...
+이 페이지가 이전 내용의 연속이라면 [이전 페이지에서 계속] 표시를 추가해주세요.
+---
+## 페이지 내용
+
+|-------|-------|-------|
+| 데이터 | 데이터 | 데이터 |
+- 미완성: ... [다음 페이지에 계속]
+- 연속: [이전 페이지에서 계속] ...
+###
+- 인용: > 사용
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...
+이 페이지가 이전 내용의 연속이라면 [이전 페이지에서 계속] 표시를 추가해주세요.
+---
+#### [그림 1.5.2] 가상자원 접속 시 Private Key 기반 사용자 인증
+- **Session settings**
+- **Basic SSH settings**
+- Remote host: 217.142...
+- Specify username: ubuntu
+- Port: 22
+- **Advanced SSH settings**
+- X11-Forwarding
+- Compression
+- Remote environment: Interactive shell
+- Execute command:
+- SSH-browser type: SFTP protocol
+- Use private key: C:\Users\shOut\Downloads\ssh-key (사용자 지정)
+- OK
+- Cancel
+- **Private Key기반 사용자 인증**
+- **MobaXterm**
+- Terminal settings
+- Network settings
+- Bookmark settings
+- SSH-browsert type: SFTP protocol
+- Use private key: C:\Users\shOut\Downloads\ssh-key (사용자 지정)
+- OK
+- Cancel
+- **MobaXterm**
+- Terminal settings
+- Network settings
+- Bookmark settings
+- SSH-browsert type: SFTP protocol
+- Use private key: C:\Users\shOut\Downloads\ssh-key (사용자 지정)
+- OK
+- Cancel
+- **MobaXterm**
+- Terminal settings
+- Network settings
+- Bookmark settings
+- SSH-browsert type: SFTP protocol
+- Use private key: C:\Users\shOut\Downloads\ssh-key (사용자 지정)
+- OK
+- Cancel
+- **MobaXterm**
+- Terminal settings
+- Network settings
+- Bookmark settings
+- SSH-browsert type: SFTP protocol
+- Use private key: C:\Users\shOut\Downloads\ssh-key (사용자 지정)
+- OK
+- Cancel
+- **MobaXterm**
+- Terminal settings
+- Network settings
+- Bookmark settings
+- SSH-browsert type: SFTP protocol
+- Use private key: C:\Users\shOut\Downloads\ssh-key (사용자 지정)
+- OK
+- Cancel
+- **MobaXterm**
+- Terminal settings
+- Network settings
+- Bookmark settings
+- SSH-browsert type: SFTP protocol
+- Use private key: C:\Users\shOut\Downloads\ssh-key (사용자 지정)
+- OK
+- Cancel
+- **MobaXterm**
+- Terminal settings
+- Network settings
+- Bookmark settings
+- SSH-browsert type: SFTP protocol
+- Use private key: C:\Users\shOut\Downloads\ssh-key (사용자 지정)
+- OK
+- Cancel
+- **MobaXterm**
+- Terminal settings
+- Network settings
+- Bookmark settings
+- SSH-browsert type: SFTP protocol
+- Use private key: C:\Users\shOut\Downloads\ssh-key (사용자 지정)
+- OK
+- Cancel
+- **MobaXterm**
+- Terminal settings
+- Network settings
+- Bookmark settings
+- SSH-browsert type: SFTP protocol
+- Use private key: C:\Users\shOut\Downloads\ssh-key (사용자 지정)
+- OK
+- Cancel
+- **MobaXterm**
+- Terminal settings
+- Network settings
+- Bookmark settings
+- SSH-browsert type: SFTP protocol
+- Use private key: C:\Users\shOut\Downloads\ssh-key (사용자 지정)
+- OK
+- Cancel
+- **MobaXterm**
+- Terminal settings
+- Network settings
+- Bookmark settings
+- SSH-browsert type: SFTP protocol
+- Use private key: C:\Users\shOut\Downloads\ssh-key (사용자 지정)
+- OK
+- Cancel
+- **MobaXterm**
+- Terminal settings
+- Network settings
+- Bookmark settings
+- SSH-browsert type: SFTP protocol
+- Use private key: C:\Users\shOut\Downloads\ssh-key (사용자 지정)
+- OK
+- Cancel
+- **MobaXterm**
+- Terminal settings
+- Network settings
+- Bookmark settings
+- SSH-browsert type: SFTP protocol
+- Use private key: C:\Users\shOut\Downloads\ssh-key (사용자 지정)
+- OK
+- Cancel
+- **MobaXterm**
+- Terminal settings
+- Network settings
+- Bookmark settings
+- SSH-browsert type: SFTP protocol
+- Use private key: C:\Users\shOut\Downloads\ssh-key (사용자 지정)
+- OK
+- Cancel
+- **MobaXterm**
+- Terminal settings
+- Network settings
+- Bookmark settings
+- SSH-browsert type: SFTP protocol
+- Use private key: C:\Users\shOut\Downloads\ssh-key (사용자 지정)
+- OK
+- Cancel
+- **MobaXterm**
+- Terminal settings
+- Network settings
+- Bookmark settings
+- SSH-browsert type: SFTP protocol
+- Use private key: C:\Users\shOut\Downloads\ssh-key (사용자 지정)
+- OK
+- Cancel
+- **MobaXterm**
+- Terminal settings
+- Network settings
+- Bookmark settings
+- SSH-browsert type: SFTP protocol
+- Use private key: C:\Users\shOut\Downloads\ssh-key (사용자 지정)
+- OK
+- Cancel
+- **MobaXterm**
+- Terminal settings
+- Network settings
+- Bookmark settings
+- SSH-browsert type: SFTP protocol
+- Use private key: C:\Users\shOut\Downloads\ssh-key (사용자 지정)
+- OK
+- Cancel
+- **MobaXterm**
+- Terminal settings
+- Network settings
+- Bookmark settings
+- SSH-browsert type: SFTP protocol
+- Use private key: C:\Users\shOut\Downloads\ssh-key (사용자 지정)
+- OK
+- Cancel
+- **MobaXterm**
+- Terminal settings
+- Network settings
+- Bookmark settings
+- SSH-browsert type: SFTP protocol
+- Use private key: C:\Users\shOut\Downloads\ssh-key (사용자 지정)
+- OK
+- Cancel
+- **MobaXterm**
+- Terminal settings
+- Network settings
+- Bookmark settings
+- SSH-browsert type: SFTP protocol
+- Use private key: C:\Users\shOut\Downloads\ssh-key (사용자 지정)
+- OK
+- Cancel
+- **MobaXterm**
+- Terminal settings
+- Network settings
+- Bookmark settings
+- SSH-browsert type: SFTP protocol
+- Use private key: C:\Users\shOut\Downloads\ssh-key (사용자 지정)
+- OK
+- Cancel
+- **MobaXterm**
+- Terminal settings
+- Network settings
+- Bookmark settings
+- SSH-browsert type: SFTP protocol
+- Use private key: C:\Users\shOut\Downloads\ssh-key (사용자 지정)
+- OK
+- Cancel
+- **MobaXterm**
+- Terminal settings
+- Network settings
+- Bookmark settings
+- SSH-browsert type: SFTP protocol
+- Use\n\n## Page 23\n\n### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...- Use
+---
+## 마크다운 형식화
+
+|-------|-------|-------|
+| 데이터 | 데이터 | 데이터 |
+- 미완성: ... [다음 페이지에 계속]
+- 연속: [이전 페이지에서 계속] ...
+###
+- 인용: > 사용
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...- Use
+---
+### 📌 다음 페이지 컨텍스트
+- 첫 문장: 1. 가상자원 관리
+---
+### 추출된 정보
+#### 4 참고 사항
+- [Compute] <https://cloud.oracle.com/compute/instances/create?region=ap-seoul-1>
+- [IAM] <https://www.oracle.com/kr/security/identity-management/>\n\n## Page 24\n\n
+| 식별번호 | 기준 | 내용 |
+|----------|------|------|
+| 1.6      | 이용자 가상자원별 권한 설정 | 이용자 직무 및 권한에 따른 가상자원별 접근통제 방안(권한 설정 등)을 수립하여야 한다. |
+- 미완성: ... [다음 페이지에 계속]
+###
+- 인용: > 사용
+---
+- 글머리: >
+- 문단: 이용자 직무 및 권한에 따른 가상자원별 접근통제 방안(권한설정 등)을 수립하여야 한다.
+1) 가상자원 종류별 접근통제 방안 수립(ex. IAM을 통한 접근권한 관리)
+- 모든 가상자원에 접근 가능한 Role에 대해서는 최소 인원에 대해서만 부여
+- 미완성: ... [다음 페이지에 계속]
+###
+- 인용: > 사용
+---
+- 글머리: >
+- 문단: (가상자원관리시스템) ‘홈’ → ‘Identity & Security’ → ‘Policies→ ‘Create Policy’에서 이용자 직무 및 권한에 따른 가상자원별 접근통제 방안을 수립
+- 모든 가상자원에 접근 가능한 최상위 루트 Compartment를 지정하고, Policy Builder → Instance로 검색하여 “Let admins manage Compute instance”가 포함된 정책을 선택
+- 미완성: ... [다음 페이지에 계속]
+###
+- 인용: > 사용
+---
+- 글머리: >
+- 문단: (가상자원관리시스템) ‘홈’ → ‘Identity & Security’ → ‘Policies→ ‘Create Policy’에서 이용자 직무 및 권한에 따른 가상자원별 접근통제 방안을 수립
+- 모든 가상자원에 접근 가능한 최상위 루트 Compartment를 지정하고, Policy Builder → Instance로 검색하여 “Let admins manage Compute instance”가 포함된 정책을 선택
+- 미완성: ... [다음 페이지에 계속]
+###
+- 인용: > 사용
+---
+- 글머리: >
+- 문단: (가상자원관리시스템) ‘홈’ → ‘Identity & Security’ → ‘Policies→ ‘Create Policy’에서 이용자 직무 및 권한에 따른 가상자원별 접근통제 방안을 수립
+- 모든 가상자원에 접근 가능한 최상위 루트 Compartment를 지정하고, Policy Builder → Instance로 검색하여 “Let admins manage Compute instance”가 포함된 정책을 선택
+- 미완성: ... [다음 페이지에 계속]
+###
+- 인용: > 사용
+---
+- 글머리: >
+- 문단: (가상자원관리시스템) ‘홈’ → ‘Identity & Security’ → ‘Policies→ ‘Create Policy’에서 이용자 직무 및 권한에 따른 가상자원별 접근통제 방안을 수립
+- 모든 가상자원에 접근 가능한 최상위 루트 Compartment를 지정하고, Policy Builder → Instance로 검색하여 “Let admins manage Compute instance”가 포함된 정책을 선택
+- 미완성: ... [다음 페이지에 계속]
+###
+- 인용: > 사용
+---
+- 글머리: >
+- 문단: (가상자원관리시스템) ‘홈’ → ‘Identity & Security’ → ‘Policies→ ‘Create Policy’에서 이용자 직무 및 권한에 따른 가상자원별 접근통제 방안을 수립
+- 모든 가상자원에 접근 가능한 최상위 루트 Compartment를 지정하고, Policy Builder → Instance로 검색하여 “Let admins manage Compute instance”가 포함된 정책을 선택
+- 미완성: ... [다음 페이지에 계속]
+###
+- 인용: > 사용
+---
+- 글머리: >
+- 문단: (가상자원관리시스템) ‘홈’ → ‘Identity & Security’ → ‘Policies→ ‘Create Policy’에서 이용자 직무 및 권한에 따른 가상자원별 접근통제 방안을 수립
+- 모든 가상자원에 접근 가능한 최상위 루트 Compartment를 지정하고, Policy Builder → Instance로 검색하여 “Let admins manage Compute instance”가 포함된 정책을 선택
+- 미완성: ... [다음 페이지에 계속]
+###
+- 인용: > 사용
+---
+- 글머리: >
+- 문단: (가상자원관리시스템) ‘홈’ → ‘Identity & Security’ → ‘Policies→ ‘Create Policy’에서 이용자 직무 및 권한에 따른 가상자원별 접근통제 방안을 수립
+- 모든 가상자원에 접근 가능한 최상위 루트 Compartment를 지정하고, Policy Builder → Instance로 검색하여 “Let admins manage Compute instance”가 포함된 정책을 선택
+- 미완성: ... [다음 페이지에 계속]
+###
+- 인용: > 사용
+---
+- 중제목: ## ORACLE\n\n## Page 25\n\n- 주제목: 금융분야 상용 클라우드컴퓨팅서비스 보안 관리 참고서
+- 중제목: 1. 가상자원 관리
+
+|-------|-------|-------|
+| 데이터 | 데이터 | 데이터 |
+- 미완성: ... [다음 페이지에 계속]
+- 연속: [이전 페이지에서 계속] ...
+###
+- 인용: > 사용
+---
+## 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...
+---
+### 텍스트 추출
+- Identity domain과 Groups, Location을 선택하면 Policy Builder가 생성한 정책을 확인할 수 있음
+- 가상자원별 접근권한 설정을 위해 그룹별 사용자를 등록하면 해당 그룹은 정책에 따라 가상자원을 관리
+#### 그림 1.6.2] Policy Builder
+- 그룹 정책과 사용자 등록은 아래 내용을 참고하여 절차대로 생성
+#### 그림 1.6.3] Create group
+- Identity domain과 Groups, Location을 선택하면 Policy Builder가 생성한 정책을 확인할 수 있음
+- 가상자원별 접근권한 설정을 위해 그룹별 사용자를 등록하면 해당 그룹은 정책에 따라 가상자원을 관리
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...- 중제목: ## ORACLE\n\n## Page 26\n\n### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...- 마지막 문장 일부: ...
+---
+## 마크다운 형식화
+
+|-------|-------|-------|
+| 데이터 | 데이터 | 데이터 |
+- 미완성: ... [다음 페이지에 계속]
+- 연속: [이전 페이지에서 계속] ...
+###
+- 인용: > 사용
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...- 마지막 문장 일부: ...
+---
+# 금융보안원
+ORACLE
+## 참고 사항
+- [정책 및 권한할당]
+- https://cloud.oracle.com/identity/domains/policies?region=ap-seoul-1
+- [사용자 그룹] Identity > Domain > 도메인(해당) > Groups
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...- 마지막 문장 일부: ...
+이 페이지가 이전 내용의 연속이라면 [이전 페이지에서 계속] 표시를 추가해주세요.\n\n## Page 27\n\n```markdown
+# 1.7. 이용자 가상자원 내 악성코드 통제 방안 수립
+## 1. 기준
+| 식별번호 | 기준 | 내용 |
+|----------|------|------|
+| 1.7      | 이용자 가상자원 내 악성코드 통제 방안 수립 | 이용자 가상자원 내 악성코드 통제방안을 수립하여야 한다. |
+## 2. 설명
+- 이용자 가상자원 내 악성코드 통제방안을 수립하여야 한다.
+1. 이용자가 보유하고 있는 악성코드 통제방안 수립(백신 등)
+2. 클라우드 사업자가 악성코드 통제방안 제공(백신 등)
+3. 백신 등 설치가 불가능한 환경인 경우 그 수준에 준하는 악성코드 통제방안 수립
+## 3. 우수 사례
+- 오라클 클라우드 마켓플레이스에 백신 등 악성코드 통제 솔루션 제공하고 있지 않아 별도 라이선스를 통해 가상자원에 적용하여야 함
+## 4. 참고 사항
+- N/A
+```\n\n## Page 28\n\n```markdown
+# 2. 네트워크 관리
+- 2.1. 업무 목적에 따른 네트워크 구성
+- 2.2. 내부망 네트워크 보안 통제
+- 2.3. 네트워크 보안 관제 수행
+- 2.4. 공개용 웹서버 네트워크 분리
+- 2.5. 네트워크 사설 IP 주소 할당 및 관리
+- 2.6. 네트워크(방화벽 등) 정책 주기적 검토
+```\n\n## Page 29\n\n```markdown
+# 2. 네트워크 관리
+## 2.1. 업무 목적에 따른 네트워크 구성
+### 1. 기준
+| 식별번호 | 기준 | 내용 |
+|----------|------|------|
+| 2.1      | 업무 목적에 따른 네트워크 구성 | 클라우드 환경 내 업무 목적에 따른 네트워크를 구성하여야 한다. |
+|          |     | 개발, 운영 업무 등 |
+### 2. 설명
+- 클라우드 환경 내 업무 목적(개발, 운영, 업무 등)에 따른 네트워크 구성 및 네트워크간 접근 통제 방안을 수립하여야 한다.
+1. VPC 등 네트워크 관련 기능을 통한 네트워크 구성 및 통제
+2. 보안그룹(Security Group) 또는 NACL(Network ACL) 등의 기능을 통한 네트워크 구성 및 통제(인/아웃바운드 통제 등)
+### 3. 우수 사례
+1. VPC 등 네트워크 관련 기능을 통한 네트워크 구성 및 통제
+- (가상자원관리시스템) '홈' → 'Networking' → 'Virtual cloud network' → 'Create VCN'에서 업무 목적에 따른 VCN(Virtual Cloud Network) 네트워크 구성 및 통제 가능
+```\n\n## Page 30\n\n
+|-------|-------|-------|
+| 데이터 | 데이터 | 데이터 |
+- 미완성: ... [다음 페이지에 계속]
+- 연속: [이전 페이지에서 계속] ...
+###
+- 인용: > 사용
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...```
+---
+### 텍스트 추출
+#### [그림 2.1.1] VCN 네트워크 구성 화면
+- **1. 업무목적별 개별 네트워크 구성**
+- **2. VCN 가상 네트워크가 생성될 위치 지정**
+- **3. IP CIDR Blocks : 10.0.0.0/16으로 지정**
+---
+#### [그림 2.1.2] VCN 관련 리소스 화면
+- **VCN-DEV**
+- **Resources**
+- Subnets (0)
+- CIDR Blocks/Prefixes (1)
+- Route Tables (1)
+- Internet Gateways (0)
+- Dynamic Routing Gateways Attachments (0)
+- Network Security Groups (0)
+- Security Lists (1)
+- DHCP Options (1)
+- Local Peering Gateways (0)
+- NAT Gateways (0)
+- Service Gateways (0)
+---
+### 텍스트 설명
+- **VCN-DEV** 가상 네트워크가 생성되었습니다.
+- **Resources** 섹션에서는 현재 리소스가 없습니다.
+- **CIDR Blocks/Prefixes** 섹션에는 1개의 CIDR 블록이 있습니다.
+- **Route Tables** 섹션에는 1개의 로우트 테이블이 있습니다.
+- **Internet Gateways**, **Dynamic Routing Gateways Attachments**, **Network Security Groups**, **Security Lists**, **DHCP Options**, **Local Peering Gateways**, **NAT Gateways**, **Service Gateways** 등의 리소스는 모두 0개입니다.\n\n## Page 31\n\n- 주제목: 금융분야 상용 클라우드컴퓨팅서비스 보안 관리 참고서
+- 중제목: 2. 네트워크 관리
+### 소제목
+- 2) 보안그룹(Security Group) 또는 NACL(Network ACL) 등의 기능을 통한 네트워크 구성 및 통제(인/아웃바운드 통제 등)
+### 본문
+- (가상자원관리시스템) ‘홈’ → ‘Networking’ → ‘Virtual cloud network’ → ‘Virtual Cloud Network Details’ → ‘Network Security Groups’ → ‘Create Network Security Group’
+### 구조
+- [그림 2.1.3] Network Security Group 생성
+- - Ingress(Inbound), Egress(Outbound), Source CIDR(IP주소), IP Protocol을 지정하여 네트워크 구성 및 통제 방안 수립
+- [그림 2.1.4] Add Security Rules 설정
+| Rule | Direction | IP Protocol | Source Type | Source CIDR | Source Port Range | Destination Port Range |
+|------|-----------|-------------|-------------|--------------|-------------------|-----------------------|
+|      | Ingress   | All Protocols | CIDR       |              | Optional          | Optional              |
+- 미완성: ... [다음 페이지에 계속]\n\n## Page 32\n\n```markdown
+# 4 참고 사항
+- [VCN 네트워크 구성] [https://cloud.oracle.com/networking/vcns?region=ap-seoul-1](https://cloud.oracle.com/networking/vcns?region=ap-seoul-1)
+```\n\n## Page 33\n\n
+| 식별번호 | 기준 | 내용 |
+|----------|------|------|
+| 2.2      | 내부망 네트워크 보안 통제 | 클라우드 환경 내 내부망 구성 시 보안 통제 방안을 수립하고 적용하여야 한다. |
+### 본문
+1. **기준**
+- **식별번호**: 2.2
+- **기준**: 내부망 네트워크 보안 통제
+- **내용**: 클라우드 환경 내 내부망 구성 시 보안 통제 방안을 수립하고 적용하여야 한다.
+2. **설명**
+- 클라우드 환경 내 내부망을 구성하는 경우 외부 침입, 비인가 접근 등으로 보호될 수 있도록 보안 통제 방안을 수립하고 적용하여 한다.
+1) VPC 등 네트워크 관련 기능을 통한 네트워크 접근 통제(인터넷망 등)
+2) 보안그룹(Security Group) 또는 NACL(Network ACL) 등의 기능을 통한 네트워크 구성(인/아웃바운드 통제 등)
+3) 내부망으로 구현한 가상자원(서버, 데이터베이스 등)에 공인 IP 미할당
+4) 방화벽 서비스를 통한 IP 통제 등
+3. **우수 사례**
+1) VPC 등 네트워크 관련 기능을 통한 네트워크 접근 통제(인터넷망 등)
+- (가상자원관리시스템) ‘홈’ → ‘Networking’ → ‘Virtual cloud network’ → ‘Create VCN’을 통해 VCN생성 및 인터넷 망 등 네트워크 접근 통제 기능 구현
+- Create VCN을 통해 VCN생성 시 Route Table 및 Security List, DHCP 등 네트워크 기본 구성요소로 구성 (수동 모드인 Create VCN으로 구성 시 Internet Gateway는 구성되지 않음)
+- Create VCN(수동모드)로 생성한 VCN 네트워크 구성 설정
+- 미완성: ... [다음 페이지에 계속]
+###
+- 인용: > 사용\n\n## Page 34\n\n
+| CIDR Block/Prefix | Type | IP Address Range | # of IP Addresses |
+|-------------------|------|------------------|--------------------|
+| 10.0.0.0/16       | IPv4 CIDR | 10.0.0.0 - 10.0.255.255 | 65536              |
+- 미완성: ... [다음 페이지에 계속]
+###
+- 인용: > 사용
+---
+- **[그림 2.2.1] VCN 구성 설정**
+- **[그림 2.2.2] Security List 구성**
+- 네트워크 접근제어를 위한 Security List 구성 확인 및 설정
+- CIDR Block/Prefix (1)
+- Route Tables (1)
+- Internet Gateways (0)
+- Dynamic Routing Gateways Attachments (0)
+- Network Security Groups (0)
+- Security Lists (1)
+- DHCP Options (1)
+- CIDR Block/Prefix: 10.0.0.0/16, IPv4 CIDR, 10.0.0.0 - 10.0.255.255, 65536
+- Ingress Rules:
+- TCP traffic for ports: 22 S SH Remote Login Protocol
+- ICMP traffic for: 3, 4 Destination Unreachable: Fragmentation Needed and Don't Fragment was Set
+- ICMP traffic for: 3 Destination Unreachable
+- 제목: Default Security List for VCN_TEST
+- 축 레이블: Stateless, Source, IP Protocol, Source Port Range, Destination Port Range, Type and Code, Allows
+- 데이터 포인트: TCP traffic for ports: 22 S SH Remote Login Protocol, ICMP traffic for: 3, 4 Destination Unreachable: Fragmentation Needed and Don't Fragment was Set, ICMP traffic for: 3 Destination Unreachable
+- 섹션 구분: VCN Information, Tags, CIDR Blocks/Prefixes, Resources, Ingress Rules, Egress Rules
+- 하이라이트: CIDR Blocks/Prefixes (1), Route Tables (1), Security Lists (1), DHCP Options (1)\n\n## Page 35\n\n
+### 텍스트
+```markdown
+2) 보안그룹(Security Group) 또는 NACL(Network ACL) 등의 기능을 통한 네트워크 구성(인 /아웃바운드 통제 등)
+- (가상자원관리시스템) '홈' → 'Networking' → 'Virtual cloud network'에서 Network Security Group 구성 설정한 VCN 선택하여 Security Rules 설정
+1) Network Security Group를 통한 네트워크 분리
+- Public Subnet에 대한 인바운드(Ingress) 규칙을 설정하여 HTTP, HTTPS 트래픽만 허용
+- Private Subnet에 대한 인바운드 규칙을 설정하여 SSH, RDP 트래픽만 허용
+[그림 2.2.3] Network Security Group 구성
+3) 내부망으로 구현한 가상자원(서버, 데이터베이스 등)에 공인 IP 미할당
+- (가상자원관리시스템) '홈' → 'Compute' → 'Instances'에서 내부망으로 구현된 컴퓨팅 인스턴스에 공인 IP 미할당
+[그림 2.2.4] 내부 Compute Instance 공인 IP부여 현황 확인
+- 미완성: ... [다음 페이지에 계속]\n\n## Page 36\n\n
+|-------|-------|-------|
+| 데이터 | 데이터 | 데이터 |
+- 미완성: ... [다음 페이지에 계속]
+- 연속: [이전 페이지에서 계속] ...
+###
+- 인용: > 사용
+---
+### 텍스트 추출
+#### 제목 및 소제목
+- **제목**: 4) 방화벽 서비스를 통한 IP 통제 등
+- **소제목**: (가상자원관리시스템) ‘홈’ → ‘Identity & Security’ → ‘Firewalls→ ‘Network Firewalls’ → ‘Network Firewall Policies’ → ‘Create network firewall policy’ → ‘security rules’ → Create security rule’에서 Source addresses/Destination addresses에서 통제하고자 하는 IP 리스트를 구성
+#### 본문
+- **본문**:
+- **소제목**: Create security rule
+- **설명**: Match condition
+- **설명**: Define the sources, destinations, applications and URLs that must match for this rule.
+- **소제목**: Source addresses
+- **설명**: Any address
+- **선택**: Select address lists
+- **설명**: Create or select a list of source addresses to match the rule.
+- **선택**: Select address lists, Create address list, Remove
+- **선택**: Address list name, Address list type, Address count
+- **설명**: No items found.
+- **선택**: 0 selected
+- **설명**: Showing 0 items
+- **선택**: 0 selected
+- **설명**: Showing 0 items
+- **소제목**: Destination addresses
+- **설명**: Any address
+- **선택**: Select address lists
+- **설명**: Create or select a list of destination addresses to match the rule.
+- **선택**: Select address lists, Create address list, Remove
+- **선택**: Address list name, Address list type, Address count
+- **설명**: No items found.
+- **선택**: 0 selected
+- **설명**: Showing 0 items
+- **선택**: 0 selected
+- **설명**: Showing 0 items
+#### 그림 및 표
+- **그림**: [그림 2.2.5] Network Firewall 네트워크 IP통제를 위한 Policy 구성
+---
+- **페이지 번호**: 33
+- **출처**: 금융보안원, ORACLE\n\n## Page 37\n\n
+|-------|-------|-------|
+| 데이터 | 데이터 | 데이터 |
+- 미완성: ... [다음 페이지에 계속]
+- 연속: [이전 페이지에서 계속] ...
+###
+- 인용: > 사용
+---
+#### 그림 및 표
+- 마지막 문장 일부: ...- **출처**: 금융보안원, ORACLE
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...- **출처**: 금융보안원, ORACLE
+---
+### 텍스트 내용
+- **제목:** 4 참고 사항
+- **내용:**
+- [네트워크 구성] <https://cloud.oracle.com/networking/vcns?region=ap-seoul-1>
+- 보안통제를 구성할 VCN(Virtual Cloud Network)선택 → Network Security Groups → Create Network Security Group → Basic Information 작성 → Add Security Rules 작성\n\n## Page 38\n\n
+| 식별번호 | 기준 | 내용 |
+|----------|------|------|
+| 2.3      | 네트워크 보안 관제 수행 | 클라우드 환경 내 금융회사 가상자원을 보호하기 위한 네트워크 보안 관제를 수행하여야 한다. |
+- 미완성: ... [다음 페이지에 계속]
+###
+- 인용: > 사용
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...oup → Basic Information 작성 → Add Security Rules 작성
+이 페이지가 이전 내용의 연속이라면 [이전 페이지에서 계속] 표시를 추가해주세요.\n\n## Page 39\n\n- 주제목: 금융분야 상용 클라우드컴퓨팅서비스 보안 관리 참고서
+- 중제목: 2. 네트워크 관리
+
+| Sighting type | Tactic | Technique | Severity | Confidence | Sighting score | Regions | First detected | Last detected |
+|---------------|--------|-----------|----------|------------|----------------|----------|----------------|----------------|
+| Impair        | Defense Evasion (TA0005) | Impair Defenses: Disable or Modify Tools (T1562.001) | Medium | High       | 72             | South Korea Central (Seoul) | Thu, Apr 11, 2024, 03:23:29 UTC | Thu, Apr 11, 2024, 03:23:29 UTC |
+| Impossible    | Initial Access | Valid Accounts: Cloud Accounts (T1078.004) | Low     | High       | 36             | South Korea Central (Seoul), UK South (London) | Tue, Mar 19, 2024, 10:15:39 UTC | Tue, Mar 19, 2024, 10:15:39 UTC |
+| Impair        | Defense Evasion (TA0005) | Impair Defenses: Disable or Modify Tools (T1562.001) | Medium | High       | 72             | South Korea Central (Seoul) | Thu, Mar 14, 2024, 10:23:33 UTC | Thu, Mar 14, 2024, 10:23:33 UTC |
+### 차트/그래프
+- 제목: 30-day risk score trend
+- 축 레이블:
+- X축: 날짜 (3/16/2024 ~ 4/15/2024)
+- Y축: Risk score
+- 데이터 포인트: 다양한 날짜별 Risk score
+- 범례: Risk score
+###
+- 인용: > 사용
+---
+### 텍스트 내용
+- MITRE ATT&CK Framework 기반으로 다양한 보안 위협에 대해 모니터링 및 위협 정보 제공
+- [그림 2.3.2] 30-day risk score trend
+- (가상자원관리시스템) '홈' → 'Identity & Security' → 'Web Application Firewall' → 'Create WAF policy'에서 WAF 보안/탐지정책(OWASP Top 10) 설정
+- [그림 2.3.3] WAF 정책 설정\n\n## Page 40\n\n- 주제목: 금융보안원
+- 중제목: ORACLE
+- 소제목: Protection (OWASP Top 10) 웹 공격 차단 정책 활성화
+- 소제목: Access Control, Action 설정 활성화
+
+| Key | Name | Description | Collaborative | Tags |
+|-----|------|-------------|----------------|------|
+| 942270 | SQL Injection (SQLI) Common SQLI attacks for various dbs | SQL Injection (SQLI) Attempt: Common attacks against msql, oracle, and other dbs detection | No | vendor-oracle, db-oracle, db-mysql, vendor-microsoft, db-mssql, db-postgresql, rdbms, PCI, Request-Body-Inspection, Recommended, OWASP-A1-2017, OWASP-A3-2021, CAPEC-1000, CAPEC-152, CAPEC-248, CAPEC-66, Command Injection, SQL Injection (SQLI), CVE-2023-0875 |
+| 9420000 | SQL Injection (SQLI) Collaborative Group - SQLi Filters Categories | SQL Injection (SQLI) Attempt: SQLI Filters via libInjection - Detect Database names - PHPIDS - Converted SQLI Filters. | Yes | db-mysql, db-mssql, db-mongodb, db-postgresql, db-oracle, db-sqlite, rdbms, nosql, Request-Body-Inspection, PCI, Collaborative, Recommended, OWASP-A1-2017, Command Injection, SQL Injection (SQLI), CVE-2023-0630, CVE-2023-0875, CVE-2023-23488, CVE-2023-23489, CVE-2023-23490, CVE-2023-26325, CVE-2023-28660, CVE-2023-28662, CVE-2023-28663 |
+| Cross-Site Scripting (XSS) | Cross-Site Scripting (XSS) Attempt: XSS Filters - | HTTP, PCI, Request-Body-Inspection, Recommended, OWASP-A3-2021, OWASP-A3-2021 |
+- 미완성: ... [다음 페이지에 계속]
+###
+- 인용: > 사용
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...- [그림 2.3.3] WAF 정책 설정\n\n## Page 41\n\n```markdown
+# 참고 사항
+- [Cloud Guard] https://cloud.oracle.com/cloud-guard/overview?region=ap-seoul-1
+- [Web Firewall] https://cloud.oracle.com/waf/policies?region=ap-seoul-1
+```\n\n## Page 42\n\n```markdown
+# 2.4. 공개용 웹서버 네트워크 분리
+## 1. 기준
+| 식별번호 | 기준 | 내용 |
+|----------|------|------|
+| 2.4      | 공개용 웹서버 네트워크 분리 | 클라우드 환경을 통한 공개용 웹서버 구현 시 내부통신망과 분리하여 내부통신망과 외부통신망 사이 별도의 독립된 통신망("이하 DMZ")을 구현하고 안전하게 보호하여야 한다. |
+## 2. 설명
+- 클라우드 환경을 통한 공개용 웹서버의 경우 내부통신망과 분리하여 내부통신망과 외부통신망 사이 별도의 독립된 통신망에 구현하고 접근통제를 수행하여야 한다.
+1. VPC 등 네트워크 분리 기능을 통한 DMZ 망 구축 후 공개용 웹서버 구현
+2. 공개용 웹서버 직접 접근 시 통제(ACL 등)에 의한 중요단말기 등에서 접근하도록 관리
+## 3. 우수 사례
+- (가상자원관리시스템) '홈' → 'Networking' → 'Virtual cloud network'에서 Hub-spoke 아키텍처에서 웹 서버와 Bastion 호스트를 구성
+```\n\n## Page 43\n\n
+### 테이블
+|-------|-------|-------|
+| CIDR Block | Subnets | Public Subnet(DMZ) | Private Subnet |
+| 10.0.0.0/16 | Public Subnet(DMZ) : 10.0.1.0/24 | Private Subnet : 10.0.2.0/24 |
+| 10.1.0.0/16 | Public Subnet : 10.1.1.0/24 | Private Subnet : 10.1.2.0/24 |
+- 미완성: ... [다음 페이지에 계속]
+###
+- 인용: > 사용
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...\n\n## Page 44\n\n### 구조
+- 문단: 빈 줄로 구분
+- 번호 목록: 1. 2.
+- 글머리: - 또는 *
+- 들여쓰기: 2칸 또는 4칸
+| IPv4 CIDR Blocks | 10.0.0.0/16 |
+|------------------|-------------|
+- 미완성: ... [다음 페이지에 계속]
+###
+- 인용: > 사용
+---
+1. **Hub VCN을 생성하고, Compartment 위치를 지정**
+- **Name:** HUB VCN
+- **Create In Compartment:** YONGMIN.HAN
+2. **CIDR Block: 10.0.0.0/16으로 지정**
+- **IPv4 CIDR Blocks:** 10.0.0.0/16
+- **Hub VCN Subnet 생성(Public)**\n\n## Page 45\n\n
+|-------|-------|-------|
+| 데이터 | 데이터 | 데이터 |
+- 미완성: ... [다음 페이지에 계속]
+- 연속: [이전 페이지에서 계속] ...
+###
+- 인용: > 사용
+---
+추출할 내용이 없으면 "내용 없음"만 출력.
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...- **Hub VCN Subnet 생성(Public)**
+이 페이지가 이전 내용의 연속이라면 [이전 페이지에서 계속] 표시를 추가해주세요.\n\n## Page 46\n\n
+| Name            | State | IPv4 CIDR Block     | IPv6 Prefixes | Subnet Access |
+|-----------------|-------|---------------------|---------------|---------------|
+| Private Subnet  | Available | 10.0.2.0/24 | - | Private (Regional) |
+| Public Subnet   | Available | 10.0.1.0/24 | - | Public (Regional) |
+- 미완성: ... [다음 페이지에 계속]
+###
+- 인용: > 사용\n\n## Page 47\n\n
+|-------|-------|-------|
+| 데이터 | 데이터 | 데이터 |
+- 미완성: ... [다음 페이지에 계속]
+- 연속: [이전 페이지에서 계속] ...
+###
+- 인용: > 사용
+---
+#### Spoke VCN 생성
+- **그림 2.4.6] Create VCN**
+#### Spoke VCN Subnet 생성(Public/Private)
+- **그림 2.4.7] Create Subnet(Public)**
+---
+### 텍스트 추출
+- **Spoke VCN 생성**
+- **Create VCN** 버튼 클릭
+- **Name**: SPOKE VCN
+- **Create In Compartment**: YONGMIN.HAN
+- **IPv4 CIDR Blocks**: 10.1.0.0/16
+- **Spoke VCN Subnet 생성(Public/Private)**
+- **Create Subnet** 버튼 클릭
+- **Name**: Public Subnet
+- **Create In Compartment**: YONGMIN.HAN
+- **Subnet Type**: Regional (Recommended)
+- **IPv4 CIDR Block**: 10.1.1.0/24
+- **Public Subnet**: Allow public IP addresses for Instances in this Subnet\n\n## Page 48\n\n
+| Name | State | IPv4 CIDR Block | IPv6 Prefixes | Subnet Access |
+|------|-------|----------------|---------------|---------------|
+| Private Subnet | Available | 10.1.2.0/24 | - | Private (Regional) |
+| Public Subnet(DMZ) | Available | 10.1.1.0/24 | - | Public (Regional) |
+- 미완성: ... [다음 페이지에 계속]
+###
+- 인용: > 사용
+---
+### 텍스트 추출
+1. **Create Subnet**
+- **Name:** Private Subnet
+- **Create In Compartment:** YONGMIN.HAN
+- **Subnet Type:** Regional (Recommended)
+- **IPv4 CIDR Block:** 10.1.2.0/24
+- **IPv6 Prefixes:** -
+- **Route Table Compartment in YONGMIN.HAN:** (Change compartment)
+- **Subnet Access:** Private Subnet (Prohibit public IP addresses for Instances in this Subnet)
+2. **SPOKE VCN**
+- **Move resource**
+- **Add tags**
+- **Delete**
+- **VCN Information**
+- **Compartment:** YONGMIN.HAN
+- **Created:** Tue, Jul 2, 2024, 01:11:49 UTC
+- **IPv4 CIDR Block:** 10.1.0.0/16
+- **IPv6 Prefix:** -
+- **Tags**
+- **OCID:** ...y4n6nq
+- **Show**
+- **Copy**
+- **DNS Resolver:** SPOKE VCN
+- **Default Route Table:** Default Route Table for SPOKE VCN
+- **DNS Domain Name:** spokevcn.oraclevcn.com
+3. **Subnets in YONGMIN.HAN compartment**
+- **Private Subnet:** Available, IPv4 CIDR Block: 10.1.2.0/24, IPv6 Prefixes: -, Subnet Access: Private (Regional), Created: Tue, Jul 2
+- **Public Subnet(DMZ):** Available, IPv4 CIDR Block: 10.1.1.0/24, IPv6 Prefixes: -, Subnet Access: Public (Regional), Created: Tue, Jul 2
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...w public IP addresses for Instances in this Subnet\n\n## Page 49\n\n### 소제목
+- ### 2) Local Peering Gateway 설정 및 라우팅 테이블 구성
+### 본문
+- - Hub VCN과 Spoke VCN간의 Local Peering Gateway(LPG) 설정
+### 구조
+- **[그림 2.4.10] LPG설정**
+| Name | State | Peering Status | Route Table | Peer Advertised CIDRs | Cross-Tenancy | Created |
+|------|-------|----------------|-------------|-----------------------|---------------|----------|
+| Local Peering Gateway | Available | New - Not connected to a peer. | Default Route Table for HUB VCN | - | - | Tue, Jul 2, 2024, 01:43:17 UTC |
+- 미완성: ... [다음 페이지에 계속]
+###
+- 인용: > Create Local Peering Gateway
+### 구조적 요소
+- 섹션 구분: 2) Local Peering Gateway 설정 및 라우팅 테이블 구성
+- 하이라이트: Create Local Peering Gateway
+- 다이어그램 텍스트: HUB VCN, Available, Resources, Subnets (2), CIDR Blocks/Prefixes (1), Route Tables (1), Internet Gateways (0), Dynamic Routing Gateways Attachments (0), Network Security Groups (0)
+- 페이지 번호: 46
+- 출처: ORACLE\n\n## Page 50\n\n
+| Route Rule | Target Type | Destination CIDR Block | Example | Target Local Peering Gateway in YONGMIN.HAN (Change compartment) | Description | Optional |
+|------------|-------------|------------------------|---------|-------------------------------------------------------------------|-------------|----------|
+| Route Rule | Local Peering Gateway | 10.1.0.0/16 | 10.0.0.0/24 | Local Peering Gateway | Optional | Maximum 255 characters |
+- 미완성: ... [다음 페이지에 계속]
+###
+- 인용: > 사용
+---
+- **제목:** Hub VCN 라우팅 테이블
+- **소제목:** Add Route Rules
+- **본문:**
+- **Route Rule:**
+- **Target Type:** Local Peering Gateway
+- **Destination CIDR Block:** 10.1.0.0/16
+- **Example:** 10.0.0.0/24
+- **Target Local Peering Gateway in YONGMIN.HAN (Change compartment):** Local Peering Gateway
+- **Description:** Optional
+- **Maximum 255 characters**
+- **그림 2.4.11:** 라우팅 설정
+- **표 제목/헤더:** Route Rule, Target Type, Destination CIDR Block, Example, Target Local Peering Gateway in YONGMIN.HAN (Change compartment), Description, Optional
+- **데이터 값과 단위:** Route Rule, Local Peering Gateway, 10.1.0.0/16, 10.0.0.0/24, Local Peering Gateway, Optional, Maximum 255 characters
+- **제목:** Default Route Table for HUB VCN
+- **축 레이블:**
+- **Destination:** Destination
+- **Target Type:** Target Type
+- **Target:** Target
+- **Route Type:** Route Type
+- **Description:** Description
+- **데이터 포인트:**
+- **Destination:** 10.1.0.0/16
+- **Target Type:** Local Peering Gateway
+- **Target:** Local Peering Gateway
+- **Route Type:** Static
+- **Description:** Optional
+- **섹션 구분:**
+- **주제목:** Hub VCN 라우팅 테이블
+- **중제목:** Add Route Rules
+- **소제목:** [그림 2.4.11] 라우팅 설정
+- **하이라이트:**
+- **Route Rule:**
+- **Target Type:** Local Peering Gateway
+- **Destination CIDR Block:** 10.1.0.0/16
+- **Example:** 10.0.0.0/24
+- **Target Local Peering Gateway in YONGMIN.HAN (Change compartment):** Local Peering Gateway
+- **Description:** Optional
+- **Maximum 255 characters**
+- **다이어그램 텍스트:**
+- **Default Route Table for HUB VCN**
+- **Route Rules:**
+- **Traffic within the VCN is handled by the VCN's local routing by default. Intra-VCN routing allows you more control over routing between subnets. Learn more. If you're having problems, use Network Path Analyzer to check your connections.**
+- **Add Route Rules:**
+- **Destination:** 10.1.0.0/16
+- **Target Type:** Local Peering Gateway
+- **Target:** Local Peering Gateway
+- **Route Type:** Static
+- **Description:** Optional\n\n## Page 51\n\n
+| Route Rule | Target Type | Destination CIDR Block | Target Local Peering Gateway in YONGMIN.HAN (Change compartment) |
+|------------|-------------|------------------------|------------------------------------------------------------------|
+| Route Rule | Local Peering Gateway | 10.0.0.0/16            | Local Peering Gateway                                           |
+- 미완성: ... [다음 페이지에 계속]
+###
+- 인용: > 사용
+---
+- **제목:** Spoke VCN 라우팅 테이블
+- **소제목:** Default Route Table for SPOKE VCN
+- **본문:**
+- **Default Route Table Information:** OCID: ..., Created: Tue, Jul 2, 2024, 01:11:49 UTC
+- **Route Rules:** Traffic within the VCN is handled by the VCN's local routing by default. Intra-VCN routing allows you more control over routing between subnets. If you're having problems, use Network Path Analyzer to check your connections.
+- **목록 구조:**
+- Route Rules (0)
+- Route Table Information
+- Tags
+- Route Rules
+- Destination: 10.0.0.0/16
+- Target Type: Local Peering Gateway
+- Target: Local Peering Gateway
+- Route Type: Static
+- Description: Optional
+- **각주:** [그림 2.4.12] 라우팅 설정
+- **표 제목/헤더:** Route Rule, Target Type, Destination CIDR Block, Target Local Peering Gateway in YONGMIN.HAN (Change compartment)
+- **데이터 값과 단위:** Route Rule, Local Peering Gateway, 10.0.0.0/16, Local Peering Gateway
+- **행/열 관계:** Route Rule 열에 Route Rule 값이 있고, Target Type 열에 Local Peering Gateway 값이 있습니다.
+- **제목:** Add Route Rules
+- **축 레이블:** Route Rule, Target Type, Destination CIDR Block, Target Local Peering Gateway in YONGMIN.HAN (Change compartment)
+- **데이터 포인트:** Route Rule, Local Peering Gateway, 10.0.0.0/16, Local Peering Gateway
+- **범례:** None
+- **섹션 구분:** Default Route Table for SPOKE VCN, Route Rules
+- **하이라이트:** Route Rule, Target Type, Destination CIDR Block, Target Local Peering Gateway in YONGMIN.HAN (Change compartment)
+- **다이어그램 텍스트:** None
+---
+- **제목:** Add Route Rules
+- **축 레이블:** Route Rule, Target Type, Destination CIDR Block, Target Local Peering Gateway in YONGMIN.HAN (Change compartment)
+- **데이터 포인트:** Route Rule, Local Peering Gateway, 10.0.0.0/16, Local Peering Gateway
+- **범례:** None
+---
+- **섹션 구분:** Default Route Table for SPOKE VCN, Route Rules
+- **하이라이트:** Route Rule, Target Type, Destination CIDR Block, Target Local Peering Gateway in YONGMIN.HAN (Change compartment)
+- **다이어그램 텍스트:** None\n\n## Page 52\n\n
+|--------|--------|--------|
+| 데이터 | 데이터 | 데이터 |
+- 미완성: ... [다음 페이지에 계속]
+- 연속: [이전 페이지에서 계속] ...
+###
+- 인용: > 사용
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...- **다이어그램 텍스트:** None
+---
+### 📌 이 페이지 컨텍스트
+- 마지막 문장 일부: ...- **다이어그램 텍스트:** None
+---
+### 텍스트 추출
+#### 제목
+3) 인터넷 게이트웨이(IGW) 설정
+#### 소제목
+- Hub VCN에 인터넷 게이트웨이 생성
+#### 본문
+- **그림 2.4.13] IGW 설정**
+#|--------|--------|--------|
+| 데이터 | 데이터 | 데이터 |
+#### 구조적 요소
+- **HUB VCN**
+- **Resources**
+- Subnets (2)
+- CIDR Blocks/Prefixes (1)
+- Route Tables (1)
+- Internet Gateways (0)
+- Dynamic Routing Gateways
+- Attachments (0)
+- **Create Internet Gateway**
+- Name: Internet Gateway
+- Create In Compartment: YONGMIN.HAN
+#### 다이어그램 텍스트
+- **Create Internet Gateway**
+- **Name:** Internet Gateway
+- **Create In Compartment:** YONGMIN.HAN
+- **Show advanced options**
+- **HUB VCN**
+- **VCN Information**
+- Compartment: YONGMIN.HAN
+- Created: Tue, Jul 2, 2024, 00:32:02 UTC
+- IPv4 CIDR Block: 10.0.0.0/16
+- IPv6 Prefix: -
+- **Internet Gateways in YONGMIN.HAN compartment**
+- **Name:** Internet Gateway
+- **State:** Available
+- **Route Table:** -
+- **Created:** Wed, Jul 3, 2024, 03:14:31 UTC\n\n## Page 53\n\n
+|-------|-------|-------|
+| 데이터 | 데이터 | 데이터 |
+- 미완성: ... [다음 페이지에 계속]
+- 연속: [이전 페이지에서 계속] ...
+###
+- 인용: > 사용
+---
+#### 4) 공개용 웹서버 구축
+- Spoke VCN 환경에 공개용 웹서버 구성 및 Security List 설정
+##### [그림 2.4.14] Create computer Instance
+- Name: Public WebServer
+- Create in compartment: YONGMIN.HAN
+- Placement: AD 1 (ftto:AP-SEOUL-1-AD-1)
+##### [그림 2.4.15] 네트워크 구성
+- Spoke VCN, Public Subnet에 위치하도록 네트워크 구성 설정
+- VCN in YONGMIN.HAN: SPOKE VCN
+- Subnet in YONGMIN.HAN: Public Subnet (regional)
+---
+추출할 내용이 없으면 "내용 없음"만 출력.
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...- **Created:** Wed, Jul 3, 2024, 03:14:31 UTC
+이 페이지가 이전 내용의 연속이라면 [이전 페이지에서 계속] 표시를 추가해주세요.\n\n## Page 54\n\n
+|-------|-------|-------|
+| 데이터 | 데이터 | 데이터 |
+- 미완성: ... [다음 페이지에 계속]
+- 연속: [이전 페이지에서 계속] ...
+###
+- 인용: > 사용
+---
+#### 1순위: 핵심 텍스트
+- **제목:** Public WebServer
+- **소제목:** Instance details
+- **본문:**
+- Virtual cloud network: SPOKE VCN
+- Maintenance reboot: -
+- Launch mode: PARAVIRTUALIZED
+- Instance metadata service: Versions 1 and 2
+- Live migration: Use recommended default
+- Maintenance recovery action: Restore instance
+- **소제목:** Instance access
+- **본문:**
+- Public IP address: 146.56.15...
+- Username: opc
+- Primary VNIC
+- Public IPv4 address: 146.56.15...
+- Private IPv4 address: 10.1.1.104
+- Network security groups: None
+- Subnet: Public Subnet
+- Private DNS record: Enable
+- Hostname: public-webserver
+- Internal FQDN: public-webserver...
+- **소제목:** Launch options
+- **본문:**
+- NIC attachment type: PARAVIRTUALIZED
+- Remote data volume: PARAVIRTUALIZED
+#### 2순위: 표와 데이터
+- **표 제목:** Ingress Rules
+- **데이터:**
+- **Ingress Rule 1**
+- Source Type: CIDR
+- Source CIDR: 0.0.0.0/0
+- Source Port Range: 80,443
+- Destination Port Range: All
+- IP Protocol: TCP
+- **Ingress Rules**
+- No. 0.0.0.0/0
+- Source: TCP
+- Source Port Range: All
+- Destination Port Range: 22
+- IP Protocol: TCP
+- Type and Code: 22 SSH Remote Login Protocol
+- No. 0.0.0.0/0
+- Source: ICMP
+- Source Port Range: All
+- Destination Port Range: 3, 4
+- IP Protocol: ICMP
+- Type and Code: 3, 4 Destination Unreachable: Fragmentation Needed and Don't Fragment Was Set
+- No. 10.1.0.0/16
+- Source: ICMP
+- Source Port Range: All
+- Destination Port Range: 3
+- IP Protocol: ICMP
+- Type and Code: 3 Destination Unreachable
+- No. 0.0.0.0/0
+- Source: TCP
+- Source Port Range: 80
+- Destination Port Range: All
+- IP Protocol: TCP
+- Type and Code: 22 SSH Remote Login Protocol
+- No. 0.0.0.0/0
+- Source: TCP
+- Source Port Range: 443
+- Destination Port Range: All
+- IP Protocol: TCP
+- Type and Code: 22 SSH Remote Login Protocol
+#### 3순위: 차트/그래프
+- **차트 제목:** Add Ingress Rules
+- **데이터:**
+- **Source Type:** CIDR
+- **Source CIDR:** 0.0.0.0/0
+- **Source Port Range:** 80,443
+- **Destination Port Range:** All
+- **IP Protocol:** TCP
+#### 4순위: 구조적 요소
+- **섹션 구분:** [그림 2.4.16] 인스턴스 설정 화면
+- **섹션 구분:** [그림 2.4.17] Security List 설정
+- **하이라이트:**
+- IP/CIDR Block
+- Spoke VCN Public Subnet에 구성
+- Primary VNIC
+- Instance details
+- Instance access
+- Launch options
+- **다이어그램 텍스트:**
+- **Public WebServer**
+- **Instance information**
+- **General information**
+- **Availability domain: AD-1**
+- **Fault domain: FD-3**
+- **Region: ap-seoul-1**
+- **OCID: hw3aca Show Copy**
+- **Launched: Wed, Jul 3, 2024, 05:15:57 UTC**
+- **Compartment: (root)CLOUD/CLOUD-SPECIALISTS/YONGMIN.HAN**
+- **Capacity type: On-demand**
+---
+- 미완성: ... [다음 페이지에 계속]
+- 연속: [이전 페이지에서 계속] ...\n\n## Page 55\n\n- 주제목: 금융분야 상용 클라우드컴퓨팅서비스 보안 관리 참고서
+- 중제목: 2. 네트워크 관리
+- 소제목: 5) Bastion host 구성 및 Security List 설정
+
+|-------|-------|-------|
+| 데이터 | 데이터 | 데이터 |
+- 미완성: ... [다음 페이지에 계속]
+- 연속: [이전 페이지에서 계속] ...
+###
+- 인용: > 사용
+---
+### 본문
+#### 5) Bastion host 구성 및 Security List 설정
+**[그림 2.4.18] 인스턴스 생성**
+| Create compute instance |
+|-------------------------|
+| Create an instance to deploy and run applications, or save as a reusable Terraform stack for creating an instance with Resource Manager. |
+| Name                     |
+| Bastion host             |
+| Create in compartment    |
+| YONGMIN.HAN              |
+| Placement                |
+| The availability domain helps determine which shapes are available. |
+| Availability domain      |
+| AD 1                     |
+| ftto:AP-SEOUL-1-AD-1     |
+| Show advanced options    |
+**Primary VNIC information**
+A virtual network interface card (VNIC) connects your instance to a virtual cloud network (VCN) and endpoints in and outside the VCN. Having a public IP address is required to make this instance accessible from the internet.
+| VNIC name               | Optional |
+|-------------------------|----------|
+| Primary network         |
+| Select existing virtual cloud network |
+| VCN in YONGMIN.HAN     | (Change compartment) |
+| HUB VCN                 |
+| Subnet                  |
+| An IP address from a public subnet and an internet gateway on the VCN are required to make this instance accessible from the internet. |
+| Select existing subnet  |
+| Subnet in YONGMIN.HAN   | (Change compartment) |
+| Public Subnet (regional)|\n\n## Page 56\n\n
+|-------|-------|-------|
+| 데이터 | 데이터 | 데이터 |
+- 미완성: ... [다음 페이지에 계속]
+- 연속: [이전 페이지에서 계속] ...
+###
+- 인용: > 사용
+---
+#### 1순위: 핵심 텍스트
+- **제목:** Bastion host의 Security List TCP SSH 트래픽 허용
+- **소제목:** Default Security List for HUB VCN
+- **본문:**
+- Instance traffic is controlled by firewall rules on each Instance in addition to this Security List.
+- Move resource, Add tags, Terminate
+- Security List Information, Tags
+- OCID: ..., Created: Tue, Jul 2, 2024, 00:32:02 UTC
+- Compartment: YONGMIN.HAN
+- **Ingress Rules:**
+- Add Ingress Rules, Edit, Remove
+- Stateless, Source, IP Protocol, Source Port Range, Destination Port Range, Type and Code, Allows, Description
+- TCP traffic for ports: 22, SSH Remote Login Protocol
+- ICMP traffic for: 3, 4 Destination Unreachable: Fragmentation Needed and Don't Fragment was Set
+- ICMP traffic for: 3 Destination Unreachable
+- **참고 사항:**
+- [VCN] https://cloud.oracle.com/networking/vcns?region=ap-seoul-1
+- [Bastion host] https://cloud.oracle.com/compute/instances?region=ap-seoul-1
+#### 2순위: 표와 데이터
+- **표 제목/헤더:** Ingress Rules
+- **데이터 값과 단위:** Stateless, Source, IP Protocol, Source Port Range, Destination Port Range, Type and Code, Allows, Description
+- **행/열 관계:** 3개의 항목이 표시되어 있습니다.
+#### 3순위: 차트/그래프
+- **제목:** 그림 2.4.19 Security List 설정
+- **축 레이블:** 없음
+- **데이터 포인트:** 3개의 항목이 표시되어 있습니다.
+- **범례:** 없음
+#### 4순위: 구조적 요소
+- **섹션 구분:** 제목, 소제목, 본문, 참고 사항
+- **하이라이트:** Default Security List for HUB VCN, Ingress Rules
+- **다이어그램 텍스트:** 그림 2.4.19 Security List 설정
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...| Public Subnet (regional)|\n\n## Page 57\n\n
+| 식별번호 | 기준 | 내용 |
+|----------|------|------|
+| 2.5      | 네트워크 사설 IP주소 할당 및 관리 | 클라우드 환경을 통한 내부망 네트워크 구현 시 사설 IP부여 등으로 보안을 강화하고, 내부IP 유출을 금지하여야 한다. |
+### 본문
+- **1. 기준**
+- 2.5 네트워크 사설 IP주소 할당 및 관리: 클라우드 환경을 통한 내부망 네트워크 구현 시 사설 IP부여 등으로 보안을 강화하고, 내부IP 유출을 금지하여야 한다.
+- **2. 설명**
+- 클라우드 환경 내 내부망 네트워크 구현 시 사설IP를 부여하고 주기적으로 현황을 검토하여야 한다.
+1) 인터넷 게이트웨이, NAT 게이트웨이 등 관련 기능을 통해 사설IP부여 및 IP 관리 수행
+2) 사설 IP 할당 현황에 대한 주기적 검토 수행
+- **3. 우수 사례**
+- 1) 인터넷 게이트웨이, NAT 게이트웨이 등 관련 기능을 통해 사설IP부여 및 IP 관리 수행
+- OCI Private Subnet에 인스턴스를 생성하면 원천적으로 Public IP를 부여할 수 없도록 설계되어 있음
+- ![Create VNIC](https://example.com/image.png)
+- [그림 2.5.1] VNIC 생성
+- 미완성: ... [다음 페이지에 계속]\n\n## Page 58\n\n
+| Name | State | Private IP | Shape | OCPU count | Memory (GB) | Availability domain | Fault domain | Created |
+|------|-------|------------|-------|------------|-------------|---------------------|--------------|---------|
+| FSS_perf_test | Stopped | 10.0.1.226 | VM.Standard.E4.Flex | 4 | 64 | AD-1 | FD-2 | Tue, Nov 21, ... |
+| instance-20240205-1026 | Stopped | 192.168.0.199 | VM.Standard.E4.Flex | 1 | 16 | AD-1 | FD-3 | Mon, Feb 5, ... |
+| instance-20240205-1030 | Stopped | 192.168.0.200 | VM.Standard.E4.Flex | 1 | 16 | AD-1 | FD-1 | Mon, Feb 5, ... |
+| instance-20240213-1603 | Stopped | 10.0.1.142 | VM.GPU.A10.1 | 15 | 240 | AD-1 | FD-1 | Tue, Feb 13, ... |
+| instance-20240308-1608 | Stopped | 10.0.1.120 | VM.Standard.E4.Flex | 1 | 16 | AD-1 | FD-1 | Fri, Mar 8, 20... |
+| netperf_test | Stopped | 10.0.1.250 | VM.Optimized3.Flex | 10 | 140 | AD-1 | FD-3 | Thu, Feb 15, ... |
+| ubuntu_router | Running | 10.0.0.117 | VM.Standard.E4.Flex | 1 | 16 | AD-1 | FD-3 | Tue, Apr 30, ... |
+| ubuntu_client | Running | 10.0.2.105 | VM.Standard.E4.Flex | 1 | 16 | AD-1 | FD-3 | Tue, Apr 30, ... |
+| ubuntu_server | Running | 10.0.0.130 | VM.Standard.E4.Flex | 1 | 16 | AD-1 | FD-3 | Tue, Apr 30, ... |
+- 미완성: ... [다음 페이지에 계속]
+###
+- 인용: > 사용
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...- 미완성: ... [다음 페이지에 계속]\n\n## Page 59\n\n```markdown
+# 참고 사항
+- [VCN] https://cloud.oracle.com/networking/vcns?region=ap-seoul-1
+- 관리하고자 하는 VCN 선택 → Virtual Cloud Network details → CIDR Blocks/Prefixes
+```\n\n## Page 60\n\n```markdown
+# 2.6 네트워크(방화벽 등) 정책 주기적 검토
+## 1 기준
+| 식별번호 | 기준 | 내용 |
+|----------|------|------|
+| 2.6      | 네트워크(방화벽 등) 정책 주기적 검토 | 클라우드 서비스를 통해 구현한 네트워크 정책에 대해 주기적 검토를 수행하여야 한다. |
+## 2 설명
+- 클라우드 네트워크 관련 서비스 정책에 대한 적정성 여부를 주기적으로 검토하여야 한다.
+1. 방화벽 정책에 관한 주기적 검토 수행
+2. ACL 정책에 관한 주기적 검토 수행
+3. 보안그룹에 관한 주기적 검토 수행
+## 3 우수 사례
+- '2. 네트워크 관리' 분야 내 내용을 참고하여 내부에서 방화벽, ACL, 보안그룹 등에 대해 검토
+## 4 참고 사항
+- N/A
+```\n\n## Page 61\n\n```markdown
+# 3. 계정 및 권한 관리
+## 3.1. 클라우드 계정 권한 관리
+## 3.2. 이용자별 인증 수단 부여
+## 3.3. 인사변경 사항 발생시 계정 관리
+## 3.4. 클라우드 가상자원 관리시스템 관리자 권한 추가인증 적용
+## 3.5. 클라우드 가상자원 관리시스템 로그인 규칙 수립
+## 3.6. 계정 비밀번호 규칙 수립
+## 3.7. 공개용 웹서버 접근 계정 제한
+```\n\n## Page 62\n\n
+| 식별번호 | 기준 | 내용 |
+|----------|------|------|
+| 3.1      | 클라우드 계정 권한 관리 | 클라우드 서비스 이용 시 업무 및 권한에 따라 계정을 관리하여야 한다. |
+### 본문
+- **1. 기준**
+- 클라우드 계정 권한 관리
+- 클라우드 서비스 이용 시 업무 및 권한에 따라 계정을 관리하여야 한다.
+- **2. 설명**
+- 클라우드를 이용하는 임직원의 업무 및 권한에 따라 계정을 관리하여야 한다.
+- 1) 자격 증명 등의 기능을 이용하여 계정 권한 관리
+- 2) 사전에 정의된 행위만이 가능하도록 역할을 생성
+- 콘솔 최상위 관리자(ex. 최초 가입계정 등)은 서비스 운영에 활용하지 않아야 한다.
+- 1) 부득이 일부 서비스에 대해 관리자 권한이 필요한 경우, 신규로 계정을 생성하여 필요한 권한을 부여한 후 활용
+- 2) 예외적으로 반드시 최초 콘솔 가입계정을 이용하여야 하는 특정 서비스의 경우에는 MFA 등 추가 인증 방식을 구현하고 접속 IP를 제한하는 등 강화된 보안환경 구성
+- **3. 우수 사례**
+- (가상자원관리시스템) '홈' → 'Identity & Security' → 'Identity' → 'Domain' → '도메인선택' → 'Users' → 'Create Group'에서 이용자 역할별(Dev, Ops, Sec 등) 그룹을 생성하고, 그룹별 역할 및 권한 부여 가능
+- 미완성: ... [다음 페이지에 계속]\n\n## Page 63\n\n- 주제목: 금융분야 상용 클라우드컴퓨팅서비스 보안 관리 참고서
+- 중제목: 3. 계정 및 권한 관리
+
+| First name | Last name | Email |
+|------------|-----------|--------|
+|           |           | oracle.com |
+|           |           | oracle.com |
+|           |           | oracle.com |
+|           |           | oracle.com |
+|           |           | oracle.com |
+- 미완성: ... [다음 페이지에 계속]
+###
+- 인용: > 사용
+---
+### 본문
+#### Create group
+- Name: TEST IAM_GROUP
+- Description: TEST IAM_GROUP
+- User can request access: (선택 가능)
+- Users: Optional (선택 가능)
+#### Create Policy
+- Name: TEST_IAM_Policy
+- Description: TEST_IAM_Policy
+- Compartment: (root)
+- Policy Builder: Show manual editor (on)
+- Policy use cases: Data Lake (선택 가능)
+- Common policy templates: Let Data Lake Admin to create and manage Data Lake (선택 가능)
+- Groups: TEST IAM_GROUP (선택 가능)
+- Location: (root) (선택 가능)
+[그림 3.1.1] 자격증명에서 역할 지정 및 권한 관리\n\n## Page 64\n\n
+### 텍스트
+- (가상자원관리시스템) ‘홈’ → ‘Identity & Security’ → ‘Identity’ → ‘Domain’ → ‘도메인선택’ → ‘Groups’에서 최상위 관리자를 별도 그룹으로 지정하고, 서비스 운영에서 제외하도록 설정
+- 사용자 그룹 생성 및 최상위 관리자 할당
+|--------|--------|--------|
+| 데이터 | 데이터 | 데이터 |
+- 미완성: ... [다음 페이지에 계속]
+###
+- 인용: > 사용
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...[그림 3.1.1] 자격증명에서 역할 지정 및 권한 관리\n\n## Page 65\n\n- 주제목: 금융분야 상용 클라우드컴퓨팅서비스 보안 관리 참고서
+- 중제목: 3. 계정 및 권한 관리
+
+| Groups in OracleIdentityCloudService Domain |
+|---------------------------------------------|
+| Search by group name or description.       |
+| Create group                                |
+| More actions                                |
+| Name                                        |
+| Description                                 |
+| Created                                     |
+| Tenancy Admin                              |
+| Sun, May 19, 2024, 14:25:34 UTC             |
+- 미완성: ... [다음 페이지에 계속]
+###
+- 인용: > 사용
+---
+### 텍스트 추출
+- **제목**: 금융분야 상용 클라우드컴퓨팅서비스 보안 관리 참고서
+- **소제목**: 3. 계정 및 권한 관리
+- **본문**:
+- 최상위 관리자는 클라우드 서비스 운영에 관여하지 않도록 별도 관리
+- 그림 3.1.3] Group 생성 화면
+- **참고 사항**:
+- [https://cloud.oracle.com/identity/domains/overview?region=ap-seoul-1](https://cloud.oracle.com/identity/domains/overview?region=ap-seoul-1)\n\n## Page 66\n\n
+| 식별번호 | 기준 | 내용 |
+|----------|------|------|
+| 3.2      | 이용자별 인증 수단 부여 | 클라우드 서비스를 이용하는 임직원(이용자)별 인증 수단을 할당하여야 한다. |
+### 본문
+1. **기준**
+- 3.2 이용자별 인증 수단 부여: 클라우드 서비스를 이용하는 임직원(이용자)별 인증 수단을 할당하여야 한다.
+2. **설명**
+- 클라우드 서비스를 이용하는 임직원(이용자)별 인증 수단을 부여하여야 하며, 필요 시 추가인증을 적용할 수 있어야 한다. (외부직원 포함)
+1. IAM(Identity and Access Management) 기능 등을 이용하여 이용자별 인증수단 적용
+2. 업무 중요도에 따른 MFA 추가 인증(OTP, 바이오 인증 등) 고려
+3. **우수 사례**
+- (가상자원관리시스템) '홈' → 'Identity & Security' → 'Identity' → 'Domain' → '도메인선택' → 'Security' → 'Two-factor authentication'에서 인증수단(Mobile-app, Phone, Email 등) 정책 부여 가능\n\n## Page 67\n\n- 주제목: 금융분야 상용 클라우드컴퓨팅서비스 보안 관리 참고서
+- 중제목: 3. 계정 및 권한 관리
+- 소제목: Two-factor authentication in OracleIdentityCloudService Domain
+
+|-------|-------|-------|
+| 데이터 | 데이터 | 데이터 |
+- 미완성: ... [다음 페이지에 계속]
+- 연속: [이전 페이지에서 계속] ...
+###
+- 인용: > 사용
+---
+#### 3.2.1] 도메인 이용자별 인증수단 부여
+- (가상자원관리시스템) ‘홈’ → ‘Identity & Security’ → ‘Identity’ → ‘Domain’ → ‘도메인선택’ → ‘Security’ → ‘MFA’에서 업무 중요도에 따른 MFA 추가 인증 가능
+#### 3.2.2] MFA 설정
+- Factors
+- Security questions
+- Email
+- Bypass code
+- DUO security
+- Fast ID Online (FIDO) passkey authenticator
+- Phone number
+- Mobile app passcode
+- Text message (SMS)
+- Mobile app notification
+- Maximum number of enrolled factors: 5
+- Trusted devices: Enable trusted devices
+---
+### 참고 사항
+- https://cloud.oracle.com/identity/domains/overview?region=ap-seoul-1\n\n## Page 68\n\n- 주제목: 금융보안원 ORACLE
+- 중제목: 3.3. 인사변경 사항 발생 시 계정 관리
+
+| 식별번호 | 기준 | 내용 |
+|----------|------|------|
+| 3.3      | 인사변경 사항 발생 시 계정 관리 | 이용자의 인사변경(휴직, 전출, 퇴직 등) 발생 시 지체 없이 이용자 계정 삭제, 중지 등의 조치를 수행하여야 한다. |
+### 설명
+- 클라우드를 이용하는 임직원의 인사변경 사항 발생 시 지체없이 이용자 계정 삭제, 중지 등의 조치를 수행하여야 한다.
+1. 인사변경이 발생한 이용자의 계정 삭제 또는 중지
+2. 인사변경이 발생한 이용자가 공용 계정 이용 시 계정 비밀번호 변경 등
+### 우수 사례
+- (가상자원관리시스템) '홈' → 'Identity & Security' → 'Identity' → 'Domain' → '도메인선택' → 'Users' → 'User list' → '계정선택' → 'More actions' → 'Delete or Deactivate'에서 인사변경이 발생한 이용자의 계정 삭제 또는 중지 가능
+### 그림
+- [그림 3.3.1] 이용자 계정 상태 변경
+- 미완성: ... [다음 페이지에 계속]\n\n## Page 69\n\n- 주제목: 금융분야 상용 클라우드컴퓨팅서비스 보안 관리 참고서
+- 중제목: 3. 계정 및 권한 관리
+
+| Username | Status | Email | Last access | Created |
+|----------|--------|-------|-------------|---------|
+|          | Active |        |             |         |
+|          | Inactive |        |             |         |
+|          | Active |        |             |         |
+|          | Active |        |             |         |
+|          | Active |        |             |         |
+|          | Active |        |             |         |
+|          | Active |        |             |         |
+|          | Active |        |             |         |
+- 미완성: ... [다음 페이지에 계속]
+###
+- 인용: > 사용
+---
+### 텍스트 추출
+#### 1순위: 핵심 텍스트
+- (가상자원관리시스템) '홈' → 'Identity & Security' → 'Identity' → 'Domain' → '도메인선택' → 'Users' → 'User list' → '계정 오른쪽 옵션 버튼 클릭' → 'Reset password'
+- (API(CLI)) '--user-id [text]' 매개변수를 통해 사용자 계정 생성 및 삭제 등 이용자 계정 상태를 변경 가능
+- 예) oci iam user delete [OPTIONS]
+# oci iam user delete --user-id $user id
+- https://docs.oracle.com/en-us/iaas/tools/oci-cli/3.37.11/oci_cli_docs/cmdref/iam.html
+- https://docs.oracle.com/en-us/iaas/tools/oci-cli/3.37.11/oci_cli_docs/cmdref/iam/user/delete.html
+#### 2순위: 표와 데이터
+- 표 제목/헤더: Users
+- 데이터 값과 단위: Username, Status, Email, Last access, Created
+- 행/열 관계: Users 리스트
+#### 3순위: 차트/그래프
+- 제목: 그림 3.3.2 공용 계정 비밀번호 변경
+- 축 레이블: 없음
+- 데이터 포인트: 없음
+- 범례: 없음
+#### 4순위: 구조적 요소
+- 섹션 구분: 제목, 소제목, 본문, 목록 구조, 각주
+- 하이라이트: Reset password, Delete
+- 다이어그램 텍스트: 없음
+---
+### 참고 사항
+- https://cloud.oracle.com/identity/domains/overview?region=ap-seoul-1\n\n## Page 70\n\n
+| 식별번호 | 기준 | 내용 |
+|----------|------|------|
+| 3.4      | 클라우드 가상자원 관리시스템 관리자 권한 추가인증 적용 | 클라우드 서비스 관리자 권한으로 로그인 시 추가인증 수단을 적용하여야 한다. |
+### 본문
+- **1. 기준**
+- 클라우드 가상자원 관리시스템 관리자 권한 추가인증 적용
+- 클라우드 서비스 관리자 권한으로 로그인 시 추가인증 수단을 적용하여야 한다.
+- **2. 설명**
+- 이용자는 패스워드 무작위 대입 공격 등에 대응하기 위해 가상자원 관리시스템 계정에 대한 안전한 로그인 규칙을 수립하여야 한다.
+- 1) 이메일 인증
+- 2) SMS 인증
+- 3) 별도 인증도구(OTP, 바이오 인증 등) 활용 등
+- **3. 우수 사례**
+- (가상자원관리시스템) ‘홈’ → ‘Identity & Security’ → ‘Identity’ → ‘Domain’ → ‘도메인선택’ → ‘Security’ → ‘MFA’에서 Mobile, Phone(SMS), Email 등 Multi-factor 인증 등 추가 보안 요소 등록
+- 1단계 : ID 도메인에서 MFA 활성화
+- 미완성: ... [다음 페이지에 계속]
+###
+- 인용: > 사용\n\n## Page 71\n\n- 주제목: 금융분야 상용 클라우드컴퓨팅서비스 보안 관리 참고서
+- 중제목: 3. 계정 및 권한 관리
+
+| Factors | Description |
+|---------|-------------|
+| Security questions | What are the different MFA factors? |
+| Bypass code | Configure email settings |
+| Fast ID Online (FIDO) authenticator | Configure FIDO authenticator |
+| Mobile app passcode | Configure mobile app passcode |
+| Text message (SMS) | Configure phone number |
+| Phone call | Configure phone number |
+| Maximum number of enrolled factors | Enter the maximum number of factors a user can enroll in. |
+| Trusted devices | Enable trusted devices |
+| Number of days a device can be trusted | Enter the number of days a device is trusted before prompting the user again for secondary authentication. |
+| Maximum number of trusted devices | |
+- 미완성: ... [다음 페이지에 계속]
+###
+- 인용: > 사용
+---
+### 본문
+#### [그림 3.4.1] MFA Settings 화면
+1. **Mobile (Oracle Mobile Authentication) 인증**
+- OMA 모바일 앱 다운로드 :
+- 2FA 등록 프로세스 외에 OMA 앱을 모바일 기기에 다운로드하는 절차
+- https://docs.oracle.com/en-us/iaas/Content/Identity/mobileauthapp/download-mobile-authenticator-app.htm#download-mobile-authenticator-app
+- 신규 모바일 기기 등록 및 기존 모바일 기기 재등록 :
+- Mobile app notification : 2Factor 인증 요청 시 모바일 기기에서 인증 버튼 클릭
+- Mobile app passcode : 모바일 기기에서 OTP 인증코드 확인 → 코드 인증 화면에서 OTP 코드 입력 후 인증
+- https://docs.oracle.com/en-us/iaas/Content/Identity/mobileauthapp/registering_mobile_devices_with_oma.htm#registering_mobile_devices_with_oma
+- OMA 관리자 앱 관리
+- OMA 앱을 사용하면 계정보기, PIN관리, 알림 관리 방법을 쉽게 사용자 정의할 수 있습니다.
+- https://docs.oracle.com/en-us/iaas/Content/Identity/mobileauthapp/manage-oracle-mobile-authenticator-app.htm#manage-oracle-mobile-authenticator-app\n\n## Page 72\n\n
+|-------|-------|-------|
+| 데이터 | 데이터 | 데이터 |
+- 미완성: ... [다음 페이지에 계속]
+- 연속: [이전 페이지에서 계속] ...
+###
+- 인용: > 사용
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...tor-app.htm#manage-oracle-mobile-authenticator-app
+---
+### 텍스트 추출
+1. Two-factor authentication in [블러드] Domain
+- Mobile app
+- Phone number
+- Security questions
+- Email
+2. (가상자원관리시스템) '홈' → 'Identity & Security' → 'Identity' → 'Domain' → '도메인 선택' → 'Security' → 'Sign-on policies' → 'Create Sign-on policy'
+- 2단계 : 새 로그인 정책(Sign-on policy) 만들기
+---
+|-------|-------|-------|
+| Passcode policy | Hashing algorithm | Secret key refresh interval (days) |
+| Passcode length | SHA1 | 60 |
+| Passcode generation interval (seconds) | | |
+---
+- 페이지 번호: 69
+- 출처: 금융보안원, ORACLE\n\n## Page 73\n\n- 주제목: 금융분야 상용 클라우드컴퓨팅서비스 보안 관리 참고서
+- 중제목: 3. 계정 및 권한 관리
+- 소제목: Sign-on policies in [블러드된 도메인]
+- 세부: Create sign-on policy
+
+| Name | Description | Status |
+|------|-------------|--------|
+| Default Sign-On Policy | Default Sign on Policy for Tenant | Activated |
+| ds-policy | TEST Policy | Deactivated |
+| proxevi | TEST | Deactivated |
+| Security Policy for OCI Console | The Security Defaults to secure OCI Console | Activated |
+| test | TEST of Policy | Deactivated |
+| Test-Sign-on Policy | - | Deactivated |
+| testaadf | - | Deactivated |
+| ttt | ttt | Deactivated |
+- 미완성: ... [다음 페이지에 계속]
+###
+- 인용: > 사용
+### 내용 추출
+#### 3.4.3. Sign-on Policy 생성
+- **Create sign-on policy**
+- **Add policy**
+- **Name**: 20240327 MFA Policy
+- **Description**: Optional
+- **Add sign-on rule**
+- **Rule name**: (입력 필수)
+- **Conditions**
+- **Authenticating identity provider**: Optional
+- **Mobile App Passcode**: x
+- **Group membership**: Optional
+- OCI_Admnistrators
+- MFA_Policy_Test
+- **Add apps**
+- 미완성: ... [다음 페이지에 계속]\n\n## Page 74\n\n
+### 본문
+- Authentication identity provider → Mobile app passcode 등 지정
+- Group membership : Identity → Domain → 해당 도메인 → Group → Create Group에서 그룹 생성 내역 지정
+### 참고 사항
+- https://cloud.oracle.com/identity/domains/overview?region=ap-seoul-1
+- https://docs.oracle.com/en-us/iaas/Content/Security/Reference/iam_security_topic-iam_mfa_with_identity_domains.htm#iam_security_topic-iam_mfa_with_identity_domains
+- 미완성: ... [다음 페이지에 계속]\n\n## Page 75\n\n
+| 식별번호 | 기준 | 내용 |
+|----------|------|------|
+| 3.5      | 클라우드 가상자원 관리시스템 로그인 규칙 수립 | 이용자 가상자원 관리시스템 접근 계정에 대한 안전한 로그인 규칙을 수립하여야 한다. |
+### 본문
+1. **기준**
+- **식별번호**: 3.5
+- **기준**: 클라우드 가상자원 관리시스템 로그인 규칙 수립
+- **내용**: 이용자 가상자원 관리시스템 접근 계정에 대한 안전한 로그인 규칙을 수립하여야 한다.
+2. **설명**
+- 이용자는 패스워드 무작위 대입 공격 등에 대응하기 위해 가상자원 관리시스템 계정에 대한 안전한 로그인 규칙을 수립하여야 한다.
+1) 로그인 오류에 따른 보안통제 방안 수립 등
+3. **우수 사례**
+- (가상자원관리시스템) '홈' → 'Identity & Security' → 'Identity' → 'Domain' → '도메인선택' → 'Setting' → 'Password policy' → '생성한 패스워드 정책' → 'Edit password rules'에서 안전한 로그인 규칙 수립 가능\n\n## Page 76\n\n
+| Select the password policy strength | Simple | Standard | Custom |
+|------------------------------------|--------|----------|---------|
+| The following criteria apply to passwords: | | | |
+| Password length (minimum) | 12 | | |
+| Password length (maximum) | 40 | | |
+| No limit if left blank | | | |
+| Expires after (days) | Optional | | |
+| Account lock threshold | Optional | | |
+| Enable automatic account unlock | | | |
+| Automatically unlock account after (minutes) | Optional | | |
+| Previous passwords remembered | Optional | | |
+- 미완성: ... [다음 페이지에 계속]
+###
+- 인용: > 사용
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...스워드 정책' → 'Edit password rules'에서 안전한 로그인 규칙 수립 가능\n\n## Page 77\n\n
+| 식별번호 | 기준 | 내용 |
+|----------|------|------|
+| 3.6      | 계정 비밀번호 규칙 수립 | 클라우드 가상자원 관리시스템 로그인 계정 생성 시 비밀번호 규칙을 수립하여 적용하여야 한다. |
+- 미완성: ... [다음 페이지에 계속]
+###
+- 인용: > 사용
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...스워드 정책' → 'Edit password rules'에서 안전한 로그인 규칙 수립 가능\n\n## Page 78\n\n### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...스워드 정책' → 'Edit password rules'에서 안전한 로그인 규칙 수립 가능
+---
+---
+### 섹션
+#### 4 참고 사항
+- https://cloud.oracle.com/identity/domains/overview?region=ap-seoul-1
+---
+- 미완성: ... [다음 페이지에 계속]
+---
+###
+- 인용: > 사용\n\n## Page 79\n\n
+| 식별번호 | 기준 | 내용 |
+|----------|------|------|
+| 3.7      | 공개용 웹서버 접근 계정 제한 | 클라우드를 통해 공개용 웹서버를 운영하는 경우 접근 계정을 적절하게 제한하여야 한다. |
+- 미완성: ... [다음 페이지에 계속]
+###
+- 인용: > 사용
+---
+### 본문
+- 문단: 빈 줄로 구분
+- 번호 목록: 1. 2. 3.
+- 글머리: - 또는 *
+- 들여쓰기: 2칸 또는 4칸
+#### 1. 기준
+- **표**:
+| 식별번호 | 기준 | 내용 |
+|----------|------|------|
+| 3.7      | 공개용 웹서버 접근 계정 제한 | 클라우드를 통해 공개용 웹서버를 운영하는 경우 접근 계정을 적절하게 제한하여야 한다. |
+#### 2. 설명
+- **글머리**: ▶
+- **문단**: 빈 줄로 구분
+- **번호 목록**: 1. 2.
+- **글머리**: - 또는 *
+- **들여쓰기**: 2칸 또는 4칸
+- 클라우드 환경을 통해 공개용 웹서버를 운영하는 경우 접근 계정을 적절하게 제한하여야 한다.
+1) 계정 관리 기능을 통해 공개용 웹서버만 접근 가능한 계정을 개인별 부여하여 관리
+2) 공개용 웹서버에 접근 가능한 계정으로 로그인 시 추가인증 수단 적용 등
+#### 3. 우수 사례
+- **글머리**: ▶
+- **문단**: 빈 줄로 구분
+- **번호 목록**: 1.
+- **글머리**: - 또는 *
+- **들여쓰기**: 2칸 또는 4칸
+- (가상자원관리시스템) ‘홈’ → ‘Compute’ → ‘Instances’에서 공개용 웹 서버 인스턴스를 위한 컴파트먼트를 생성하고, 이후 해당 컴파트먼트에 인스턴스를 생성
+### 그림
+- **그림 제목**: [그림 3.7.1.] 공개용 웹서버 생성
+- **문단**: 빈 줄로 구분
+- **번호 목록**: 1.
+- **글머리**: - 또는 *
+- **들여쓰기**: 2칸 또는 4칸
+- [이미지] ORACLE Cloud Create compute instance 화면
+- **글머리**: 공개용 웹서버 구축 시 별도 컴파트먼트 생성
+- **문단**: 빈 줄로 구분
+- **번호 목록**: 1.
+- **글머리**: - 또는 *
+- **들여쓰기**: 2칸 또는 4칸
+- 미완성: ... [다음 페이지에 계속]\n\n## Page 80\n\n
+|-------|-------|-------|
+| 데이터 | 데이터 | 데이터 |
+- 미완성: ... [다음 페이지에 계속]
+- 연속: [이전 페이지에서 계속] ...
+###
+- 인용: > 사용
+---
+- **그림 3.7.2** 웹서버 관리자를 위한 그룹 및 사용자 지정
+- **그림 3.7.3** 웹서버 접근 정책 설정
+- 공개용 웹서버를 관리하도록 사용자(그룹)을 해당 컴파트먼트에 지정하도록 설정하는 정책을 생성
+- **그림 3.7.2** 웹서버 관리자를 위한 그룹 및 사용자 지정
+- Name: WebServer_Ops_Group
+- Description: WebServer_Ops_Group
+- Users: yongmin (yongmin.han@oracle.com)
+- **그림 3.7.3** 웹서버 접근 정책 설정
+- Name: WebServer_Ops_Policy
+- Description: WebServer_Ops_Policy
+- Compartment: root
+- Policy Builder: Compute Management
+- Policy use cases: Let admins manage Compute instance configurations, instance pools, and cluster networks
+- **그림 3.7.2** 웹서버 관리자를 위한 그룹 및 사용자 지정
+- **그림 3.7.3** 웹서버 접근 정책 설정
+- 다이어그램 텍스트: Compute Management, Let admins manage Compute instance configurations, instance pools, and cluster networks
+---
+### 참고 사항
+- [정책 및 권한 할당] https://cloud.oracle.com/identity/domains/policies?region=ap-seoul-1\n\n## Page 81\n\n
+### 본문
+- 4.1. 암호화 적용 가능 여부 확인
+- 4.2. 암호키 관리 방안 수립
+- 4.3. 암호키 서비스 관리자 권한 통제
+- 4.4. 암호키 호출 권한 관리
+- 4.5. 안전한 암호화 알고리즘 적용
+### 구조적 요소
+- 섹션 구분: 4. (제목)
+- 하이라이트: 제목, 소제목
+- 다이어그램 텍스트: 내용 없음\n\n## Page 82\n\n
+| 식별번호 | 기준 | 내용 |
+|----------|------|------|
+| 4.1      | 암호화 적용 가능 여부 확인 | 관련 법령(전자금융거래법, 신용정보법 등)에 따른 암호화 대상이 저장 및 처리되는 가상자원(서버, 스토리지 등)에 대한 암호화 기능 적용 여부를 확인하여야 한다. |
+### 본문
+- **1. 기준**
+- **식별번호** | **기준** | **내용**
+|----------|------|------|
+| 4.1      | 암호화 적용 가능 여부 확인 | 관련 법령(전자금융거래법, 신용정보법 등)에 따른 암호화 대상이 저장 및 처리되는 가상자원(서버, 스토리지 등)에 대한 암호화 기능 적용 여부를 확인하여야 한다. |
+- **2. 설명**
+- 관련 법령(전자금융거래법, 개인정보보호법, 신용정보법 등)에 따라 암호화가 필요한 대상이 저장 및 처리되는 가상자원에 대해서는 암호화 적용을 고려하여야 한다.
+1. 클라우드의 키 관리 서비스를 통해 CSP 사업자의 관리형 Key로 암호화
+2. 클라우드의 키 관리 서비스를 통해 이용자 관리형 Key 암호화
+3. 이용자가 직접 관리하는 Key로 암호화 등
+- **3. 우수 사례**
+- 1) 클라우드의 키 관리 서비스를 통해 CSP 사업자의 관리형 Key로 암호화
+- (가상자원관리시스템) '홈' → 'Storage' → 'Object Storage & Archive Storage' → 'Buckets' → 'Create Bucket'을 선택하고 Encryption 항목에 CSP 사업자의 관리형 Key로 암호화 지정 (Encryption using Oracle managed keys)
+- 미완성: ... [다음 페이지에 계속]
+###
+- 인용: > 사용\n\n## Page 83\n\n
+|-------|-------|-------|
+| 데이터 | 데이터 | 데이터 |
+- 미완성: ... [다음 페이지에 계속]
+- 연속: [이전 페이지에서 계속] ...
+###
+- 인용: > 사용
+---
+#### 2) 클라우드의 키 관리 서비스를 통해 이용자 관리형 Key 암호화
+- (가상자원관리시스템) '홈' → 'Identity & Security' → 'Key Management & Secret Management' → 'Vault'에서 최초 Master key 생성 및 키 보호를 위한 하드웨어/소프트웨어 선택 및 암호화 알고리즘, 키 길이 선택 옵션 제공
+---
+#### 그림 4.1.1] Oracle managed key를 통한 암호화
+- [이미지: Oracle Cloud의 Create Bucket 화면]
+- Bucket Name: bucket-20240507-1433
+- Default Storage Tier: Standard
+- Encryption: Encrypt using Oracle managed keys (Oracle 관리 키 사용)
+---
+#### 그림 4.1.2] Key Management를 통한 Master key 생성
+- [이미지: Oracle Cloud의 Key Management & Secret Management 화면]
+- Create Key 화면에서 Protection Mode: HSM (하드웨어 보호 모드 선택)
+- Key Shape Algorithm: AES (Symmetric key used for Encrypt and Decrypt)
+- Key Shape Length: 256 bits
+---
+- 미완성: ... [다음 페이지에 계속]
+---
+###
+- 인용: > 사용\n\n## Page 84\n\n
+|-------|-------|-------|
+| 데이터 | 데이터 | 데이터 |
+- 미완성: ... [다음 페이지에 계속]
+- 연속: [이전 페이지에서 계속] ...
+###
+- 인용: > 사용
+---
+#### 그림 4.1.3] Secret rotation 설정
+- 관리형 키를 사용하여 Autonomous Database, OCI Function 데이터 암호화
+#### 그림 4.1.4] 관리형 키를 사용하여 Bucket 암호화
+- 관리형 키를 사용하여 Object storage 데이터 암호화
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...- 인용: > 사용
+이 페이지가 이전 내용의 연속이라면 [이전 페이지에서 계속] 표시를 추가해주세요.\n\n## Page 85\n\n- 주제목: 금융분야 상용 클라우드컴퓨팅서비스 보안 관리 참고서
+- 중제목: 4. 계정 및 권한 관리
+### 소제목
+- 3) 이용자가 직접 관리하는 Key로 암호화 등
+### 본문
+- (가상자원관리시스템) ‘홈’ → ‘Identity & Security’ → ‘Key Management & Secret Management’ → ‘External Key Management’ → ‘Create Vault’에서 이용자가 외부에서 관리되는 키를 사용할 수 있도록 지원
+### 구조
+- [그림 4.1.5] External Key Management
+### 참고 사항
+- [버킷 생성 시 암호화] https://cloud.oracle.com/object-storage/buckets?region=ap-seoul-1
+- [Key Management & Secret Management] https://cloud.oracle.com/security/kms?region=ap-seoul-1
+- [External Key Management] https://cloud.oracle.com/security/external-hsm?region=ap-seoul-1
+- 82\n\n## Page 86\n\n
+| 식별번호 | 기준 | 내용 |
+|----------|------|------|
+| 4.2      | 암호키 관리 방안 수립 | 암호화 기능 이용 시 암호키 관리방안을 수립하여야 한다. |
+- 미완성: ... [다음 페이지에 계속]
+###
+- 인용: > 사용
+---
+#### 1 기준
+- **식별번호:** 4.2
+- **기준:** 암호키 관리 방안 수립
+- **내용:** 암호화 기능 이용 시 암호키 관리방안을 수립하여야 한다.
+#### 2 설명
+- 암호화 기능 이용 시 암호키 관리 방안을 수립하여야 한다.
+1. KMS(Key Management Service)를 통한 암호화 키 방안 수립(생성, 변경, 폐기 등)
+2. 클라우드 서비스 제공자가 직접 제공하는 암호화키 이용 시 적절한 관리방안 수립
+3. 키 사용기간 수립 및 암호키 유출 등에 대응할 수 있도록 키 삭제 및 재적용 관련 기능 수립
+4. 생성한 암호화키를 안전하게 보관할 수 있는 방안 수립 등
+#### 3 우수 사례
+1. **KMS(Key Management Service)를 통한 암호화 키 방안 수립(생성, 변경, 폐기 등)**
+- (가상자원관리시스템) '홈' → 'Identity & Security' → 'Key Management & Secret Management' → 'Vault' → 'Vault Details'에서 암호화 키 생성, 변경(Rotate), 폐기할 수 있도록 지원
+![Vault Details](https://example.com/vault_details.png)
+- **[그림 4.2.1] 암호화 키 생성**
+---
+- 미완성: ... [다음 페이지에 계속]\n\n## Page 87\n\n- 주제목: 금융분야 상용 클라우드컴퓨팅서비스 보안 관리 참고서
+- 중제목: 4. 계정 및 권한 관리
+
+### 텍스트
+- 내부 보안규정에 따라 암호화 키에 대한 수명주기를 고려하여 암호화 키 로테이션 권장
+- 사용 목적이 완료되었거나 사용하지 않은 키를 정기적으로 검토하고 필요시 암호화 키 삭제
+| Name       | State | Protection Mode | Algorithm | Created |
+|------------|-------|-----------------|-----------|---------|
+| hym_key    | Enabled | HSM             | AES       | Tue, May 7, 20... |
+|            |        |                 |           |         |
+|            |        |                 |           |         |
+|            |        |                 |           |         |
+|            |        |                 |           |         |
+- Master Encryption Keys in (root) Compartment
+- 테이블에 있는 데이터는 위에서 설명한 것과 같습니다.
+### 그림
+- [그림 4.2.2] 암호화 키 변경(Rotate)
+- [그림 4.2.3] 암호화 키 삭제
+### 구조적 요소
+- 섹션 구분: 제목, 소제목, 본문, 목록 구조, 각주
+- 하이라이트: Rotate Key, Delete Key
+---
+추출할 내용이 없으면 "내용 없음"만 출력.
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...- 미완성: ... [다음 페이지에 계속]\n\n## Page 88\n\n
+### 텍스트 내용
+1. 아래 5가지 방법으로 오라클 클라우드가 제공하는 암호화키 이용 시 관리방안 기준 및 보호대책 제공
+- ① 키 생성 및 관리 정책 수립
+- [키 생성] 중요한 데이터와 시스템을 보호할 수 있도록 강력한 암호화 알고리즘을 사용(AES-256 등 강력한 알고리즘 지원)
+- ② 키 생명 주기 관리
+- [키 생명 주기 관리] 키의 생성, 활성화, 비활성화, 폐기 등의 키 수명 주기를 정의하고 관리
+- ③ 키 접근 제어
+- [정책 설정] OCI 콘솔에서 키 관리와 관련된 IAM 정책을 설정 (예를 들어 특정 그룹이나 사용자만 키를 생성하고 관리할 수 있도록 제한)
+- ④ 키 사용 모니터링 및 로깅
+- [감사로그(Audit Logs)] OCI Audit 서비스를 사용하여 키의 사용 이력을 기록하고 모니터링(키의 생성, 접근, 사용, 삭제 등의 모든 활동을 로그로 남김)
+- [이벤트 알림] Event 서비스의 Notification 서비스를 연계하여 키의 관련된 중요한 이벤트 발생 시 알림 예를 들어 키의 비정상적인 접근 시도를 모니터링하고 알림을 받을 수 있음
+- ⑤ 데이터 암호화
+- [데이터 암호화 적용] OCI Key Management 서비스에서 생성한 키를 사용하여 저장 데이터와 전송 데이터를 암호화
+- [연계 서비스 사용] 오라클 데이터베이스, 블록 스토리지, 오브젝트 스토리지 등과 같은 OCI 서비스에서 제공하는 기본 암호화 기능을 사용
+- ⑥ 보안정책 및 규정준수
+- [규정 준수] HIPAA, GDPR, PCI-DSS 등과 같은 산업 규정을 준수하기 위해 필요한 키 관리 절차를 설정 (규정 준수 요구사항에 따라 키의 보관 위치, 접근통제, 감사 요구사항 등을 관리)
+2. 키 사용기간 수립 및 암호키 유출 등에 대응할 수 있도록 키 삭제 및 재적용 관련 기능 수립
+- (가상자원관리시스템) '홈' → 'Identity & Security' → 'Key Management & Secret Management' → 'Vault' → 'Vaults in (root) Compartment' → '적용할 키 선택' 오른쪽 메뉴버튼을 클릭하여 키 삭제 및 재적용을 위한 키를 로테이션 할 수 있도록 지원
+- 미완성: ... [다음 페이지에 계속]\n\n## Page 89\n\n- 주제목: 금융분야 상용 클라우드컴퓨팅서비스 보안 관리 참고서
+- 중제목: 4. 계정 및 권한 관리
+
+| Name       | State    | Protection Mode | Algorithm | Created          |
+|------------|----------|-----------------|-----------|------------------|
+| hym_key    | Enabled  | HSM             | AES       | Tue, May 7, 20... |
+|            | Enabled  | Software        | AES       | Sun, Apr 21, 20... |
+|            | Pending Deletion | Software | AES       | Fri, Apr 19, 20... |
+|            | Enabled  | HSM             | AES       | Mon, Jan 16, 20... |
+- 미완성: ... [다음 페이지에 계속]
+###
+- 인용: > 사용
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...- 미완성: ... [다음 페이지에 계속]
+이 페이지가 이전 내용의 연속이라면 [이전 페이지에서 계속] 표시를 추가해주세요.\n\n## Page 90\n\n```markdown
+# 금융보안원 ORACLE
+## 참고 사항
+### Key Management & Secret Management
+- [Key Management & Secret Management](https://cloud.oracle.com/security/kms?region=ap-seoul-1)
+```\n\n## Page 91\n\n```markdown
+# 4.3. 이용자 가상자원 접근시 로그인 규칙 적용
+## 1. 기준
+| 식별번호 | 기준 | 내용 |
+|----------|------|------|
+| 4.3      | 암호키 서비스 관리자 권한 통제 | 클라우드 암호키 서비스 이용 시 관리자 권한은 최소인원에게 부여하고 모니터링 하여야 한다. |
+## 2. 설명
+- 클라우드 환경 내 암호키 관리서비스(ex. KMS) 이용 시 암호키 서비스 관리자 권한을 적절하게 통제하여야 한다.
+1. 암호키 관리 서비스 관리자 권한은 최소인원에게 부여하고 부여현황에 대해 상시 모니터링 수행
+2. 사용자가 생성하는 각 키에 대해서는 관리자를 별도 지정할 수 있어야 하며, 각 조건에 따라 최소한의 권한 부여 등
+## 3. 우수 사례
+1. 암호키 관리 서비스 관리자 권한은 최소인원에게 부여하고 부여현황에 대해 상시 모니터링 수행
+- (가상자원관리시스템) '홈' → 'Identity & Security' → 'Domain' → 'Default Domain' → 'Groups' → 'Create Group'에서 암호키 관리 서비스 관리자를 최소 인원으로 구성 후
+- (가상자원관리시스템) '홈' → 'Identity & Security' → 'Policies' → 'Create Policy'에서 Policy builder를 통해 Policy use case, Common policy templates를 사용하여 최소인원에게 암호키 관리서비스의 관리자 권한을 지정할 수 있음
+```\n\n## Page 92\n\n
+| Name       | Description                          |
+|------------|--------------------------------------|
+| Key Management | OCI Key Management                   |
+| Webserver-group | -                                    |
+| MFA_Policy_Test | -                                    |
+| TEST IAM_GROUP | TEST IAM_GROUP                        |
+- 미완성: ... [다음 페이지에 계속]
+###
+- 인용: > 사용
+---
+## 텍스트 추출
+- **그림 4.3.1] 암호키 관리서비스 관리자 권한 설정**
+- **그림 4.3.2] Policy Builder 관리자 권한 지정**
+- 보안 관리자가 Vault, Key, Secrets을 관리하도록 허용
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...\n\n## Page 93\n\n
+| Policy use cases | Common policy templates |
+|------------------|-------------------------|
+| Key and Secret Management | Let security admins manage vaults, keys, and secrets |
+- 미완성: ... [다음 페이지에 계속]
+###
+- 인용: > 사용
+---
+## 텍스트 추출
+### Create Policy
+- **Name:** KeyAdmin
+- **Description:** Managing Encryption Keys
+- **Compartment:** apackrsct (root)
+### Policy Builder
+- **Policy use cases:** Key and Secret Management
+- **Identity domain:** OracleIdentityCloudService
+- **Location:** apackrsct (root)
+- **Key Management:** Allow group 'OracleIdentityCloudService'/'Key Management' to manage vaults in tenancy apackrsct (root)
+Allow group 'OracleIdentityCloudService'/'Key Management' to manage keys in tenancy apackrsct (root)
+Allow group 'OracleIdentityCloudService'/'Key Management' to manage secret-family in tenancy apackrsct (root)
+### 그림 4.3.3] Policy Builder 관리자 권한 지정
+### KeyAdmin
+- **Edit Policy**
+- **Add tags**
+- **Delete**
+- **Policy Information**
+- **OCID:** ...qhteqwa
+- **Compartment:** apackrsct (root)
+- **Description:** Managing Encryption Keys
+- **Created:** Tue, May 14, 2024, 04:44:59 UTC
+- **Statements**
+- Allow group 'OracleIdentityCloudService'/'Key Management' to manage vaults in tenancy
+- Allow group 'OracleIdentityCloudService'/'Key Management' to manage keys in tenancy
+- Allow group 'OracleIdentityCloudService'/'Key Management' to manage secret-family in tenancy
+### 그림 4.3.4] Key 관리자 권한할당 화면
+---
+## 텍스트 설명
+- **Create Policy:** 이 섹션에서는 암호키 관리자를 위한 정책을 생성하는 과정을 설명합니다. 정책 이름은 'KeyAdmin'으로 설정되었으며, 설명은 '암호화 키 관리'입니다. 정책은 'apackrsct (root)' 컴포먼트에 적용됩니다.
+- **Policy Builder:** 이 섹션에서는 정책을 구성하는 방법을 설명합니다. 정책 사용 사례는 'Key and Secret Management'이며, 이는 안전 관리자가 보관소, 키, 비밀을 관리할 수 있는 권한을 부여하는 것입니다. 정책은 'OracleIdentityCloudService' 아이덴티티 도메인에 적용되며, 'Key Management' 권한을 부여합니다.
+- **KeyAdmin:** 이 섹션에서는 'KeyAdmin' 정책의 정보가 표시됩니다. 정책은 'OracleIdentityCloudService' 아이덴티티 도메인에 속하며, 'Key Management' 권한을 부여받은 그룹이 보관소, 키, 비밀 가족을 관리할 수 있습니다. 이 정보는 'apackrsct (root)' 컴포먼트에 생성되었습니다.\n\n## Page 94\n\n- 주제목: 금융보안원
+- 중제목: ORACLE
+
+### 텍스트
+2) 사용자가 생성하는 각 키에 대해서는 관리자를 별도 지정할 수 있어야 하며, 각 조건에 따라 최소한의 권한 부여 등
+- (가상자원관리시스템) '홈' → 'Identity & Security' → 'Domain' → 'Default Domain' → 'Groups' → 'Create Group'에서 암호키별 그룹을 생성
+- (가상자원관리시스템) '홈' → 'Identity & Security' → 'Policies' → 'Create Policy'에서 Policy builder를 통해 사용자가 생성한 각 키(OCID)에 대해 사용자 그룹을 지정하고, 키마다 관리자를 지정하도록 지원
+- 사용자가 생성한 암호키마다 관리 정책을 할당하기 위해 그룹 생성(Custom Key Manager 1...n)
+| Create group |
+|---------------|
+| Name         | Custom Key Manager 1 |
+| Description  | Custom Key Manager 1 |
+| Users        | Optional             |
+| First name   | Yongmin              |
+| Last name    | Han                   |
+| Email        | yongmin.han@oracle.com |
+- 미완성: ... [다음 페이지에 계속]
+###
+- 인용: > 사용
+---
+### 그림 4.3.5] 암호키 관리서비스 관리자 권한 설정\n\n## Page 95\n\n- 주제목: 금융분야 상용 클라우드컴퓨팅서비스 보안 관리 참고서
+- 중제목: 4. 계정 및 권한 관리
+
+|-------|-------|-------|
+| 데이터 | 데이터 | 데이터 |
+- 미완성: ... [다음 페이지에 계속]
+- 연속: [이전 페이지에서 계속] ...
+###
+- 인용: > 사용
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...### 그림 4.3.5] 암호키 관리서비스 관리자 권한 설정
+---
+### 📌 이 페이지 컨텍스트
+- 마지막 문장 일부: ...### 그림 4.3.6] 사용자 생성한 암호키 OCID 값 확인
+---
+- 제목: 사용자가 생성한 각 암호키 별 권한을 할당하기 위해 사전에 OCID 값 확인
+- 소제목: Key Management & Secret Management > Vault > sw > Secret Details
+- 본문:
+- 사용자가 생성한 각 암호키 별 권한을 할당하기 위해 사전에 OCID 값 확인
+- 그림 4.3.6] 사용자 생성한 암호키 OCID 값 확인
+### 테이블
+| OCID: ocid1.vaultsecret.oc1.ap-seoul-1.amaaaaavsea7yiakgs4dp4dwovcdquoiciov6fyqv74rwbuhxq2h2rzdlq Hide Copy | Vault: sw |
+|---------------------------------------------------------------------------------------------------------|-----------|
+| Created: Tue, May 14, 2024, 07:14:51 UTC                                                             | Auto generation: On |
+| Compartment: (root)                                                                                   | Auto rotation: Off |
+### 테이블
+| Versions |
+|----------|
+| Create Secret Version |
+### 테이블
+| Version Number | Status | Content auto generated |
+|---------------|--------|------------------------|
+| 1 (latest)    | Current | True                   |
+- 제목: 보안 관리자가 Vault, Key, Secrets을 관리하도록 허용
+- 소제목: Policy Builder 관리자 권한 지정
+- 본문:
+- 보안 관리자가 Vault, Key, Secrets을 관리하도록 허용
+- 그림 4.3.7] Policy Builder 관리자 권한 지정
+### 테이블
+| Policy Builder Show manual editor |
+|-----------------------------------|
+| Allow group 'OracleIdentityCloudService' 'Custom Key Manger 1' to manage keys where target.key.id = 'ocid1.vaultsecret.oc1.ap-seoul-1.amaaaaavsea7yiakgs4dp4dwovcdquoiciov6fyqv74rwbuhxq2h2rzdlq' |
+### 테이블
+| [SAMPLE] Allow group <group-name> to manage keys where target.key.id = '<key-ocid>' |
+|------------------------------------------------------------------------------------|
+- 페이지 번호: 92
+- 회사 로고: 금융보안원, ORACLE\n\n## Page 96\n\n
+|-------|-------|-------|
+| 데이터 | 데이터 | 데이터 |
+- 미완성: ... [다음 페이지에 계속]
+- 연속: [이전 페이지에서 계속] ...
+###
+- 인용: > 사용
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...- 회사 로고: 금융보안원, ORACLE
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...- 회사 로고: 금융보안원, ORACLE
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...- 회사 로고: 금융보안원, ORACLE
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...- 회사 로고: 금융보안원, ORACLE
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...- 회사 로고: 금융보안원, ORACLE
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...- 회사 로고: 금융보안원, ORACLE
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...- 회사 로고: 금융보안원, ORACLE
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...- 회사 로고: 금융보안원, ORACLE
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...- 회사 로고: 금융보안원, ORACLE
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...- 회사 로고: 금융보안원, ORACLE
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...- 회사 로고: 금융보안원, ORACLE
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...- 회사 로고: 금융보안원, ORACLE
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...- 회사 로고: 금융보안원, ORACLE
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...- 회사 로고: 금융보안원, ORACLE
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...- 회사 로고: 금융보안원, ORACLE
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...- 회사 로고: 금융보안원, ORACLE
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...- 회사 로고: 금융보안원, ORACLE
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...- 회사 로고: 금융보안원, ORACLE
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...- 회사 로고: 금융보안원, ORACLE
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...- 회사 로고: 금융보안원, ORACLE
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...- 회사 로고: 금융보안원, ORACLE
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...- 회사 로고: 금융보안원, ORACLE
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...- 회사 로고: 금융보안원, ORACLE
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...- 회사 로고: 금융보안원, ORACLE
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...- 회사 로고: 금융보안원, ORACLE
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...- 회사 로고: 금융보안원, ORACLE
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...- 회사 로고: 금융보안원, ORACLE
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...- 회사 로고: 금융보안원, ORACLE
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...- 회사 로고: 금융보안원, ORACLE
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...- 회사 로고: 금융보안원, ORACLE
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...- 회사 로고: 금융보안원, ORACLE
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...- 회사 로고: 금융보안원, ORACLE
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...- 회사 로고: 금융보안원, ORACLE
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...- 회사 로고: 금융보안원, ORACLE
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...- 회사 로고: 금융보안원, ORACLE
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...- 회사 로고: 금융보안원, ORACLE
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...- 회사 로고: 금융보안원, ORACLE
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...- 회사 로고\n\n## Page 97\n\n
+| 식별번호 | 기준 | 내용 |
+|----------|------|------|
+| 4.4      | 암호키, 호출, 권한 관리 | 클라우드 암호키, 호출, 권한을 관리하여야 한다. |
+- 미완성: ... [다음 페이지에 계속]
+###
+- 인용: > 사용
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...- 마지막 문장 일부: ...- 회사 로고
+이 페이지가 이전 내용의 연속이라면 [이전 페이지에서 계속] 표시를 추가해주세요.\n\n## Page 98\n\n
+|-------|-------|-------|
+| 데이터 | 데이터 | 데이터 |
+- 미완성: ... [다음 페이지에 계속]
+- 연속: [이전 페이지에서 계속] ...
+###
+- 인용: > 사용
+---
+- Key and Secret Management에서 암호키 호출 관련 권한부여 템플릿을 선택하여 정책을 자동으로 생성
+#### [그림 4.4.2] 암호키 호출 권한 템플릿 선택
+2) 암호키 호출 권한 현황에 대한 모니터링 및 주기적 검토 수행
+> (가상자원관리시스템) '홈' → 'Observability & Management' → 'Logging' → 'Audit'에서 암호키 (KeyManagementService) 호출 권한 현황에 대한 모니터링
+---
+| Policy Builder | Show manual editor | Common policy templates |
+|----------------|---------------------|--------------------------|
+| Policy use cases | Key and Secret Management | Let security admins manage vaults, keys, and secrets |
+| Identity domain | OracleIdentityCloudService | Select a group | Location | Select a location |
+| Policy Statements | Allow group {group name} to manage vaults in {location} | Allow group {group name} to manage keys in {location} | Allow group {group name} to manage secret-family in {location} |
+---
+---
+- Policy Builder
+- Policy Statements
+- Show advanced options
+- Show manual editor
+- Policy use cases
+- Identity domain
+- Location
+- Common policy templates\n\n## Page 99\n\n- 주제목: 금융분야 상용 클라우드컴퓨팅서비스 보안 관리 참고서
+- 중제목: 4. 계정 및 권한 관리
+
+| Event time | User | Event source | Event name | Resource name | Request action | Response status |
+|------------|------|--------------|------------|---------------|----------------|-----------------|
+| Wed, May 15, 2024, 00:02:08 UTC | vaultsecret | KeyManagementService | GetVault | sw | GET | OK (200) |
+| Wed, May 15, 2024, 00:09:51 UTC | vaultsecret | KeyManagementService | GetVault | sw | GET | OK (200) |
+| Wed, May 15, 2024, 00:15:42 UTC | vaultsecret | KeyManagementService | GetVault | sw | GET | OK (200) |
+- 미완성: ... [다음 페이지에 계속]
+###
+- 인용: > 사용
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...- Common policy templates
+이 페이지가 이전 내용의 연속이라면 [이전 페이지에서 계속] 표시를 추가해주세요.\n\n## Page 100\n\n
+| 식별번호 | 기준 | 내용 |
+|----------|------|------|
+| 4.5      | 안전한 암호화 알고리즘 적용 | 암호화 기능 이용 시 안전한 암호화 알고리즘을 적용하여야 한다. |
+### 본문
+1. **기준**
+- 4.5 안전한 암호화 알고리즘 적용: 암호화 기능 이용 시 안전한 암호화 알고리즘을 적용하여야 한다.
+2. **설명**
+- 암호화 기능 이용 시 안전한 암호화 알고리즘을 적용하여야 한다.
+1. 이용자가 관리하는 암호키로 암호화 기능 적용 시 안전한 암호화 알고리즘 적용
+2. 클라우드 KMS 서비스를 통해 암호화 시 안전한 암호화 알고리즘을 제공하는지 확인
+3. **우수 사례**
+- 1) 이용자가 관리하는 암호키로 암호화 기능 적용 시 안전한 암호화 알고리즘 적용(금융'문 암호 기술 활용가이드 참고)
+- (가상자원관리시스템) '홈' → 'Identity & Security' → 'Key Management & Secret Management' → 'Vault' → 'Create Key'
+- 미완성: ... [다음 페이지에 계속]\n\n## Page 101\n\n- 주제목: 금융분야 상용 클라우드컴퓨팅서비스 보안 관리 참고서
+- 중제목: 4. 계정 및 권한 관리
+
+| Key Shape: Algorithm | Key Shape: Length |
+|----------------------|-------------------|
+| AES (Symmetric key used for Encrypt and Decrypt) | 256 bits |
+| RSA (Asymmetric key used for Encrypt, Decrypt, Sign and Verify) | 2048 bits |
+| ECDSA (Asymmetric key used for Sign and Verify) | 3072 bits |
+| 128 bits | 192 bits |
+| 256 bits | 384 bits |
+| 384 bits | 512 bits |
+| 512 bits | 1024 bits |
+| 1024 bits | 2048 bits |
+| 2048 bits | 3072 bits |
+| 3072 bits | 4096 bits |
+- 미완성: ... [다음 페이지에 계속]
+###
+- 인용: > 사용
+---
+### 본문
+- **[그림 4.5.1] 암호 알고리즘 종류 및 암호 강도**
+- 대칭키 암호 알고리즘 (KISA 권고사항인 128bit이상~256bit이상 모두 지원)
+- **[그림 4.5.2] 대칭키 길이 화면**
+- 공개키 암호 알고리즘 (KISA 권고사항인 112bit~128bit이상을 지원)
+- 공개키 암호 알고리즘 보안강도(공개키) : 112:2048, 128:3072, 192:7680
+- **[그림 4.5.3] 공개키 길이 화면**
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...- 미완성: ... [다음 페이지에 계속]\n\n## Page 102\n\n
+| 분류 | NIST(미국) (2015) | CRYPTREC(일본) (2013) | ECRYPT(유럽) (2018) | 국내1) (2018) |
+|------|------------------|------------------------|---------------------|---------------|
+| 대칭키 암호 알고리즘 (블록암호) | AES 3TDEA<sup>2)</sup> | AES Camellia | AES Camellia Serpent | SEED HIGHT ARIA LEA |
+| 해시함수 | SHA-224<br>SHA-256<br>SHA-384<br>SHA-512<br>SHA-512/224<br>SHA-512/256<br>SHA3-224<br>SHA3-256<br>SHA3-384<br>SHA3-512 | SHA-256<br>SHA-384<br>SHA-512 | SHA-256<br>SHA-384<br>SHA-512<br>SHA3-shake128<sup>3)</sup><br>SHA3-shake256<sup>3)</sup><br>Whirlpool-512<br>BLAKE-256<br>BLAKE-384<br>BLAKE-512 | SHA-224<br>SHA-256<br>SHA-384<br>SHA-512<br>LSH-224<br>LSH-256<br>LSH-384<br>LSH-512<br>LSH-512-224<br>LSH-512-256 |
+| 공개키 암호 알고리즘 | DH ECDH MQV ECMQV | DH ECDH | ECIES-KEM PSEC-KEM RSA-KEM | DH ECDH |
+| 암·복호화용 | RSA | RSA - OAEP | RSA-OAEP | RSAES |
+| 보안강도 | 대칭키 암호 알고리즘 (보안강도) | 해시함수 (보안강도) | 공개키 암호 알고리즘 | 인수분해 (비트) | 이산대수 (비트) | 타원곡선 암호 (비트) | 암호 알고리즘 안전성 유지기간 (년도) |
+|---------|--------------------------------|---------------------|---------------------|-----------------|-----------------|---------------------|------------------------------------|
+| 112비트 | 112 | 112 | 2048 | 2048 | 224 | 224 | 2011년에서 2030년까지 |
+| 128비트 | 128 | 128 | 3072 | 3072 | 256 | 256 | 2030년 이후 |
+| 192비트 | 192 | 192 | 7680 | 7680 | 384 | 384 | 2030년 이후 |
+| 256비트 | 256 | 256 | 15360 | 15360 | 512 | 512 | 2030년 이후 |
+- 미완성: ... [다음 페이지에 계속]
+###
+- 인용: > 사용
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...- 마지막 문장 일부: ...- 미완성: ... [다음 페이지에 계속]
+이 페이지가 이전 내용의 연속이라면 [이전 페이지에서 계속] 표시를 추가해주세요.\n\n## Page 103\n\n```markdown
+# 2) 클라우드 KMS 서비스를 통해 암호화 시 안전한 암호화 알고리즘을 제공하는지 확인
+- OCI KMS는 AES, RSA, SHA와 같은 강력한 암호화 알고리즘을 제공하여 데이터를 안전하게 보호합니다. 이러한 알고리즘은 국제표준을 준수하며, FIPS 인증을 받은 HSM에서 키를 관리하여 높은 수준의 보안을 보장합니다.
+- AES-256 : AES는 대칭 키 알고리즘으로 동일한 키로 데이터를 암호화하고 복호화합니다. AES-245은 256bit key를 사용하여 높은 보안 수준을 제공
+- RSA-2048(2048bit key), 3072(3072bit key) : RSA는 비대칭 키 알고리즘으로, 공개키와 개인키 쌍을 사용
+- SHA-256 : 256 bit 해시 값을 생성하는 해시 알고리즘으로 주로 데이터의 무결성을 검증하는데 사용
+## 참고 사항
+- [Key Management & Secret Management](https://cloud.oracle.com/security/kms?region=ap-seoul-1)
+- [메뉴얼](https://docs.oracle.com/en-us/iaas/Content/KeyManagement/Concepts/keyoverview.htm)
+```\n\n## Page 104\n\n```markdown
+# 5. 로깅 및 모니터링 관리
+- 5.1. 가상자원 이용(생성, 삭제, 변경등)에 관한 행위추적성 확보
+- 5.2. 가상자원 이용 행위추적성 증적 모니터링
+- 5.3. 이용자 가상자원 모니터링 기능 확보
+- 5.4. API 사용(호출대상, 호출자, 호출일시등)에 관한 행위추적성 확보
+- 5.5. 네트워크 관련 서비스(VPC, 보안그룹, ACL 등)에 관한 행위추적성 확보
+- 5.6. 계정 변동사항에 대한 행위추적성 확보
+- 5.7. 계정 변경사항에 관한 모니터링 수행
+```\n\n## Page 105\n\n```markdown
+# 5. 로깅 및 모니터링 관리
+## 5.1. 가상자원 이용(생성, 삭제, 변경 등)에 관한 행위추적성 확보
+### 1. 기준
+| 식별번호 | 기준 | 내용 |
+|----------|------|------|
+| 5.1      | 가상자원 이용(생성, 삭제, 변경 등)에 관한 행위 추적성 확보 | 이용자의 가상자원(서버, 데이터베이스, 스토리지 등) 이용 관련 행위추적성(로그 등)을 확보하여야 한다. |
+### 2. 설명
+> 이용자의 가상자원 이용 관련 일련의 행위에 대한 추적성을 확보할 수 있는 방안이 마련되어야 한다.
+>
+> 1. 가상자원 변경사항에 관한 행위(생성, 변경, 삭제 등)
+> 2. 가상자원에 접속한 일시, 접속자 및 접근을 확인할 수 있는 접근기록
+> 3. 가상자원을 이용한 일시, 사용자 및 가상자원의 형태(서버, 데이터베이스, 스토리지 등) 확인할 수 있는 접근기록
+### 3. 우수 사례
+1. 가상자원 변경 사항에 관한 행위(생성, 변경, 삭제 등)
+> (가상자원관리시스템) '홈' → 'Observability & Management' → 'Events Service' → 'Rules' → 'Create Rule'에서 가상자원 리소스를 지정하여 행위 추적성 모니터링 기능
+```\n\n## Page 106\n\n- 주제목: 금융보안원
+- 중제목: ORACLE
+
+|-------|-------|-------|
+| 데이터 | 데이터 | 데이터 |
+- 미완성: ... [다음 페이지에 계속]
+- 연속: [이전 페이지에서 계속] ...
+###
+- 인용: > 사용
+---
+#### [그림 5.1.1] 가상자원 이용 행위 추적성 모니터링 설정
+- 아래 메뉴 중 Actions → ‘Notification’ → ‘Compartment’ → 생성한 Topic을 지정하면 알림을 받고자 하는 메일 및 Slack 등으로 가상자원의 행위를 지속적으로 알림을 받아볼 수 있음
+#### [그림 5.1.2] 리소스 설정 및 관리자 알림 설정
+- 아래 메뉴 중 Actions → ‘Notification’ → ‘Compartment’ → 생성한 Topic을 지정하면 알림을 받고자 하는 메일 및 Slack 등으로 가상자원의 행위를 지속적으로 알림을 받아볼 수 있음
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...\n\n## Page 107\n\n- 주제목: 금융분야 상용 클라우드컴퓨팅서비스 보안 관리 참고서
+- 중제목: 5. 계정 및 권한 관리
+### 소제목
+- 2) 가상자원에 접속한 일시, 접속자 및 접근을 확인할 수 있는 접근기록
+### 본문
+- (가상자원관리시스템) ‘홈’ → ‘Observability & Management’ → ‘Logging’ → ‘Logs’ → ‘Create custom log’에서 가상자원의 시스템 로그를 수집하여 접속일시, 접속자 및 접근기록(Log) 확인 가능
+### 구조
+- [그림 5.1.3] 가상자원의 Audit, Security, System log 수집
+### 구조적 요소
+- Agent configuration을 통해 Input type: Windows, Linux(path)를 지정하여 다양한 시스템 로그를 수집하도록 지원\n\n## Page 108\n\n
+| Agent configuration | Configure log inputs | Select log destination |
+|---------------------|----------------------|-------------------------|
+| Input type          | Windows event log    | Compartment             |
+| Input name          |                      | Log Group               |
+| Event channels      | Application          | Log name                |
+|                     | Security             |                         |
+|                     | System               |                         |
+|                     |                      |                         |
+|                     |                      |                         |
+|                     |                      |                         |
+- 미완성: ... [다음 페이지에 계속]
+###
+- 인용: > 사용
+---
+### 본문
+3) 가상자원을 이용한 일시, 사용자 및 가상자원의 형태(서버, 데이터베이스, 스토리지 등) 확인 할 수 있는 접근기록
+- (가상자원관리시스템) ‘홈’ → ‘Observability & Management’ → ‘Logging’ → ‘Logs’ → ‘생성한 Log 선택’에서 계정변경, 네트워크 변경 등 다양한 보안 모니터링에 대한 주기적인 검토가 가능하도록 지원\n\n## Page 109\n\n- 주제목: 금융분야 상용 클라우드컴퓨팅서비스 보안 관리 참고서
+- 중제목: 5. 계정 및 권한 관리
+
+| Log name | Log type | Status | Details | Created | Last updated |
+|----------|----------|--------|---------|---------|--------------|
+| log_20240319_EventService_ruleexecutionlog | Service | Active | Service: Events Service; Category: Rule Execution Logs | Tue, Mar 19, 2024, 11:21:56 UTC | Tue, Mar 19, 2024, 11:21:56 UTC |
+- 미완성: ... [다음 페이지에 계속]
+###
+- 인용: > 사용
+---
+### 본문
+#### [그림 5.1.5] 접근기록을 저장하기 위한 Custom log 생성
+- **Custom log** 생성을 위해 `Create custom log` 버튼을 클릭합니다.
+- **Service log** 활성화를 위해 `Enable service log` 버튼을 클릭합니다.
+#### [그림 5.1.6] 가상자원 접근 기록 검토
+- 검색된 로그에서 Action → Explore with Log Search → Explorer or Visualize를 선택하여 원하는 필드나 로그 생성 시간 등을 조회할 수 있는 기능 제공
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ... 계정변경, 네트워크 변경 등 다양한 보안 모니터링에 대한 주기적인 검토가 가능하도록 지원\n\n## Page 110\n\n
+| datetime | type | data.message |
+|----------|------|--------------|
+| Mar 20, 2024, 02:34:03 UTC | eventservice eventrule ruleexecutionlog | Event delivered to ONS successfully |
+| Mar 20, 2024, 02:34:02 UTC | eventservice eventrule ruleexecutionlog | Rule has matched event |
+- 미완성: ... [다음 페이지에 계속]
+###
+- 인용: > 사용
+---
+### 참고 사항
+- [Event Service] https://cloud.oracle.com/events/rules?region=ap-seoul-1
+- [Logging] https://cloud.oracle.com/logging/logs?region=ap-seoul-1\n\n## Page 111\n\n```markdown
+# 5.2. 이용자 가상자원 접근시 로그인 규칙 적용
+## 1. 기준
+| 식별번호 | 기준 | 내용 |
+|----------|------|------|
+| 5.2      | 가상자원 이용 행위추적성 증적 모니터링 | 가상자원 이용에 관한 행위추적성 증적에 대해 모니터링 및 주기적 검토를 수행하여야 한다. |
+## 2. 설명
+- 클라우드 가상자원 이용에 관한 행위추적성 증적에 대해 모니터링 및 주기적 검토를 수행하여야 한다.
+- 예시
+1. 클라우드 가상자원 이용에 관한 행위추적성 증적(ex. 감사로그 등)에 대한 상시 모니터링 수행
+2. 금융회사 내부규정 등 관련 규정을 통해 수립된 검토 기간에 맞추어 클라우드 가상자원 이용에 관한 행위추적성 증적에 대한 주기적 검토 수행
+## 3. 우수 사례
+- (주기적 검토) '5.1 가상자원 이용에 관한 행위추적성 확보' 기준을 통해 확인된 로그에 대해 금융회사에서는 주기적 검토를 수행한다.
+- 인가받지 않은 가상자원 접속, 생성, 변경, 삭제 등
+## 4. 참고 사항
+- N/A
+```\n\n## Page 112\n\n```markdown
+# 5.3. 이용자 가상자원 접근시 로그인 규칙 적용
+## 1. 기준
+| 식별번호 | 기준 | 내용 |
+|----------|------|------|
+| 5.3      | 이용자 가상자원 모니터링 기능 확보 | 이용자 가상자원 운용에 관한 모니터링 기능을 확보하여야 한다. |
+## 2. 설명
+> 이용자 가상자원 가용성 확보 및 장애대응을 위한 모니터링 기능을 확보하여야 한다.
+>
+> 1) 가상자원 상태 모니터링 (사용량, 트래픽 용량 등)
+> 2) 가상자원 장애 모니터링 (장애 발생 시 담당자 공지 등)
+## 3. 우수 사례
+### 1) 가상자원 상태 모니터링 (사용량, 트래픽 용량 등)
+> (가상자원관리시스템) '홈' → 'Observability & Management' → 'Monitoring' → 'Service Metrics'에서 서비스별 간략 모니터링 기능을 제공
+![그림 5.3.1] Metric 선택](https://example.com/image.png)
+```\n\n## Page 113\n\n- 주제목: 금융분야 상용 클라우드컴퓨팅서비스 보안 관리 참고서
+- 중제목: 5. 계정 및 권한 관리
+
+|-------|-------|-------|
+| 데이터 | 데이터 | 데이터 |
+- 미완성: ... [다음 페이지에 계속]
+- 연속: [이전 페이지에서 계속] ...
+###
+- 인용: > 사용
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...```
+---
+#### [그림 5.3.2] 모니터링 대시보드
+- (가상자원관리시스템) ‘홈’ → ‘상단 Dashboard’선택
+- 클라우드 리소스 등 필요한 모든 항목을 대시보드에 추가하여 모니터링이 가능하도록 지원.
+#### [그림 5.3.3] 대시보드 생성
+- 클라우드 리소스 등 필요한 모든 항목을 대시보드에 추가하여 모니터링이 가능하도록 지원.
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...```
+---
+#### [그림 5.3.2] 모니터링 대시보드
+- (가상자원관리시스템) ‘홈’ → ‘상단 Dashboard’선택
+- 클라우드 리소스 등 필요한 모든 항목을 대시보드에 추가하여 모니터링이 가능하도록 지원.
+#### [그림 5.3.3] 대시보드 생성
+- 클라우드 리소스 등 필요한 모든 항목을 대시보드에 추가하여 모니터링이 가능하도록 지원.
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...```
+---
+#### [그림 5.3.2] 모니터링 대시보드
+- (가상자원관리시스템) ‘홈’ → ‘상단 Dashboard’선택
+- 클라우드 리소스 등 필요한 모든 항목을 대시보드에 추가하여 모니터링이 가능하도록 지원.
+#### [그림 5.3.3] 대시보드 생성
+- 클라우드 리소스 등 필요한 모든 항목을 대시보드에 추가하여 모니터링이 가능하도록 지원.
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...```
+---
+#### [그림 5.3.2] 모니터링 대시보드
+- (가상자원관리시스템) ‘홈’ → ‘상단 Dashboard’선택
+- 클라우드 리소스 등 필요한 모든 항목을 대시보드에 추가하여 모니터링이 가능하도록 지원.
+#### [그림 5.3.3] 대시보드 생성
+- 클라우드 리소스 등 필요한 모든 항목을 대시보드에 추가하여 모니터링이 가능하도록 지원.
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...```
+---
+#### [그림 5.3.2] 모니터링 대시보드
+- (가상자원관리시스템) ‘홈’ → ‘상단 Dashboard’선택
+- 클라우드 리소스 등 필요한 모든 항목을 대시보드에 추가하여 모니터링이 가능하도록 지원.
+#### [그림 5.3.3] 대시보드 생성
+- 클라우드 리소스 등 필요한 모든 항목을 대시보드에 추가하여 모니터링이 가능하도록 지원.
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...```
+---
+#### [그림 5.3.2] 모니터링 대시보드
+- (가상자원관리시스템) ‘홈’ → ‘상단 Dashboard’선택
+- 클라우드 리소스 등 필요한 모든 항목을 대시보드에 추가하여 모니터링이 가능하도록 지원.
+#### [그림 5.3.3] 대시보드 생성
+- 클라우드 리소스 등 필요한 모든 항목을 대시보드에 추가하여 모니터링이 가능하도록 지원.
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...```
+---
+#### [그림 5.3.2] 모니터링 대시보드
+- (가상자원관리시스템) ‘홈’ → ‘상단 Dashboard’선택
+- 클라우드 리소스 등 필요한 모든 항목을 대시보드에 추가하여 모니터링이 가능하도록 지원.
+#### [그림 5.3.3] 대시보드 생성
+- 클라우드 리소스 등 필요한 모든 항목을 대시보드에 추가하여 모니터링이 가능하도록 지원.
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...```
+---
+#### [그림 5.3.2] 모니터링 대시보드
+- (가상자원관리시스템) ‘홈’ → ‘상단 Dashboard’선택
+- 클라우드 리소스 등 필요한 모든 항목을 대시보드에 추가하여 모니터링이 가능하도록 지원.
+#### [그림 5.3.3] 대시보드 생성
+- 클라우드 리소스 등 필요한 모든 항목을 대시보드에 추가하여 모니터링이 가능하도록 지원.
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...```
+---
+#### [그림 5.3.2] 모니터링 대시보드
+- (가상자원관리시스템) ‘홈’ → ‘상단 Dashboard’선택
+- 클라우드 리소스 등 필요한 모든 항목을 대시보드에 추가하여 모니터링이 가능하도록 지원.
+#### [그림 5.3.3] 대시보드 생성
+- 클라우드 리소스 등 필요한 모든 항목을 대시보드에 추가하여 모니터링이 가능하도록 지원.
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...```
+---
+#### [그림 5.3.2] 모니터링 대시보드
+- (가상자원관리시스템) ‘홈’ → ‘상단 Dashboard’선택
+- 클라우드 리소스 등 필요한 모든 항목을 대시보드에 추가하여 모니터링이 가능하도록 지원.
+#### [그림 5.3.3] 대시보드 생성
+- 클라우드 리소스 등 필요한 모든 항목을 대시보드에 추가하여 모니터링이 가능하도록 지원.
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 헤더: ### 1) 가상자원 상태 모니터링 (사용량, 트래픽\n\n## Page 114\n\n
+| Widget (5) | Sample layout |
+|------------|----------------|
+| 1. Resource overview | <1> Resource overview |
+| 2. Infrastructure Billing | <2> Infrastructure billing |
+| 3. Cost by service | <3> Cost by service |
+| 4. Cost by compartment | <4> Cost by compartment |
+| 5. Cost by region | <5> Cost by region |
+- 미완성: ... [다음 페이지에 계속]
+###
+- 인용: > 사용
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...- 마지막 헤더: ### 1) 가상자원 상태 모니터링 (사용량, 트래픽\n\n## Page 115\n\n## 마크다운 형식화
+
+|-------|-------|-------|
+| 데이터 | 데이터 | 데이터 |
+- 미완성: ... [다음 페이지에 계속]
+- 연속: [이전 페이지에서 계속] ...
+###
+- 인용: > 사용
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ... 문장 일부: ...
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ... 문장 일부: ...
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ... 문장 일부: ...
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ... 문장 일부: ...
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ... 문장 일부: ...
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ... 문장 일부: ...
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ... 문장 일부: ...
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ... 문장 일부: ...
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ... 문장 일부: ...
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ... 문장 일부: ...
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ... 문장 일부: ...
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ... 문장 일부: ...
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ... 문장 일부: ...
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ... 문장 일부: ...
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ... 문장 일부: ...
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ... 문장 일부: ...
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ... 문장 일부: ...
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ... 문장 일부: ...
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ... 문장 일부: ...
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ... 문장 일부: ...
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ... 문장 일부: ...
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ... 문장 일부: ...
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ... 문장 일부: ...
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ... 문장 일부: ...
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ... 문장 일부: ...
+---\n\n## Page 116\n\n- 주제목: 금융보안원
+- 중제목: ORACLE
+
+### 텍스트
+- **Set visualization parameters**
+- Chart type: Line Chart
+- Interval: 1m
+- Filter by time: Past 3 hours
+- **Configure metric query**
+- Region: South Korea Central (Seoul)
+- Namespace in (root) (Change compartment): oci_computeagent
+- Metric Name: NetworksBytesIn
+- Statistic: rate
+- Dimension value: Select dimension value
+| Metric Name | Statistic | Dimension value |
+|-------------|-----------|-----------------|
+| NetworksBytesIn | rate | Select dimension value |
+- 미완성: ... [다음 페이지에 계속]
+###
+- 인용: > 사용\n\n## Page 117\n\n- 주제목: 금융분야 상용 클라우드컴퓨팅서비스 보안 관리 참고서
+- 중제목: 5. 계정 및 권한 관리
+### 소제목
+- 2) 가상자원 장애 모니터링 (장애 발생 시 담당자 공지 등)
+### 본문
+- (가상자원관리시스템) '홈' → 'Observability & Management' → 'Monitoring' → 'Alarm Status'에서 장애유형과 리소스 유형(Compute, Storage, Networking 등)을 지정하고, Notification Service의 Topic과 연동하여 담당자에게 관련 장애 유형별 알림을 받아볼 수 있도록 지정
+| Create Alarm |
+|--------------|
+| Define alarm |
+| Alarm name   | 20240325 Alarm Test |
+| Alarm body   | Optional |
+| Tags (optional) |
+| Metric description |
+| Compartment  | (root) |
+| Metric namespace | oci_compute_infrastructure_health |
+| Metric name  | instance_status |
+| Interval     | 1 minute |
+| Trigger rule |
+| Operator     | greater than |
+| Value        | 1 |
+| Trigger delay minutes | 1 |
+### 차트/그래프
+- **그림 5.3.8] 장애 발생 시 담당자 공지 설정**
+### 구조적 요소
+- 섹션 구분: 2) 가상자원 장애 모니터링 (장애 발생 시 담당자 공지 등)
+- 하이라이트: Metric description, Trigger rule
+- 다이어그램 텍스트: Create Alarm, Define alarm, Alarm name, Alarm body, Tags (optional), Metric description, Compartment, Metric namespace, Metric name, Interval, Trigger rule, Operator, Value, Trigger delay minutes\n\n## Page 118\n\n
+|-------|-------|-------|
+| 데이터 | 데이터 | 데이터 |
+- 미완성: ... [다음 페이지에 계속]
+- 연속: [이전 페이지에서 계속] ...
+###
+- 인용: > 사용
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...igger rule, Operator, Value, Trigger delay minutes
+---
+### 내용 추출
+#### [그림 5.3.9] 장애 발생 시 담당자 공지 설정
+- **Destination**
+- Destination service: Notifications
+- Compartment: (root)
+- Topic: Topic_ODP
+#### [그림 5.3.10] 장애발생 알림 설정 완료
+- **20240325 Alarm Test**
+- **Summary**
+- Alarm fires when the Mean of instance_status is greater than the threshold value of 1, with a trigger delay of a minute.
+- **Alarm Severity**
+- Warning
+- **Alarm Details**
+- Compartment: (root)
+- OCID: ...qknlog2ca
+- Namespace: ocl_compute_infrastructure_health
+- Resource group: All resource groups
+- Metric: instance_status
+- Statistic: mean()
+- Interval: 1m
+- Aggregation: None
+- Dimensions: No dimensions
+- Last updated: Mar 25, 2024, 07:20:20 UTC
+- **Notifications**
+- Destination: Notifications
+- Topic: Topic_ODP
+- Group notifications across metric streams
+- Message Format: Formatted messages
+- Repeat notification: Does not repeat
+- Suppression: Not suppressed
+- **Tags**
+- Defined tags (2)
+- Oracle-Tags.CreatedBy: oracleidentitycloudservice:yongmin.han@oracle.com
+- Oracle-Tags.CreatedOn: Mar 25, 2024, 07:20:20 UTC
+- **Alarm data**
+- Start time: Mar 25, 2024 06:20:43 UTC
+- End time: Mar 25, 2024 07:21:23 UTC
+- Quick selects: Last hour
+- Chart:
+- Time (UTC): 06:20 ~ 07:20
+- No data for this time range.
+---
+이 페이지의 내용만 추출하여 정리했습니다. 추가 정보가 필요하시다면 언제든지 알려주세요.\n\n## Page 119\n\n- 주제목: 금융분야 상용 클라우드컴퓨팅서비스 보안 관리 참고서
+- 중제목: 5. 계정 및 권한 관리
+
+### 텍스트
+- (가상자원관리시스템) ‘홈’ → ‘Observability & Management’ → ‘Monitoring’ → ‘Health Checks’
+- Instance(VM)를 모니터링하기 위해 Health check 서비스를 통해 지속적인 모니터링
+- Metrics Explorer로 모니터링하고자 하는 대상을 알림이 아닌 화면에서 모니터링 기능 제공
+|-------|-------|-------|
+| 데이터 | 데이터 | 데이터 |
+- 미완성: ... [다음 페이지에 계속]
+###
+- 인용: > 사용
+---
+### 그림 5.3.11] Health Check 설정 화면
+- [그림 5.3.11] Health Check 설정 화면
+### 그림 5.3.12] Metrics Explorer 화면
+- [그림 5.3.12] Metrics Explorer 화면\n\n## Page 120\n\n```markdown
+# 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...- [그림 5.3.12] Metrics Explorer 화면
+## 4. 참고 사항
+- [Monitoring] https://cloud.oracle.com/monitoring/?region=ap-seoul-1
+```\n\n## Page 121\n\n
+| 식별번호 | 기준 | 내용 |
+|----------|------|------|
+| 5.4      | API 사용 (호출대상, 호출자, 호출 일시 등)에 관한 행위추적성 확보 | API 사용 이력에 대한 행위추적성(로그 등)을 확보하여야 한다. |
+- 미완성: ... [다음 페이지에 계속]
+###
+- 인용: > 사용
+---
+### 본문
+- 문단: 빈 줄로 구분
+- 글머리: - 또는 *
+- 들여쓰기: 2칸 또는 4칸
+1. API 사용 이력에 대한 행위 추적성을 확보하여야 한다.
+1. API 호출에 대한 정보(호출대상, 호출자, 호출일시 등)
+### 본문
+- 문단: 빈 줄로 구분
+- 글머리: - 또는 *
+- 들여쓰기: 2칸 또는 4칸
+- (가상자원관리시스템) ‘홈’ → ‘Identity & Security’ → ‘Audit’ → ‘Keywords 검색’에서 ‘API’ 키워드로 Audit Log 중 API 호출에 대한 정보 조회 기능 제공(기간 등을 설정하여 세부 내용 조회)
+- [그림 5.4.1] 모니터링 대상 지정(API 사용)
+- 미완성: ... [다음 페이지에 계속]\n\n## Page 122\n\n- 주제목: 금융보안원
+- 중제목: ORACLE
+### 본문
+#### [그림 5.4.2] 모니터링 대상 지정(API 사용)
+#### 참고 사항
+- https://cloud.oracle.com/audit/events?region=ap-seoul-1
+| Event time | User | Event source | Event name | Resource name | Request action | Response status |
+|------------|------|--------------|------------|---------------|----------------|-----------------|
+| Thu, Mar 21, 2024, 00:00:52 UTC | ocidv1:clouguard-agent:oc1:ap-seoul-1:clouguard-agent:aa | ObjectStorage | GetNamespace | /n?compartmentId=ocid1.compartment.oc | GET | OK (200) |
+| Thu, Mar 21, 2024, 00:04:41 UTC | budgetscontrolplane | UsageApi | RequestSummarizedUsages | - | POST | Forbidden (403) |
+| Thu, Mar 21, 2024, 00:04:43 UTC | budgetscontrolplane | UsageApi | RequestSummarizedUsages | - | POST | Forbidden (403) |
+| Thu, Mar 21, 2024, 00:04:47 UTC | budgetscontrolplane | UsageApi | RequestSummarizedUsages | - | POST | Forbidden (403) |
+| Thu, Mar 21, 2024, 00:04:55 UTC | budgetscontrolplane | UsageApi | RequestSummarizedUsages | - | POST | Forbidden (403) |
+| Thu, Mar 21, 2024, 00:05:11 UTC | budgetscontrolplane | UsageApi | RequestSummarizedUsages | - | POST | Forbidden (403) |
+| Thu, Mar 21, 2024, 00:08:14 UTC | tenant-manager-api-cp-external | tenant-manager-api-cp-external | ListSubscriptions | - | GET | OK (200) |
+| Thu, Mar 21, 2024, 00:08:14 UTC | tenant-manager-api-cp-external | tenant-manager-api-cp-external | GetSubscription | - | GET | OK (200) |
+| Thu, Mar 21, 2024, 00:08:28 UTC | tenant-manager-api-cp-external | ComputeApi | GetImage | Oracle-Linux-8.9-2024.02.26-0 | GET | OK (200) |
+### 구조적 요소
+- 섹션 구분: [그림 5.4.2], 참고 사항
+- 하이라이트: Event time, User, Event source, Event name, Resource name, Request action, Response status
+- 다이어그램 텍스트: JSON 형식의 이벤트 정보
+- 페이지 경계: 미완성: ... [다음 페이지에 계속]\n\n## Page 123\n\n```markdown
+# 5.5. 네트워크 관련 서비스(VPC, 보안그룹, ACL 등)에 관한 행위추적성 확보
+## 1. 기준
+| 식별번호 | 기준 | 내용 |
+|----------|------|------|
+| 5.5      | 네트워크 관련 서비스(VPC, 보안그룹, ACL 등)에 관한 행위 추적성 확보 | 이용자의 클라우드 네트워크 서비스 이용 시 발생하는 사항에 대한 행위추적성(로그 등)을 확보하여야 한다. |
+## 2. 설명
+- 클라우드 환경에서 네트워크 서비스(VPC, NAT 등) 사용 시 발생하는 사항에 대한 행위추적성(로그 등)을 확보하여야 한다.
+1. 네트워크 서비스 이용에 관한 사항(VPC, NAT 규칙 생성 및 변경 등) 등
+## 3. 우수 사례
+- (가상자원관리시스템) '홈' → 'Observability & Management' → 'Events Service' → 'Create Rule'에서 Rule conditions → 'Condition → Service Name → 'Networking' → 'Event type' → VCN, Security List, NAT 등 네트워크 서비스 사용 시 발생하는 사항에 대해 모니터링 (Notification Email, SMS 등) 기능
+```\n\n## Page 124\n\n
+|-------|-------|-------|
+| 데이터 | 데이터 | 데이터 |
+- 미완성: ... [다음 페이지에 계속]
+- 연속: [이전 페이지에서 계속] ...
+###
+- 인용: > 사용
+---
+#### [그림 5.5.1] 모니터링 대상 지정(Networking)
+- **Rule Conditions**
+- **Event Type:** Networking
+- Security List - Change Compartment
+- Security List - Create
+- Security List - Delete
+- Security List - Update
+- Service Gateway - Attach Service
+- Service Gateway - Create
+- Service Gateway - Delete Begin
+- Service Gateway - Delete End
+- Service Gateway - Detach Service
+- Service Gateway - Update
+- VCN - Create
+- VCN - Delete
+- VCN - Update
+- **Actions**
+- **Action Type:** Notifications
+- **Compartment:**
+- **Topic:** Eventservice_20240319
+#### [그림 5.5.2] 네트워크 행위추적성 설정 상태 확인
+- **Rule Information**
+- OCID: ...
+- Compartment: ...
+- Created: Tue, Mar 19, 2024, 07:45:28 UTC
+- **Event Types**
+- **Add Event Type**
+- **Edit**
+- **Remove**
+- **Event Type**
+- Security List - Change Compartment
+- Security List - Create
+- Security List - Delete
+- Security List - Update
+- Service Gateway - Attach Service
+- Service Gateway - Create
+- Service Gateway - Delete Begin
+- Service Gateway - Delete End
+- Service Gateway - Detach Service
+- Service Gateway - Update
+- VCN - Create
+- VCN - Delete
+- VCN - Update
+- Service Gateway - Change Compartment\n\n## Page 125\n\n- 주제목: 금융분야 상용 클라우드컴퓨팅서비스 보안 관리 참고서
+- 중제목: 5. 계정 및 권한 관리
+
+| Category | Status | Log Name | Log Group | Enable Log |
+|----------|--------|----------|-----------|------------|
+| Rule Execution Logs | Active | log_20240319_EventService_ruleexecutionlog | Default_Group | Enabled |
+- 미완성: ... [다음 페이지에 계속]
+###
+- 인용: > 사용
+---
+#### [그림 5.5.3] 행위추적성 로깅 활성화
+- 리소스 변경사항의 행위추적성은 Logs로 남겨 추후 지속적으로 검토가 가능하도록 제공
+- Logs → Enable Log → 활성화 (로그저장을 위해 Log Group 생성 필요)
+---
+#### [그림 5.5.4] Log Group 생성
+- Logs → Enable Log → 활성화 (로그저장을 위해 Log Group 생성 필요)
+- Logs → Log Groups → Audit
+---
+### 구조적 요소
+- 섹션 구분: [그림 5.5.3], [그림 5.5.4]
+- 하이라이트: Logs, Enable Log, Audit
+- 다이어그램 텍스트:
+- [그림 5.5.3] 행위추적성 로깅 활성화
+- [그림 5.5.4] Log Group 생성\n\n## Page 126\n\n### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...- [그림 5.5.4] Log Group 생성
+---
+---
+
+---
+| datetime | type | data.message |
+|----------|------|--------------|
+| Mar 20, 2024 02:34:03 UTC | eventservice eventrule ruleexecutionlog | Event delivered to ONS successfully |
+---
+- 미완성: ... [다음 페이지에 계속]
+---
+###
+- 인용: > 사용
+---
+### 참고 사항
+- [Event Service] https://cloud.oracle.com/events/rules?region=ap-seoul-1
+- [Logging] https://cloud.oracle.com/logging/logs?region=ap-seoul-1\n\n## Page 127\n\n
+| 식별번호 | 기준 | 내용 |
+|----------|------|------|
+| 5.6      | 계정 변동사항에 대한 행위추적성 확보 | 클라우드 계정 변동사항에 대한 행위추적성(로그 등)을 확보하여야 한다. |
+### 본문
+#### 1. 기준
+- 5.6 계정 변동사항에 대한 행위추적성 확보 | 클라우드 계정 변동사항에 대한 행위추적성(로그 등)을 확보하여야 한다.
+#### 2. 설명
+- 클라우드 계정 변동사항에 대한 행위추적성(로그 등)을 확보하여야 한다.
+1. 클라우드 가상자원 관리시스템 접속 계정 생성, 변경, 삭제에 관한 사항
+2. 클라우드 가상자원(서버, 데이터베이스 등) 접속계정 생성, 변경, 삭제에 관한 사항
+#### 3. 우수 사례
+- 1) 클라우드 가상자원 관리시스템 접속 계정 생성, 변경, 삭제에 관한 사항
+- (가상자원관리시스템) '홈' → 'Observability & Management' → 'Events Service' → 'Create Rule'에서 Rule conditions → 'Condition' → 'Service Name' → 'Identity' → 'Event type' → 계정 변경사항(생성, 삭제 등)에 대해 모니터링(Notification Email, SMS 등) 및 로깅 기능 제공
+### 그림
+- [그림 5.6.1] 모니터링 리소스 지정(계정 Identity)
+### 구조적 요소
+- 섹션 구분: 1. 기준, 2. 설명, 3. 우수 사례
+- 하이라이트: 제목, 소제목, 강조된 텍스트
+- 다이어그램 텍스트: Create Rule, Rule Conditions, Rule Logic
+- 미완성: ... [다음 페이지에 계속]
+###
+- 강조: **금융분야**, **상용**, **클라우드컴퓨팅서비스**, **보안**, **관리**, **참고서**, **계정**, **권한**, **관리**, **행위추적성**, **확보**, **가상자원**, **관리시스템**, **접속**, **계정**, **생성**, **변경**, **삭제**, **사항**, **가상자원**, **서버**, **데이터베이스**, **모니터링**, **Notification Email**, **SMS**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **Rule conditions**, **\n\n## Page 128\n\n- 주제목: 금융보안원
+- 중제목: ORACLE
+
+| Event Type |
+|------------|
+| Dynamic Group - Create |
+| Grant - Delete |
+| Group - Add User To |
+| Group - Create |
+| Group - Delete |
+| Group - Update |
+| Password - Create or Reset |
+| User - Activate |
+| User - Create |
+| User - Deactivate |
+| User - Delete |
+| User - Update |
+| User State - Update |
+| Verification Email - Send |
+| Group - Remove User From |
+- 미완성: ... [다음 페이지에 계속]
+###
+- 인용: > 사용
+---
+### 참고 사항
+1. [Event Service] https://cloud.oracle.com/events/rules?region=ap-seoul-1
+2. [Logging] https://cloud.oracle.com/logging/logs?region=ap-seoul-1\n\n## Page 129\n\n
+| 식별번호 | 기준 | 내용 |
+|----------|------|------|
+| 5.7      | 계정 변경사항에 관한 모니터링 수행 | 클라우드 서비스 이용 계정 변경사항(생성, 삭제 등)에 관한 로깅 및 모니터링을 수행하여야 한다. |
+### 본문
+1. **기준**
+- 5.7 계정 변경사항에 관한 모니터링 수행
+- 클라우드 서비스 이용 계정 변경사항에 관한 로깅 및 모니터링을 수행하여야 한다.
+2. **설명**
+- 클라우드 서비스 이용 계정 변경사항에 관한 모니터링을 수행하여야 한다.
+1. 계정 변경사항에 관한 상시 모니터링 수행
+2. 전자금융감독규정 및 금융회사 내부규정 등에 수립된 주기에 맞추어 주기적 검토 수행
+3. 관리자 계정에 대해서는 이중확인 수행 등
+3. **우수 사례**
+- 1) 계정 변경사항에 관한 상시 모니터링 수행
+- (가상자원관리시스템) '홈' → 'Observability & Management' → 'Events Service' → 'Create Rule'에서 Rule conditions → 'Condition' → 'Service Name' → 'Identity' → 'Event type' → 계정 변경사항(생성, 삭제 등)에 대해 모니터링(Notification Email, SMS 등) 및 로깅 기능 제공
+### 그림
+- [그림 5.7.1] 모니터링 리소스 지정(계정 Identity)
+- 미완성: ... [다음 페이지에 계속]\n\n## Page 130\n\n- 주제목: 금융보안원 ORACLE
+- 중제목: [그림 5.7.2] 모니터링 리소스 지정(계정 Identity)
+- 소제목: [그림 5.7.3] 행위추적성 로깅 활성화
+- 소제목: [그림 5.7.4] 행위추적성 생성 확인
+
+|-------|-------|-------|
+| 데이터 | 데이터 | 데이터 |
+- 미완성: ... [다음 페이지에 계속]
+- 연속: [이전 페이지에서 계속] ...
+###
+- 인용: > 사용
+---
+#### 1순위: 핵심 텍스트
+- 리소스 변경사항의 행위추적성은 Logs로 남겨 추후 지속적으로 검토가 가능하도록 제공
+- Logs → Enable Log → 활성화 (로그저장을 위해 Log Group 생성 필요)
+---
+#### 2순위: 표와 데이터
+|-------|-------|-------|
+| 데이터 | 데이터 | 데이터 |
+---
+#### 3순위: 차트/그래프
+- 제목: Event Types
+- 축 레이블: Event Type
+- 데이터 포인트: Dynamic Group - Create, Grant - Delete, Group - Add User To, Group - Create, Group - Delete, Group - Update, Password - Create or Reset, User - Activate, User - Create, User - Deactivate, User - Delete, User - Update, User State - Update, Verification Email - Send, Group - Remove User From
+- 범례: 0 selected
+---
+#### 4순위: 구조적 요소
+- 섹션 구분: [그림 5.7.2], [그림 5.7.3], [그림 5.7.4]
+- 하이라이트: Action Type, Notifications Compartment, Topic, Event Matching (15), Actions (1), Logs
+- 다이어그램 텍스트: 20240319_EventService, ER, ACTIVE, Rule Information, Rule Execution Logs, Log Name, Log Group, Enable Log
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...- 미완성: ... [다음 페이지에 계속]\n\n## Page 131\n\n- 주제목: 금융분야 상용 클라우드컴퓨팅서비스 보안 관리 참고서
+- 중제목: 5. 계정 및 권한 관리
+
+| Log name | Log type | Status | Details | Created | Last updated |
+|----------|----------|--------|---------|---------|--------------|
+| log_20240319_EventService_ruleexecutionlog | Service | Active | Service: Events Service; Category: Rule Execution Logs | Tue, Mar 19, 2024, 11:21:56 UTC | Tue, Mar 19, 2024, 11:21:56 UTC |
+- 미완성: ... [다음 페이지에 계속]
+###
+- 인용: > 사용
+---
+### 텍스트 추출
+#### 제목
+- 금융분야 상용 클라우드컴퓨팅서비스 보안 관리 참고서
+- 5. 계정 및 권한 관리
+#### 소제목
+- 2) 전자금융감독규정 및 금융회사 내부규정 등에 수립된 주기에 맞추어 주기적 검토 수행
+#### 본문
+- (가상자원관리시스템) ‘홈’ → ‘Observability & Management’ → ‘Logging’ → ‘Logs’ → ‘생성한 Log 선택’에서 계정변경, 네트워크 변경 등 다양한 보안 모니터링에 대한 주기적인 검토가 가능하도록 지원
+#### 그림 5.7.5] 변경사항에 대한 로그 주기적 검토
+- [그림 5.7.5] 변경사항에 대한 로그 주기적 검토
+#### 그림 5.7.6] 클라우드 리소스 행위추적성 확인
+- [그림 5.7.6] 클라우드 리소스 행위추적성 확인
+#- **Log Information**
+- OCID: .k3hdea
+- Compartment: .root@CLOUD/CLOUD-SPECIALISTS/YONGMIN.HAN
+- Log Group: LogGroup20240319
+- Created: Tue, Mar 19, 2024, 11:21:56 UTC
+- Retention Period: 1 month (default) (30 days)
+- Legacy Archival Logs: Disabled
+- Status: Active
+- **Log Details**
+- Log Type: Service log
+- Service: Events Service
+- Resource: 20240319_EventService
+- Log Category: Rule Execution Logs
+- **Explore Log**
+- Sort: Newest
+- Filter by time: Past 5 minutes
+- Number of log events per minute:
+```
+Mar 20, 2024: 02:34:03 UTC eventservice.eventrule.ruleexecutionlog Event delivered to ONS successfully
+```
+- **JSON Before & After**
+```json
+{
+"datetime": 17109802043800,
+"logContent": {
+"data": {
+"eventId": "d7994649-ff76-425e-93e8-d0c3973d7f86",
+"message": "Event delivered to ONS successfully",
+"ruleId": "ocidi.eventrule.oci.ap-seoul-1.",
+"target": "ocidi.onstopic.oci.ap-seoul-1."
+},
+"id": "jach6b5-9c51-4c73-b52d-1a7368dc3417",
+"oracle": {
+"compartmentid": "ocidi.compartment.oci...",
+"ingestedtime": "2024-03-20T02:34:08.692Z",
+"loggroupid": "ocidi.loggroup.oci.ap-seoul-1.",
+"logid": "ocidi.log.oci.ap-seoul-1.",
+"tenancyid": "ocidi.tenancy.oci..."
+},
+"source": "20240319_EventService",
+"specversion": "1.0"
+}
+}
+```
+---
+- 미완성: ... [다음 페이지에 계속]\n\n## Page 132\n\n
+|-------|-------|-------|
+| 데이터 | 데이터 | 데이터 |
+- 미완성: ... [다음 페이지에 계속]
+- 연속: [이전 페이지에서 계속] ...
+###
+- 인용: > 사용
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...- 미완성: ... [다음 페이지에 계속]
+---
+### 텍스트 추출
+- **제목**: 금융보안원 ORACLE
+- **소제목**: 검색된 로그에서 Action → Explore with Log Search → Explorer or Visualize를 선택하여 원하는 필드나 로그 생성 시간 등을 조회할 수 있는 기능 제공
+- **Explore Log**:
+- Sort: Newest
+- Filter by time: Today
+- Number of log events per minute:
+- Mar 20, 00:00
+- Mar 20, 01:00
+- Mar 20, 02:00
+- Mar 20, 03:00
+- Mar 20, 04:00
+- Mar 20, 05:00
+- Mar 20, 06:00
+- **Search**:
+- Custom filters: Enter search filters
+- Select logs to search: LogGroup20240319/log_20240319_EventService_ruleexecutionlog
+- Filter by time: Today
+- More search options: Show Advanced Mode
+- Reset Search: Reset Search
+- Save search: Save search
+- Create connector: Create connector
+- Search: Search
+- **Visualization Type**: Stacked Bar
+- **X Axis**: datetime
+- **Interval**: 1 Hour
+- **Group By**: Select group by
+- **Visualization Type**: Stacked Bar
+- **X Axis**: datetime
+- **Interval**: 1 Hour
+- **Group By**: Select group by
+- **Visualization Type**: Stacked Bar
+- **X Axis**: datetime
+- **Interval**: 1 Hour
+- **Group By**: Select group by
+- **Visualization Type**: Stacked Bar
+- **X Axis**: datetime
+- **Interval**: 1 Hour
+- **Group By**: Select group by
+- **Visualization Type**: Stacked Bar
+- **X Axis**: datetime
+- **Interval**: 1 Hour
+- **Group By**: Select group by
+- **Visualization Type**: Stacked Bar
+- **X Axis**: datetime
+- **Interval**: 1 Hour
+- **Group By**: Select group by
+- **Visualization Type**: Stacked Bar
+- **X Axis**: datetime
+- **Interval**: 1 Hour
+- **Group By**: Select group by
+- **Visualization Type**: Stacked Bar
+- **X Axis**: datetime
+- **Interval**: 1 Hour
+- **Group By**: Select group by
+- **Visualization Type**: Stacked Bar
+- **X Axis**: datetime
+- **Interval**: 1 Hour
+- **Group By**: Select group by
+- **Visualization Type**: Stacked Bar
+- **X Axis**: datetime
+- **Interval**: 1 Hour
+- **Group By**: Select group by
+- **Visualization Type**: Stacked Bar
+- **X Axis**: datetime
+- **Interval**: 1 Hour
+- **Group By**: Select group by
+- **Visualization Type**: Stacked Bar
+- **X Axis**: datetime
+- **Interval**: 1 Hour
+- **Group By**: Select group by
+- **Visualization Type**: Stacked Bar
+- **X Axis**: datetime
+- **Interval**: 1 Hour
+- **Group By**: Select group by
+- **Visualization Type**: Stacked Bar
+- **X Axis**: datetime
+- **Interval**: 1 Hour
+- **Group By**: Select group by
+- **Visualization Type**: Stacked Bar
+- **X Axis**: datetime
+- **Interval**: 1 Hour
+- **Group By**: Select group by
+- **Visualization Type**: Stacked Bar
+- **X Axis**: datetime
+- **Interval**: 1 Hour
+- **Group By**: Select group by
+- **Visualization Type**: Stacked Bar
+- **X Axis**: datetime
+- **Interval**: 1 Hour
+- **Group By**: Select group by
+- **Visualization Type**: Stacked Bar
+- **X Axis**: datetime
+- **Interval**: 1 Hour
+- **Group By**: Select group by
+- **Visualization Type**: Stacked Bar
+- **X Axis**: datetime
+- **Interval**: 1 Hour
+- **Group By**: Select group by
+- **Visualization Type**: Stacked Bar
+- **X Axis**: datetime
+- **Interval**: 1 Hour
+- **Group By**: Select group by
+- **Visualization Type**: Stacked Bar
+- **X Axis**: datetime
+- **Interval**: 1 Hour
+- **Group By**: Select group by
+- **Visualization Type**: Stacked Bar
+- **X Axis**: datetime
+- **Interval**: 1 Hour
+- **Group By**: Select group by
+- **Visualization Type**: Stacked Bar
+- **X Axis**: datetime
+- **Interval**: 1 Hour
+- **Group By**: Select group by
+- **Visualization Type**: Stacked Bar
+- **X Axis**: datetime
+- **Interval**: 1 Hour
+- **Group By**: Select group by
+- **Visualization Type**: Stacked Bar
+- **X Axis**: datetime
+- **Interval**: 1 Hour
+- **Group By**: Select group by
+- **Visualization Type**: Stacked Bar
+- **X Axis**: datetime
+- **Interval**: 1 Hour
+- **Group By**: Select group by
+- **Visualization Type**: Stacked Bar
+- **X Axis**: datetime
+- **Interval**: 1 Hour
+- **Group By**: Select group by
+- **Visualization Type**: Stacked Bar
+- **X Axis**: datetime
+- **Interval**: 1 Hour
+- **Group By**: Select group by
+- **Visualization Type**: Stacked Bar
+- **X Axis**: datetime
+- **Interval**: 1 Hour
+- **Group By**: Select group by
+- **Visualization Type**: Stacked Bar
+- **X Axis**: datetime
+- **Interval**: 1 Hour
+- **Group By**: Select group by
+- **Visualization Type**: Stacked Bar
+- **X Axis**: datetime
+- **Interval**: 1 Hour
+- **Group By**: Select group by
+- **Visualization Type**: Stacked Bar
+- **X Axis**: datetime
+- **Interval**: 1 Hour
+- **Group By**: Select group by
+- **Visualization Type**: Stacked Bar
+- **X Axis**: datetime
+- **Interval**: 1 Hour
+- **Group By**: Select group by
+- **Visualization Type**: Stacked Bar
+- **X Axis**: datetime
+- **Interval**: 1 Hour
+- **Group By**: Select group by
+- **Visualization Type**: Stacked Bar
+- **X Axis**: datetime
+- **Interval**: 1 Hour
+- **Group By**: Select group by
+- **Visualization Type**: Stacked Bar
+- **X Axis**: datetime
+- **Interval**: 1 Hour
+- **Group By**: Select group by
+- **Visualization Type**: Stacked Bar
+- **X Axis**: datetime
+- **Interval**: 1 Hour
+- **Group By**: Select group by
+- **Visualization Type**: Stacked Bar
+- **X Axis**: datetime
+- **Interval**: 1 Hour
+- **Group By**: Select group by
+- **Visualization Type**: Stacked Bar
+- **X Axis**: datetime
+- **Interval**: 1 Hour
+- **Group By**: Select group by
+- **Visualization Type**: Stacked Bar
+- **X Axis**: datetime
+- **Interval**: 1 Hour
+- **Group By**: Select group by
+- **Visualization Type**: Stacked Bar
+- **X Axis**: datetime
+- **Interval**: 1 Hour
+- **Group By**: Select group by
+- **Visualization Type**: Stacked Bar
+- **X Axis**: datetime
+- **Interval**: 1 Hour
+- **Group By**: Select group by
+- **Visualization Type**: Stacked Bar
+- **X Axis**: datetime
+- **Interval**: 1 Hour
+- **Group By**: Select group by
+- **Visualization Type**: Stacked Bar
+- **X Axis\n\n## Page 133\n\n```markdown
+### 참고 사항
+- [Event Service] https://cloud.oracle.com/events/rules?region=ap-seoul-1
+- [Logging] https://cloud.oracle.com/logging/logs?region=ap-seoul-1
+```\n\n## Page 134\n\n```markdown
+# 금융분야 상용 클라우드컴퓨팅서비스 보안 관리 참고서 (ORACLE)
+## 참여자
+- **DT대응지원부**
+- 부장: 이수미
+- **클라우드보안팀**
+- 팀장: 장지현
+- 차장: 장기헌
+- 과장: 김용규
+- 과장: 유희만
+- 대리: 이성덕
+- 대리: 김상후
+- 대리: 최주섭
+- 주임: 송창석
+## 발행인
+- 김철웅
+## 공동발행인
+- 한국오라클
+## 발행처
+- 금융보안원
+## 주소
+- 경기도 용인시 수지구 대지로 132
+## 참고사항
+- 본 안내서 내용의 무단전재를 금하며, 가공 인용할 때에는 반드시 금융보안원 '금융분야 상용 클라우드컴퓨팅서비스 보안 관리 참고서'라고 밝혀 주시기 바랍니다.
+```\n\n## Page 135\n\n```markdown
+# 금융분야 상용 클라우드컴퓨팅서비스 보안 관리 참고서
+본 참고서는 금융회사 등에서 클라우드컴퓨팅서비스 이용 시 보안관리 및 기술 활용 지원이 목적이며, 금융회사의 의무 준수사항이 아닙니다.
+```

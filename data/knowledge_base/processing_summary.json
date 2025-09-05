@@ -1,0 +1,32 @@
+{
+  "total": 3,
+  "success": 3,
+  "failed": 0,
+  "empty": 0,
+  "total_chunks": 374,
+  "total_embeddings": 374,
+  "processing_time": 19.997843742370605,
+  "files": [
+    {
+      "file": "(2024.4.) 해외사업자의 개인정보 보호법 적용 안내서_국문(korean)_최종.pdf",
+      "status": "success",
+      "chunks": 102,
+      "embeddings": 102,
+      "error": null
+    },
+    {
+      "file": "(개정)+(부처합동)+약국+개인정보보호+가이드라인(2020.12월).pdf",
+      "status": "success",
+      "chunks": 93,
+      "embeddings": 93,
+      "error": null
+    },
+    {
+      "file": "(개정)+(부처합동)+의료기관+개인정보보호+가이드라인(2020.12월).pdf",
+      "status": "success",
+      "chunks": 179,
+      "embeddings": 179,
+      "error": null
+    }
+  ]
+}

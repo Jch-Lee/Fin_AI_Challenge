@@ -1,0 +1,50 @@
+  검색된 문서: 10개 중 1개 사용 (점수 >= 0.7)
+  질문 유형: 객관식
+  프롬프트 길이: 712자
+  선택지 범위: 1-4
+  최종 답변: 3
+  처리 시간: 15.65초
+
+================================================================================
+테스트 결과 요약
+================================================================================
+
+총 처리 시간: 199.8초
+평균 처리 시간: 20.0초/질문
+
+[질문 유형별 통계]
+  객관식: 8개
+  주관식: 2개
+
+[답변 결과]
+  TEST_000 (객관식): 2 [17.29s]
+  TEST_001 (객관식): 1 [17.73s]
+  TEST_002 (객관식): 2 [16.69s]
+  TEST_003 (객관식): 3 [17.32s]
+  TEST_004 (주관식): 트로이 목마(RAT)는 원격제어 기능을 가진 악성코드로, 네트워크 접속 및 파일 조작 등 ... [31.91s]
+  TEST_005 (객관식): 4 [17.06s]
+  TEST_006 (객관식): 2 [15.69s]
+  TEST_007 (주관식): 전자금융거래법에 따르면 금융 분쟁조정을 신청할 수 있는 기관은 금융감독원입니다. (Page... [34.71s]
+  TEST_008 (객관식): 5 [15.78s]
+  TEST_009 (객관식): 3 [15.65s]
+Traceback (most recent call last):
+  File "/root/scripts/test_10docs_improved.py", line 195, in <module>
+    test_10_questions()
+  File "/root/scripts/test_10docs_improved.py", line 189, in test_10_questions
+    result_df[['ID', 'Answer']].to_csv(output_file, index=False, encoding='utf-8-sig')
+  File "/usr/local/lib/python3.12/dist-packages/pandas/util/_decorators.py", line 333, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/pandas/core/generic.py", line 3986, in to_csv
+    return DataFrameRenderer(formatter).to_csv(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/pandas/io/formats/format.py", line 1014, in to_csv
+    csv_formatter.save()
+  File "/usr/local/lib/python3.12/dist-packages/pandas/io/formats/csvs.py", line 251, in save
+    with get_handle(
+         ^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/pandas/io/common.py", line 749, in get_handle
+    check_parent_directory(str(handle))
+  File "/usr/local/lib/python3.12/dist-packages/pandas/io/common.py", line 616, in check_parent_directory
+    raise OSError(rf"Cannot save file into a non-existent directory: '{parent}'")
+OSError: Cannot save file into a non-existent directory: 'test_results'

@@ -1,0 +1,13 @@
+# 8-bit 모델용 최소 패키지
+torch==2.1.0
+transformers==4.41.2
+bitsandbytes==0.41.1
+accelerate==0.30.1
+sentence-transformers==2.7.0
+faiss-cpu==1.8.0
+kiwipiepy==0.17.1
+rank-bm25==0.2.2
+pandas==2.0.3
+numpy==1.24.3
+tqdm==4.66.1
+safetensors==0.4.1

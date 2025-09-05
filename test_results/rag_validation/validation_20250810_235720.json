@@ -1,0 +1,70 @@
+{
+  "timestamp": "20250810_235720",
+  "results": {
+    "pdf": {
+      "success": true,
+      "text_length": 32140,
+      "pages": 0
+    },
+    "chunking": {
+      "success": true,
+      "num_chunks": 37,
+      "avg_length": 943.2972972972973
+    },
+    "embeddings": {
+      "success": true,
+      "model": "dragonkue/multilingual-e5-small-ko",
+      "dimension": 384,
+      "doc_shape": [
+        37,
+        384
+      ],
+      "query_shape": [
+        1,
+        384
+      ]
+    },
+    "faiss": {
+      "success": true,
+      "num_vectors": 37,
+      "dimension": 384,
+      "search_test": {
+        "distances": [
+          1.0,
+          0.6737927198410034,
+          0.6428019404411316,
+          0.5873240828514099,
+          0.5766255259513855
+        ],
+        "indices": [
+          0,
+          1,
+          34,
+          2,
+          36
+        ]
+      }
+    },
+    "bm25": {
+      "success": true,
+      "num_docs": 37,
+      "search_results": 5
+    },
+    "hybrid": {
+      "success": true,
+      "bm25_results": 10,
+      "vector_results": 10,
+      "combined_results": 5,
+      "top_score": 0.49366870522499084
+    },
+    "llm": {
+      "success": true,
+      "model": "Qwen2.5-7B-Instruct",
+      "use_gpu": true,
+      "answer_length": 424,
+      "generation_time": 12.26288652420044
+    }
+  },
+  "errors": [],
+  "success": true
+}

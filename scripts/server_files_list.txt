@@ -1,0 +1,49 @@
+# RAG 시스템 서버 배포에 필요한 파일 목록
+# 총 크기: 약 500MB (PDF 파일 포함)
+
+## 1. 핵심 스크립트 (필수)
+scripts/test_simple_pipeline.py
+scripts/build_rag_system.py
+scripts/process_all_pdfs.py  # 생성 예정
+
+## 2. 패키지 파일들 (필수)
+packages/__init__.py
+packages/preprocessing/__init__.py
+packages/preprocessing/chunker.py
+packages/preprocessing/hierarchical_chunker.py
+packages/preprocessing/text_processor.py
+packages/preprocessing/data_preprocessor.py
+packages/preprocessing/pdf_processor_traditional.py
+packages/preprocessing/pdf_processor_vision.py
+packages/preprocessing/embedder.py
+packages/preprocessing/batch_processor.py
+
+packages/rag/__init__.py
+packages/rag/rag_pipeline.py
+packages/rag/knowledge_base.py
+packages/rag/embeddings/__init__.py
+packages/rag/embeddings/base_embedder.py
+packages/rag/embeddings/kure_embedder.py
+packages/rag/retrieval/__init__.py
+packages/rag/retrieval/base_retriever.py
+packages/rag/retrieval/vector_retriever.py
+packages/rag/retrieval/bm25_retriever.py
+packages/rag/retrieval/hybrid_retriever.py
+
+packages/vision/__init__.py
+packages/vision/qwen_vision.py
+packages/vision/vision_pipeline.py
+packages/vision/vision_extraction.py
+
+## 3. 데이터 파일 (필수)
+data/raw/*.pdf  # 59개 PDF 파일
+
+## 4. 설정 파일 (필수)
+requirements.txt
+CLAUDE.md  # 프로젝트 가이드
+
+## 5. 출력 디렉토리 구조 (서버에서 생성됨)
+data/knowledge_base/
+data/processed/
+data/embeddings/
+test_results/

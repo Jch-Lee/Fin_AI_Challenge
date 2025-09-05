@@ -1,0 +1,20 @@
+{
+  "e5-small-ko": {
+    "status": "success",
+    "load_time": 10.206150531768799,
+    "embedding_dim": 384,
+    "doc_encoding_time": 0.12417125701904297,
+    "docs_per_sec": 64.42714837599748
+  },
+  "e5-small": {
+    "status": "success",
+    "load_time": 7.88041090965271,
+    "embedding_dim": 384,
+    "doc_encoding_time": 0.008055448532104492,
+    "docs_per_sec": 993.1166424956344
+  },
+  "nmixx-bge": {
+    "status": "failed",
+    "error": "n_components=384 must be between 0 and min(n_samples, n_features)=8 with svd_solver='full'"
+  }
+}

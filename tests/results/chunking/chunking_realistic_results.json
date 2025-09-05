@@ -1,0 +1,32 @@
+{
+  "Small (512/50)": {
+    "total_chunks": 63,
+    "avg_size": 374.87301587301585,
+    "min_size": 68,
+    "max_size": 509,
+    "boundary_chunks": 9,
+    "avg_regular_overlap": 12.977272727272727,
+    "avg_boundary_overlap": 98.77777777777777,
+    "total_overlap": 2349
+  },
+  "Standard (1024/100)": {
+    "total_chunks": 40,
+    "avg_size": 596.625,
+    "min_size": 68,
+    "max_size": 1024,
+    "boundary_chunks": 9,
+    "avg_regular_overlap": 37.95238095238095,
+    "avg_boundary_overlap": 115.44444444444444,
+    "total_overlap": 2875
+  },
+  "Large (1536/150)": {
+    "total_chunks": 34,
+    "avg_size": 704.8529411764706,
+    "min_size": 68,
+    "max_size": 1535,
+    "boundary_chunks": 9,
+    "avg_regular_overlap": 59.6,
+    "avg_boundary_overlap": 115.44444444444444,
+    "total_overlap": 2972
+  }
+}

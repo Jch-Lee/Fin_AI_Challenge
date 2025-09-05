@@ -1,0 +1,9 @@
+{
+  "model": "nlpai-lab/KURE-v1",
+  "total_chunks": 88,
+  "embedding_dimension": 1024,
+  "embedding_shape": [
+    88,
+    1024
+  ]
+}

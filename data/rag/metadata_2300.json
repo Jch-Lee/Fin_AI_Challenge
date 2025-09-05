@@ -1,0 +1,22 @@
+{
+  "creation_time": "2025-08-17 23:40:39",
+  "last_update": "2025-08-21",
+  "config": {
+    "chunk_size": 2300,
+    "chunk_overlap": 200,
+    "boundary_overlap": 300
+  },
+  "statistics": {
+    "total_chunks": 8756,
+    "regular_chunks": 4679,
+    "boundary_chunks": 4077,
+    "avg_chunk_size": 764.6478839177751,
+    "min_chunk_size": 50,
+    "max_chunk_size": 2298,
+    "total_characters": 6697138,
+    "unique_docs": 73
+  },
+  "embedder": "KURE-v1",
+  "device": "cuda",
+  "total_documents": 73
+}

@@ -1,0 +1,135 @@
+{
+  "original": {
+    "chunks": 36,
+    "total_overlap": 369,
+    "overlaps": [
+      {
+        "chunk_pair": "0 → 1",
+        "actual_overlap": 0,
+        "declared_overlap": 50,
+        "is_section_boundary": true
+      },
+      {
+        "chunk_pair": "1 → 2",
+        "actual_overlap": 0,
+        "declared_overlap": 50,
+        "is_section_boundary": true
+      },
+      {
+        "chunk_pair": "2 → 3",
+        "actual_overlap": 0,
+        "declared_overlap": 50,
+        "is_section_boundary": true
+      },
+      {
+        "chunk_pair": "3 → 4",
+        "actual_overlap": 0,
+        "declared_overlap": 50,
+        "is_section_boundary": true
+      },
+      {
+        "chunk_pair": "4 → 5",
+        "actual_overlap": 0,
+        "declared_overlap": 50,
+        "is_section_boundary": true
+      },
+      {
+        "chunk_pair": "5 → 6",
+        "actual_overlap": 0,
+        "declared_overlap": 50,
+        "is_section_boundary": true
+      },
+      {
+        "chunk_pair": "6 → 7",
+        "actual_overlap": 0,
+        "declared_overlap": 50,
+        "is_section_boundary": true
+      },
+      {
+        "chunk_pair": "7 → 8",
+        "actual_overlap": 0,
+        "declared_overlap": 50,
+        "is_section_boundary": true
+      },
+      {
+        "chunk_pair": "8 → 9",
+        "actual_overlap": 0,
+        "declared_overlap": 50,
+        "is_section_boundary": true
+      },
+      {
+        "chunk_pair": "9 → 10",
+        "actual_overlap": 0,
+        "declared_overlap": 50,
+        "is_section_boundary": true
+      }
+    ]
+  },
+  "hybrid": {
+    "chunks": 32,
+    "total_overlap": 1294,
+    "overlaps": [
+      {
+        "chunk_pair": "0 → 1",
+        "actual_overlap": 42,
+        "declared_overlap": 50,
+        "is_section_boundary": false
+      },
+      {
+        "chunk_pair": "1 → 2",
+        "actual_overlap": 100,
+        "declared_overlap": 50,
+        "is_section_boundary": true
+      },
+      {
+        "chunk_pair": "2 → 3",
+        "actual_overlap": 1,
+        "declared_overlap": 50,
+        "is_section_boundary": false
+      },
+      {
+        "chunk_pair": "3 → 4",
+        "actual_overlap": 25,
+        "declared_overlap": 50,
+        "is_section_boundary": false
+      },
+      {
+        "chunk_pair": "4 → 5",
+        "actual_overlap": 100,
+        "declared_overlap": 50,
+        "is_section_boundary": true
+      },
+      {
+        "chunk_pair": "5 → 6",
+        "actual_overlap": 85,
+        "declared_overlap": 50,
+        "is_section_boundary": true
+      },
+      {
+        "chunk_pair": "6 → 7",
+        "actual_overlap": 100,
+        "declared_overlap": 50,
+        "is_section_boundary": true
+      },
+      {
+        "chunk_pair": "7 → 8",
+        "actual_overlap": 99,
+        "declared_overlap": 50,
+        "is_section_boundary": true
+      },
+      {
+        "chunk_pair": "8 → 9",
+        "actual_overlap": 72,
+        "declared_overlap": 50,
+        "is_section_boundary": true
+      },
+      {
+        "chunk_pair": "9 → 10",
+        "actual_overlap": 68,
+        "declared_overlap": 50,
+        "is_section_boundary": true
+      }
+    ],
+    "boundary_chunks": 9
+  }
+}

@@ -1,0 +1,1140 @@
+\n## Page 1\n\n- 주제목: 마이데이터 표준 API 규격 및 명세
+
+|-------|-------|-------|
+| 데이터 | 데이터 | 데이터 |
+- 미완성: ... [다음 페이지에 계속]
+- 연속: [이전 페이지에서 계속] ...
+###
+- 인용: > 사용
+---
+- 제목: 마이데이터 표준 API 규격 및 명세
+- 본문: 2025. 4
+- 소제목: 개인정보보호위원회
+- 소제목: KISA 한국인터넷진흥원
+---
+- 표 제목/헤더: 없음
+- 데이터 값과 단위: 없음
+- 행/열 관계: 없음
+---
+- 제목: 없음
+- 축 레이블: 없음
+- 데이터 포인트: 없음
+- 범례: 없음
+- 수치: 없음
+---
+- 섹션 구분: 없음
+- 하이라이트: 없음
+- 다이어그램 텍스트: 없음
+---
+**제외사항:**
+- 색상/폰트/위치 등 스타일, 레이아웃/디자인, 장식 요소\n\n## Page 2\n\n```markdown
+# 1. 개요
+## 1. 목적
+- 정보주체가 정보전송자에게 개인정보 전송 요구 시 안전하고 신뢰할 수 있는 방식으로 개인정보를 제공하기 위한 규격 제시
+## 2. 범위
+- (적용대상) 개인정보를 보유하고 있는 정보전송자, 개인정보를 수신하려는 정보수신자를 주요 대상으로 함
+- (적용범위) 「개인정보 보호법」에 정의된 전송요구권에 따라 정보전송자, 정보수신자, 중계전문기관 및 개인정보전송지원플랫폼 간 연계에 필요한 API 규격 명시
+- ※ 세부 전송요구 절차는 '전 분야 마이데이터 전송 절차 및 기술 가이드라인'의 제1권 참고
+```\n\n## Page 3\n\n```markdown
+# 3 API 목록
+## 전송요구 API
+| API ID | API명 | 제공기관 | 요청기관 | API URI | 비고 |
+|--------|-------|----------|----------|---------|------|
+| 전송요구-001 | 정보전송자 회원 여부 | 중계전문기관 | 정보수신자 | /v1/user/verify | |
+| 전송요구-002 | 정보요청용 접근토큰 발급 (공동인증기관) | 중계전문기관 | 정보수신자 | /oauth/2.0/token | |
+| 전송요구-003 | 정보요청용 접근토큰 발급 (간편인증기관) | 중계전문기관 | 정보수신자 | /oauth/2.0/token | |
+| 전송요구-004 | 개별인증 인가코드 발급 | 정보전송자 | 정보수신자 | /oauth/2.0/authorize | 개별식별자 유형인 경우 |
+| 전송요구-005 | 개별인증 ID토큰 발급 | 정보전송자 | 정보수신자 | /oauth/2.0/token | 개별식별자 유형인 경우 |
+| 전송요구-006 | 접근토큰 갱신 | 중계전문기관 | 정보수신자 | /oauth/2.0/token | |
+| 전송요구-007 | 전송요구 철회 | 중계전문기관 | 정보수신자 | /oauth/2.0/revoke | |
+| 전송요구-008 | 주민등록번호 입력창 호출 | 중계전문기관 | 정보수신자 | /identifier/form | 주민등록번호 유형인 경우 |
+| 전송요구-009 | 주민등록번호 변환 여부 확인 | 중계전문기관 | 정보수신자 | /identifier/result | 주민등록번호 유형인 경우 |
+## 정보요청 API
+### 0 무선통신 분야
+| API ID | API명 | 제공기관 | 요청기관 | API URI | SCOPE | 비고 |
+|--------|-------|----------|----------|---------|-------|------|
+| 무선통신-001 | 고객정보 조회 | 통신업권 중계 | 정보수신자 | /comms/member | comms.member | 고객정보 |
+| 무선통신-002 | 가입정보 조회 | 통신업권 중계 | 정보수신자 | /comms/mobile-join | comms.mobilejoin | 가입정보 |
+| 무선통신-003 | 이용정보 조회 | 통신업권 중계 | 정보수신자 | /comms/mobile-usage | comms.mobileusage | 이용정보 |
+| 무선통신-004 | 청구정보 조회 | 통신업권 중계 | 정보수신자 | /comms/mobile-bills | comms.charge | 결제정보 |
+| 무선통신-005 | 납부정보 조회 | 통신업권 중계 | 정보수신자 | /comms/mobile-payments | comms.charge | 결제정보 |
+```\n\n## Page 4\n\n```markdown
+# 전송지원 API
+## 0 개인정보전송지원플랫폼(이하, '지원플랫폼') 제공
+| API ID | API명 | 제공기관 | 요청기관 | API URI | 비고 |
+|--------|-------|----------|----------|---------|------|
+| 전송지원-001 | 연계지원용 접근토큰 발급 | 지원플랫폼 중계전문기관 정보수신자 | 지원플랫폼 정보수신자 중계전문기관 인증기관 | /support/oauth/2.0/token | |
+| 전송지원-002 | 기관정보 조회 | 지원플랫폼 | 정보수신자 중계전문기관 | /support/insts | |
+| 전송지원-003 | 자격증명 조회 | 지원플랫폼 | 정보수신자 중계전문기관 | /support/credentials | |
+| 전송지원-004 | CA 인증서 목록 조회 | 지원플랫폼 | 정보수신자 중계전문기관 인증기관 | /support/ca_certs | |
+| 전송지원-005 | 통계 전송 | 지원플랫폼 | 중계전문기관 | /support/statistics | |
+## 0 중계전문기관 제공
+| API ID | API명 | 제공기관 | 요청기관 | API URI | 비고 |
+|--------|-------|----------|----------|---------|------|
+| 전송지원-101 | 전송요구 내역 조회 | 중계전문기관 | 지원플랫폼 | /support/request/history | |
+| 전송지원-102 | 전송 이력 조회 | 중계전문기관 | 지원플랫폼 | /support/request/transmission | |
+| 전송지원-103 | 전송요구 철회 요청 | 중계전문기관 | 지원플랫폼 | /support/request/revoke | |
+| 전송지원-104 | 제3자 제공공동의 내역 조회 | 중계전문기관 | 지원플랫폼 | /support/agreements | |
+| 전송지원-105 | 제3자 제공공동의 내역 전송 | 중계전문기관 | 정보수신자 | /support/rcv/agreements | |
+| 전송지원-106 | 통계 재전송 요청 | 중계전문기관 | 지원플랫폼 | /support/re_statistics | |
+## 0 인증기관 제공
+| API ID | API명 | 제공기관 | 요청기관 | API URI | 비고 |
+|--------|-------|----------|----------|---------|------|
+| 간편인증-001 | 접근토큰 요청 | 인증기관 | 정보수신자 중계전문기관 | ~/kcert/v1.0/token | |
+| 간편인증-002 | 전자서명 요청 | 인증기관 | 정보수신자 | ~/kcert/v1.0/request | |
+| 간편인증-003 | 서명 결과 요청 | 인증기관 | 정보수신자 | ~/kcert/v1.0/result | |
+| 간편인증-004 | 전자서명 검증 및 서명자 확인 요청 | 인증기관 | 중계전문기관 | ~/kcert/v1.0/identify | |
+※ 간편인증 API의 상세한 규격은 본 문서에 포함되어 있지 않으며 자세한 사항은 KISA 디지털인증확산센터(dapc.kisa.or.kr)에서 발간하는 '간편인증 인터페이스 가이드라인' 참고
+```\n\n## Page 5\n\n
+| API ID | API CODE | API 제공자 | API URI | HTTP Method | 설명 | Content-Type (요청) | Content_Type (응답) |
+|--------|----------|------------|---------|-------------|------|---------------------|--------------------|
+| 전송요구-001 | AT001 | 중계전문기관 | /v1/user/verify | POST | 정보수신자는 전송요구 단계 전, 정보주체가 정보전송자의 회원인지 여부를 확인 | application/json; charset=UTF-8 | application/json; charset=UTF-8 |
+### 요청메시지 명세
+| HTTP | 항목명 | 항목 설명 | 필수 | 타입(byte) | 설명 |
+|------|---------|-----------|------|------------|------|
+| Header | Authorization | 인증정보 | Y | String(1500) | 연계지원용 접근토큰(Bearer) |
+|        | X-Src-Inst-Cd | API 요청기관 | Y | String(12) | API 요청메시지를 작성하는 기관코드 |
+|        | X-Dst-Inst-Cd | API 응답기관 | Y | String(12) | API 응답메시지를 작성하는 기관코드 |
+|        | X-Api-Tx-Id | 거래고유번호 | Y | String(36) | 거래고유번호 |
+| Body | ci | 연계정보 | Y | String(100) | 정보주체 연계정보 |
+### 응답메시지 명세
+| HTTP | 항목명 | 항목설명 | 필수 | 타입(byte) | 설명 |
+|------|---------|-----------|------|------------|------|
+| Header | X-Api-Tx-Id | 거래고유번호 | Y | String(36) | 거래고유번호 |
+| Body | rsp_code | 세부 응답코드 | Y | String(5) | API 처리결과코드 |
+|       | rsp_msg | 세부응답 메시지 | Y | String(1550) | 응답코드에 해당하는 메시지 |
+|       | is_member | 회원여부 | Y | String(1) | 회원 가입 여부 |\n\n## Page 6\n\n## 정보요청용 접근토큰 발급(공동인증기관)
+### 기본 정보
+| API ID | 전송요구-002 |
+|--------|---------------|
+| API CODE | AT002 |
+| API 제공자 | 중계전문기관 |
+| API URI | /oauth/2.0/token |
+| HTTP Method | POST |
+| 설명 | 정보수신자는 정보주체의 전송요구에 대한 접근토큰 발급 요청(전자서명 전송) |
+| Content-Type (요청) | application/x-www-form-urlencoded; charset=UTF-8 |
+| Content-Type (응답) | application/json; charset=UTF-8 |
+### 요청메시지 명세
+| HTTP 항목명 | 항목설명 | 필수 | 타입 (byte) | 설명 |
+|-------------|----------|------|-------------|------|
+| Header | X-Src-Inst-Cd | API 요청기관 | Y | String(12) | API 요청메시지를 작성하는 기관코드 |
+|         | X-Dst-Inst-Cd | API 응답기관 | Y | String(12) | API 응답메시지를 작성하는 기관코드 |
+|         | X-Api-Tx-Id | 거래고유번호 | Y | String(36) | 거래고유번호 |
+| Body | tx_id | 트랜잭션 ID | Y | String(82) | 정보수신자가 생성 |
+|         | grant_type | 권한부여 방식 | Y | String(8) | 권한부여 방식 |
+|         | client_id | 클라이언트 ID | Y | String(32) | 지원플랫폼에 등록된 자격증명 |
+|         | client_secret | 클라이언트 Secret | Y | String(50) | 지원플랫폼에 등록된 자격증명(보안을 위해 추가 확인하는 값) |
+|         | ca_code | 통합인증기관 코드 | Y | String(12) | 통합인증수단을 발급한 통합인증기관 기관코드 |
+|         | ci | 연계정보 | Y | String(100) | 정보주체 연계정보 |
+|         | id_token | ID 토큰 | N | String(1500) | 정보주체에 해당되는 ID 토큰 값으로, 개별인증 수행 시 정보수신자가 정보전송자에게 발급받은 id_token 값 |
+|         | password_len | password 항목 길이 | Y | String(5) | 전송요구내역 전자서명(signedData) 길이 |
+|         | password | 전송요구내역 전자서명 (signedConsent) | Y | String(10000) | 전송요구내역 전자서명(CMS SignedData, Base64 url-safe 인코딩) |
+|         | signed_person_info_req_len | 본인확인 이용동의 전자서명 항목 길이 (signedPersonInfoReq 의 길이) | N | String(5) | signed_person_info_req의 길이 적용 |
+|         | signed_person_info_req | 본인확인 이용동의 전자서명 (signedPersonInfoReq) | N | String(10000) | 본인확인 이용동의 전자서명(CMS SignedData, Base64 url-safe 인코딩) |
+---
+## 마크다운 형식화
+
+| API ID | API CODE | API 제공자 | API URI | HTTP Method |
+|--------|----------|------------|---------|-------------|
+| 전송요구-002 | AT002 | 중계전문기관 | /oauth/2.0/token | POST |
+| 설명 | 정보수신자는 정보주체의 전송요구에 대한 접근토큰 발급 요청(전자서명 전송) | | | |
+| Content-Type (요청) | application/x-www-form-urlencoded; charset=UTF-8 | | | |
+| Content-Type (응답) | application/json; charset=UTF-8 | | | |
+| HTTP 항목명 | 항목설명 | 필수 | 타입 (byte) | 설명 |
+|-------------|----------|------|-------------|------|
+| Header | X-Src-Inst-Cd | API 요청기관 | Y | String(12) | API 요청메시지를 작성하는 기관코드 |
+|         | X-Dst-Inst-Cd | API 응답기관 | Y | String(12) | API 응답메시지를 작성하는 기관코드 |
+|         | X-Api-Tx-Id | 거래고유번호 | Y | String(36) | 거래고유번호 |
+| Body | tx_id | 트랜잭션 ID | Y | String(82) | 정보수신자가 생성 |
+|         | grant_type | 권한부여 방식 | Y | String(8) | 권한부여 방식 |
+|         | client_id | 클라이언트 ID | Y | String(32) | 지원플랫폼에 등록된 자격증명 |
+|         | client_secret | 클라이언트 Secret | Y | String(50) | 지원플랫폼에 등록된 자격증명(보안을 위해 추가 확인하는 값) |
+|         | ca_code | 통합인증기관 코드 | Y | String(12) | 통합인증수단을 발급한 통합인증기관 기관코드 |
+|         | ci | 연계정보 | Y | String(100) | 정보주체 연계정보 |
+|         | id_token | ID 토큰 | N | String(1500) | 정보주체에 해당되는 ID 토큰 값으로, 개별인증 수행 시 정보수신자가 정보전송자에게 발급받은 id_token 값 |
+|         | password_len | password 항목 길이 | Y | String(5) | 전송요구내역 전자서명(signedData) 길이 |
+|         | password | 전송요구내역 전자서명 (signedConsent) | Y | String(10000) | 전송요구내역 전자서명(CMS SignedData, Base64 url-safe 인코딩) |
+|         | signed_person_info_req_len | 본인확인 이용동의 전자서명 항목 길이 (signedPersonInfoReq 의 길이) | N | String(5) | signed_person_info_req의 길이 적용 |
+|         | signed_person_info_req | 본인확인 이용동의 전자서명 (signedPersonInfoReq) | N | String(10000) | 본인확인 이용동의 전자서명(CMS SignedData, Base64 url-safe 인코딩) |
+---
+- 미완성: ... [다음 페이지에 계속]
+---
+###
+- 인용: > 사용\n\n## Page 7\n\n
+| HTTP | 항목명 | 항목설명 | 필수 | 타입(byte) | 설명 |
+|------|--------|----------|------|------------|------|
+| Header | X-Api-Tx-Id | 거래고유번호 | Y | String(36) | 거래고유번호 |
+| Body | rsp_code | 세부응답코드 | Y | String(5) | API 처리결과코드 |
+|       | rsp_msg | 세부응답메시지 | Y | String(1550) | 응답코드에 해당하는 메시지 |
+|       | tx_id | 트랜잭션 ID | Y | String(82) | API 요청시 포함되어 있던 tx_id |
+|       | token_type | 접근토큰 유형 | Y | String(6) | 접근토큰 유형 |
+|       | access_token | 접근토큰 | Y | String(1500) | 정보요청용 접근토큰(Bearer) |
+|       | expires_in | 접근토큰 유효기간 | Y | String(9) | 접근토큰 유효기간(단위: 초) |
+|       | refresh_token | 갱신토큰 | Y | String(1500) | 접근토큰 갱신을 위한 토큰 |
+|       | refresh_token_expires_in | 갱신토큰 유효기간 | Y | String(9) | 갱신토큰 유효기간(단위: 초) |
+|       | scope | 권한범위 | Y | String(500) | 접근토큰 권한 범위 (다중 scope 가능) |
+- 미완성: ... [다음 페이지에 계속]
+###
+- 인용: > 사용\n\n## Page 8\n\n## 정보요청용 접근토큰 발급(간편인증기관)
+### 기본 정보
+| API ID | 전송요구-003 | API CODE | AT003 |
+|--------|--------------|----------|-------|
+| API 제공자 | 중계전문기관 | API 요청자 | 정보수신자 |
+| API URI | /oauth/2.0/token | HTTP Method | POST |
+| 설명 | 정보수신자는 정보주체가 선택한 정보전송자를 대상으로 통합인증을 요청(전자서명 전송) | - 정보전송자 서버는 1개 이상의 정보전송자에게 해당 기관을 대상으로 하는 전자서명을 각각 전송 |
+| Content-Type (요청) | application/x-www-form-urlencoded | Content-Type (응답) | application/json; charset=UTF-8 |
+### 요청메시지 명세
+| HTTP | 항목명 | 항목설명 | 필수 | 타입(byte) | 설명 |
+|------|--------|----------|------|------------|------|
+| Header | X-Api-Tx-Id | 거래고유번호 | Y | String(36) | 거래고유번호 |
+|       | X-Src-Inst-Cd | API 요청기관 | Y | String(12) | API 요청메시지를 작성하는 기관코드 - 지원플랫폼 등록시 발급 |
+|       | X-Dst-Inst-Cd | API 응답기관 | Y | String(12) | API 응답메시지를 작성하는 기관코드 - 전송요구-002(기관정보) 조회에서 확인 |
+| Body | tx_id | 트랜잭션 ID | Y | String(82) | 마이데이터 사업자가 생성 * [참고] 트랜잭션 ID 생성 규칙 |
+|       | grant_type | 권한부여 방식 | Y | String(8) | 권한부여 방식 - 'password' 고정값 |
+|       | client_id | 클라이언트 ID | Y | String(32) | 지원플랫폼에 등록된 자격증명 |
+|       | client_secret | 클라이언트 Secret | Y | String(50) | 지원플랫폼에 등록된 자격증명(보안을 위해 추가 확인하는 값) |
+|       | ca_code | 통합인증기관 코드 | Y | String(12) | 통합인증수단을 발급한 통합인증기관 기관코드 (지원플랫폼에 등록시 할당된 기관코드) |
+|       | ci | 연계정보 | Y | String(100) | 정보주체 연계정보 |
+|       | id_token | ID 토큰 | N | String(1500) | 개별인증 시 정보수신자가 정보전송자에게 발급받은 id_token 값 |
+|       | password_len | password 항목 길이 | Y | String(5) | 전송요구내역 전자서명(signedData) 길이 |
+|       | password | 전송요구내역 전자서명 (signedConsent) | Y | String(10000) | 전송요구내역 전자서명 요청(request) 응답으로 받은 signed_content 값 * 항목명 password는 OAuth 표준 준용함 |
+|       | consent_len | consent 항목 길이 | Y | String(5) | consent 항목의 길이(전송요구내역 원문의 길이) |
+|       | consent | 전송요구내역 | Y | String(10000) | 전송요구내역 원문 |
+|       | kcert_tx_id | 인증사업자 트랜잭션 아이디 | Y | String(120) | 전자서명 요청(request) 응답으로 받은 tx_id |
+|       | sign_client_id | 인증사업자 client_id | Y | String(50) | 전자서명 요청(request) 한 인증사업자로부터 발급받은 정보수신자의 client_id 정보 |
+|       | content_id | 전자서명 원문 id | Y | String(120) | 전자서명 요청(request) API 호출 시 사용했던 전자서명 원문에 부여한 구분값 |
+---
+- 미완성: ... [다음 페이지에 계속]\n\n## Page 9\n\n### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...- 미완성: ... [다음 페이지에 계속]
+---
+---
+
+---
+| HTTP | 항목명 | 항목설명 | 필수 | 타입(byte) | 설명 |
+|------|--------|----------|------|------------|------|
+| Header | X-Api-Tx-Id | 거래고유번호 | Y | String(36) | 거래고유번호 |
+| Body | rsp_code | 세부 응답코드 | Y | String(5) | API 처리결과코드 |
+| Body | rsp_msg | 세부 응답메시지 | Y | String(1550) | 응답코드에 해당하는 메시지 |
+| Body | tx_id | 트랜잭션 ID | Y | String(74) | API 요청시 포함되어 있던 tx_id |
+| Body | token_type | 접근토큰 유형 | Y | String(6) | 접근토큰 유형 |
+| Body | access_token | 접근토큰 | Y | String(1500) | 정보요청용 접근토큰(Bearer) |
+| Body | expires_in | 접근토큰 유효기간 | Y | String(9) | 접근토큰 유효기간(단위: 초) |
+| Body | refresh_token | 갱신토큰 | Y | String(1500) | 접근토큰 갱신을 위한 토큰 |
+| Body | refresh_token_expires_in | 갱신토큰 유효기간 | Y | String(9) | 갱신토큰 유효기간(단위: 초) |
+| Body | scope | 권한 범위 | Y | String(500) | 접근토큰 권한 범위 (다중 scope 가능) |
+---
+- 미완성: ... [다음 페이지에 계속]\n\n## Page 10\n\n## (전송요구-004) 개별인증 인가코드 발급
+### 기본 정보
+| API ID | 전송요구-004 | API CODE | AT004 |
+|--------|--------------|----------|-------|
+| API 제공자 | 정보전송자 | API 요청자 | 정보수신자 |
+| API URI | /oauth/2.0/authorize | HTTP Method | GET |
+| 설명 | 정보수신자는 정보주체가 로그인하는 정보전송자를 대상으로 인가코드 발급을 요청 | Content-Type (요청) | application/x-www-form-urlencoded |
+|         |             |          | ※ (참고) charset=UTF-8 | Content-Type (응답) | application/json; charset=UTF-8 |
+### 요청메시지 명세
+| HTTP | 항목명 | 항목설명 | 필수 | 타입(byte) | 설명 |
+|------|--------|----------|------|------------|------|
+| Header | X-Src-Inst-Cd | API 요청기관 | Y | String(12) | API 요청메시지를 작성하는 기관코드 |
+|       | X-Dst-Inst-Cd | API 응답기관 | Y | String(12) | API 응답메시지를 작성하는 기관코드 |
+|       | X-Api-Tx-Id | 거래고유번호 | Y | String(36) | 거래고유번호 |
+| Body | response_type | 타입 | Y | String(4) | 수신하려는 응답값의 형태 |
+|       | client_id | 클라이언트 ID | Y | String(32) | 지원플랫폼에 등록된 자격증명 ID |
+|       | redirect_uri | 리다이렉트 URI | Y | String(100) | 마이데이터 플랫폼에 마이데이터 서비스 등록 시 입력한 Redirect URI |
+|       | state | 상태값 | Y | String(40) | CSRF 보안위협에 대응하기 위해 임의 설정하는 값 |
+|       | nonce | 재전송 공격 방지 정보 | Y | String(30) | ID토큰에 포함될 Nonce 값 |
+|       | hci | 암호화된 정보주체 식별값 | Y | String(64) | (nonce || 정보주체 CI)의 SHA-256 해시값 |
+### 응답메시지 명세 (HTTP Status : 302 Redirect)
+- 정보수신자의 Callback URL(redirect uri)로 리다이렉트
+| HTTP | 항목명 | 항목설명 | 필수 | 타입(byte) | 설명 |
+|------|--------|----------|------|------------|------|
+| Parameter | api_tx_id | 거래고유번호 | Y | String(36) | 거래고유번호 |
+|       | code | 인가코드 | Y | String(128) | 발급한 인가코드(Authorization code) |
+|       | state | 상태값 | Y | String(40) | 요청 Parameter로 전달받은 'state'와 동일한 값 설정 |
+### 회신 예시
+HTTP/1.1 302 Found
+Location: https://정보수신자redirect_uri?&api_tx_id=거래고유번호&code=인가코드&state=상태값\n\n## Page 11\n\n- 주제목: 전송요구-005 개별인증 ID 토큰 발급
+- 중제목: 기본 정보
+- 소제목: 요청메시지 명세
+- 소제목: 응답메시지 명세
+
+| 항목명 | 항목설명 | 필수 | 타입(byte) | 설명 |
+|--------|----------|------|------------|-------|
+| X-Src-Inst-Cd | API 요청기관 | Y | String(12) | API 요청메시지를 작성하는 기관코드 - 지원플랫폼 등록시 발급 |
+| X-Dst-Inst-Cd | API 응답기관 | Y | String(12) | API 응답메시지를 작성하는 기관코드 - 전송요구-002(기관정보) 조회에서 확인 |
+| X-Api-Tx-Id | 거래고유번호 | Y | String(36) | 거래고유번호 |
+| grant_type | 권한부여 방식 | Y | String(18) | 권한부여 방식 - 'authorization_code' 고정값 |
+| code | 인가코드 | Y | String(128) | 발급한 인가코드 |
+| client_id | 클라이언트 ID | Y | String(32) | 지원플랫폼에 등록된 자격증명 |
+| client_secret | 클라이언트 Secret | Y | String(50) | 지원플랫폼에 등록된 자격증명(보안을 위해 추가 확인하는 값) |
+| redirect_uri | 리다이렉트 URI | Y | String(100) | 마이데이터 플랫폼에 마이데이터 서비스 등록 시 입력한 Redirect URI - URL 인코딩 필요 (정보전송자는 디코딩 후 검증) |
+| X-Api-Tx-Id | 거래고유번호 | Y | String(36) | 거래고유번호 |
+| rsp_code | 세부 응답코드 | Y | String(5) | API 처리결과코드 |
+| rsp_msg | 세부 응답메시지 | Y | String(1550) | 응답코드에 해당하는 메시지 |
+| expire_in | ID 토큰 유효기간 | Y | String(9) | ID 토큰 유효기간(단위: 초) |
+| id_token | ID 토큰 | Y | String(1500) | 정보주체에 해당되는 ID 토큰 값 |
+| token_type | 접근토큰 유형 | Y | String(6) | 접근토큰 유형 - 'Bearer' 고정값 |
+- 미완성: ... [다음 페이지에 계속]
+###
+- 인용: > 사용\n\n## Page 12\n\n- 주제목: (전송요구-006) 접근토큰 갱신
+### 기본 정보
+- API ID: 전송요구-006
+- API CODE: AT006
+- API 제공자: 중계전문기관
+- API 요청자: 정보수신자
+- API URI: /oauth/2.0/token
+- HTTP Method: POST
+- 설명: 접근토큰 발급 시 수신한 갱신토큰을 이용하여 새로운 접근토큰과 갱신토큰을 발급
+- Content-Type (요청): application/x-www-form-urlencoded
+- Content-Type (응답): application/json; charset=UTF-8
+### 요청메시지 명세
+| HTTP | 항목명 | 항목설명 | 필수 | 타입(byte) | 설명 |
+|------|--------|----------|------|------------|------|
+| Header | X-Src-Inst-Cd | API 요청기관 | Y | String(12) | API 요청메시지를 작성하는 기관코드 - 지원플랫폼 등록시 발급 |
+| Header | X-Dst-Inst-Cd | API 응답기관 | Y | String(12) | API 응답메시지를 작성하는 기관코드 - 전송지원-002(기관정보) 조회에서 확인 |
+| Header | X-Api-Tx-Id | 거래고유번호 | Y | String(36) | 거래고유번호 |
+| Body | grant_type | 권한부여방식 | Y | String(13) | 권한부여방식 - 'refresh_token' 고정값 |
+| Body | refresh_token | 갱신토큰 | Y | String(1500) | 갱신토큰 |
+| Body | client_id | 클라이언트 ID | Y | String(32) | 지원플랫폼에 등록된 자격증명 |
+| Body | client_secret | 클라이언트 Secret | Y | String(50) | 지원플랫폼에 등록된 자격증명(보안을 위해 추가 확인하는 값) |
+### 응답메시지 명세
+| HTTP | 항목명 | 항목설명 | 필수 | 타입(byte) | 설명 |
+|------|--------|----------|------|------------|------|
+| Header | X-Api-Tx-Id | 거래고유번호 | Y | String(36) | 거래고유번호 |
+| Body | rsp_code | 세부 응답코드 | Y | String(5) | API 처리결과코드 |
+| Body | rsp_msg | 세부 응답메시지 | Y | String(1550) | 응답코드에 해당하는 메시지 |
+| Body | token_type | 토큰 유형 | Y | String(6) | 토큰유형 - 'Bearer' 고정값 |
+| Body | access_token | 접근토큰 | Y | String(1500) | 갱신된 접근토큰 |
+| Body | expires_in | 접근토큰 유효기간 | Y | String(9) | 접근토큰 유효기간(단위: 초) |
+| Body | refresh_token | 갱신토큰 | Y | String(1500) | 접근토큰 갱신을 위한 토큰 |
+| Body | refresh_token_expires_in | 갱신토큰 유효기간 | Y | String(9) | 갱신토큰 유효기간(단위: 초) |
+---
+이 페이지가 이전 내용의 연속이라면 [이전 페이지에서 계속] 표시를 추가해주세요.\n\n## Page 13\n\n## 전송요구-007) 전송요구 철회
+### 기본 정보
+| API ID | 전송요구-007 | API CODE | AT007 |
+|--------|--------------|----------|-------|
+| API 제공자 | 중계전문기관 | API 요청자 | 정보수신자 |
+| API URI | /oauth/2.0/revoke | HTTP Method | POST |
+| 설명 | 접근토큰 및 갱신토큰 폐기 <br> - 전송요구를 통해 발급받은 접근토큰 및 갱신토큰을 유효기간 만료 전 폐기하기 위한 API (정보주체가 전송요구 철회하기 위해)<br> - 접근토큰 폐기시 갱신토큰 또한 함께 폐기 | |
+| Content-Type (요청) | application/x-www-form-urlencoded<br>※ (참고) charset=UTF-8 | Content-Type (응답) | application/json; charset=UTF-8 |
+### 요청메시지 명세
+| HTTP | 항목명 | 항목설명 | 필수 | 타입(byte) | 설명 |
+|------|---------|-----------|------|------------|-------|
+| Header | X-Src-Inst-Cd | API 요청기관 | Y | String(12) | API 요청메시지를 작성하는 기관코드 - 지원플랫폼 등록시 발급 |
+|       | X-Dst-Inst-Cd | API 응답기관 | Y | String(12) | API 응답메시지를 작성하는 기관코드 - 전송지원-002(기관정보) 조회에서 확인 |
+|       | X-Api-Tx-Id | 거래고유번호 | Y | String(36) | 거래고유번호 |
+| Body | token | 폐기하고자 하는 토큰 | Y | String(1500) | 폐기하고자 하는 접근 토큰 또는 갱신토큰 ※ 토큰유형에 관계없이 해당 전송요구 철회 |
+|       | client_id | 클라이언트 ID | Y | String(32) | 지원플랫폼에 등록된 자격증명 |
+|       | client_secret | 클라이언트 Secret | Y | String(50) | 지원플랫폼에 등록된 자격증명(보안을 위해 추가 확인하는 값) |
+### 응답메시지 명세
+| HTTP | 항목명 | 항목설명 | 필수 | 타입(byte) | 설명 |
+|------|---------|-----------|------|------------|-------|
+| Header | X-Api-Tx-Id | 거래고유번호 | Y | String(36) | 거래고유번호 |
+| Body | rsp_code | 세부 응답코드 | Y | String(5) | API 처리결과코드 |
+|       | rsp_msg | 세부 응답메시지 | Y | String(1550) | 세부 응답메시지 |\n\n## Page 14\n\n- 주제목: (전송요구-008) 주민등록번호 입력창 호출
+- 중제목: 기본 정보
+- 소제목: API ID, API 제공자, API URI, 설명, Content-Type (요청), Content-Type (응답)
+- 세부: HTTP Method, API CODE, API 요청자, Redirect URL을 통해 인가코드를 수신받음
+
+| 항목명 | 항목설명 | 필수 | 타입(byte) | 설명 |
+|--------|-----------|------|------------|-------|
+| X-Src-Inst-Cd | API 요청기관 | Y | String(12) | API 요청메시지를 작성하는 기관코드 - 지원플랫폼 등록시 발급 |
+| X-Dst-Inst-Cd | API 응답기관 | Y | String(12) | API 응답메시지를 작성하는 기관코드 - 전송지원-002(기관정보) 조회에서 확인 |
+| X-Api-Tx-Id | 거래고유번호 | Y | String(36) | 거래고유번호 |
+| response_type | 타입 | Y | String(4) | 수신하려는 응답값의 형태 - 'code' 고정 값 |
+| client_id | 클라이언트 ID | Y | String(32) | 지원플랫폼에 등록된 자격증명 ID |
+| redirect_uri | 리다이렉트 URI | Y | String(100) | 마이데이터 플랫폼에 마이데이터 서비스 등록 시 입력한 Redirect URI - URL 인코딩 필요 (정보전송자는 디코딩 후 검증) |
+| state | 상태값 | Y | String(40) | CSRF 보안위협에 대응하기 위해 임의 설정하는 값 |
+| nonce | 재전송 공격 방지 정보 | Y | String(30) | 재전송 방지를 위한 Nonce 값 (Base64 url-safe 인코딩, 패딩('=') 포함) |
+| hci | 암호화된 정보주체 식별값 | Y | String(64) | (nonce || 정보주체 CI)의 SHA-256 해시값 |
+
+| 항목명 | 항목설명 | 필수 | 타입(byte) | 설명 |
+|--------|-----------|------|------------|-------|
+| api_tx_id | 거래고유번호 | Y | String(36) | 거래고유번호 - 요청시 전달받은 거래고유번호 헤더값과 동일한 값 - 헤더값은 리다이렉트 되지 않으므로 다른 API와 달리 parameter로 거래고유번호 회신 |
+| code | 인가코드 | Y | String(128) | 발급한 인가코드(Authorization code) |
+| state | 상태값 | Y | String(40) | 요청 Parameter로 전달받은 'state'와 동일한 값 설정 |
+- 미완성: ... [다음 페이지에 계속]\n\n## Page 15\n\n- 주제목: [전송요구-009] 주민등록번호 변환 여부 확인
+- 중제목: 기본 정보, 요청메시지 명세, 응답메시지 명세
+
+| 항목명 | 항목설명 | 필수 | 타입(byte) | 설명 |
+|--------|----------|------|------------|-------|
+| X-Src-Inst-Cd | API 요청기관 | Y | String(12) | API 요청메시지를 작성하는 기관코드 - 지원플랫폼 등록시 발급 |
+| X-Dst-Inst-Cd | API 응답기관 | Y | String(12) | API 응답메시지를 작성하는 기관코드 - 전송지원-002(기관정보) 조회에서 확인 |
+| X-Api-Tx-Id | 거래고유번호 | Y | String(36) | 거래고유번호 |
+| grant_type | 권한부여 방식 | Y | String(18) | 권한부여 방식 - 'authorization_code' 고정값 |
+| code | 인가코드 | Y | String(128) | 발급한 인가코드 |
+| client_id | 클라이언트 ID | Y | String(32) | 지원플랫폼에 등록된 자격증명 |
+| client_secret | 클라이언트 Secret | Y | String(50) | 지원플랫폼에 등록된 자격증명(보안을 위해 추가 확인하는 값) |
+| redirect_uri | 리다이렉트 URI | Y | String(100) | 마이데이터 플랫폼에 마이데이터 서비스 등록 시 입력한 Redirect URI - URL 인코딩 필요 (정보전송자는 디코딩 후 검증) |
+| 항목명 | 항목설명 | 필수 | 타입(byte) | 설명 |
+|--------|----------|------|------------|-------|
+| X-Api-Tx-Id | 거래고유번호 | Y | String(36) | 거래고유번호 |
+| rsp_code | 세부 응답코드 | Y | String(5) | API 처리결과코드 |
+| rsp_msg | 세부 응답메시지 | Y | String(1550) | 응답코드에 해당하는 메시지 |
+| nonce | 재전송 공격 방지 정보 | Y | String(30) | 재전송 방지를 위해 정보수신자가 추가한 Nonce 값 회신 (Base64 url-safe 인코딩, 패딩('=',) 포함) |
+- 미완성: ... [다음 페이지에 계속]\n\n## Page 16\n\n### 기본 정보
+| API ID | 무선통신-001 | API CODE | WC001 |
+|--------|---------------|----------|-------|
+| API 제공자 | 통신업권 | API 요청자 | 정보수신자 |
+| API URI | /comms/member | HTTP Method | POST |
+| 설명 | 통신서비스를 계약한 정보주체의 계약관리번호 조회 | - Pagination, 계약관리번호 기준 오름차순 | - (기준시점) 현재 기준 |
+| Content-Type (요청) | application/json; charset=UTF-8 | Content-Type (응답) | application/json; charset=UTF-8 |
+### 요청메시지 명세
+| HTTP | 항목명 | 항목설명 | 필수 | 타입(byte) | 설명 |
+|------|--------|-----------|------|------------|-------|
+| Header | Authorization | 인증정보 | Y | String(1500) | 정보요청용 접근토큰(Bearer) |
+|        | X-Src-Inst-Cd | API 요청기관 | Y | String(12) | API 요청메시지를 작성하는 기관코드 - 지원플랫폼 등록시 발급 |
+|        | X-Dst-Inst-Cd | API 응답기관 | Y | String(12) | API 응답메시지를 작성하는 기관코드 - 전송지원-002(기관정보) 조회에서 확인 |
+|        | X-Api-Type | API 유형 | Y | String(2) | 정기적/비정기적 전송 API 유형 ( 01: 정기적, 02: 비정기적 ) |
+|        | X-Api-Tx-Id | 거래고유번호 | Y | String(36) | 거래고유번호 |
+| Body | search_timestamp | 조회일시 | N | String(14) | 요청가 처리한 마지막 API 처리시간(YYYYMMDDhhmmss) - 최초 호출값은 0, 이후에는 마지막 호출 시 search_timestamp 응답값 |
+|       | next_page | 다음 페이지 기준개체 식별자 | N | String(1000) | 다음 페이지 요청을 위한 기준개체(설정 시 해당 개체 후 limit개 반환) - 최초 호출 시 값이 없고, 이후 요청 시 응답값의 다음페이지 기준개체 사용 - Pagination, 계약관리번호 기준 오름차순 |
+|       | limit | 최대조회갯수 | Y | String(3) | 최대값 500 |
+### 응답메시지 명세
+| HTTP | 항목명 | 항목설명 | 필수 | 타입(byte) | 설명 |
+|------|--------|-----------|------|------------|-------|
+| Header | X-Api-Tx-Id | 거래고유번호 | Y | String(36) | 거래고유번호 |
+|       | rsp_code | 세부 응답코드 | Y | String(5) | API 처리결과코드 |
+|       | rsp_msg | 세부 응답메시지 | Y | String(1550) | 응답코드에 해당하는 메시지 |
+|       | search_timestamp | 조회일시 | N | String(14) | API 처리 시점의 현재시각을 설정하여 회신 |
+| Body | next_page | 다음 페이지 기준개체 식별자 | N | String(1000) | 다음 페이지 요청을 위한 기준개체의 식별자 (다음 페이지 존재하지 않는 경우(마지막 페이지), 미회신) |
+|       | ctrt_list_cnt | 계약목록개수 | Y | String(3) | 계약내역목록의 총 개수 |
+|       | ctrt_dsctn_list | 계약내역목록 | Y | Object | 조회기간에 해당하는 모든 계약 내역 데이터를 포함하는 배열형 객체 |
+|       | --ctr_mng_no | 계약관리번호 | Y | String(50) | 정보전송자가 각 통신 회선을 식별하기 위해 정보주체에게 부여한 고유번호 식별자(해시 가능) |
+|       | --join_no | 가입번호 | Y | String(20) | 정보주체의 통신회선에 할당된 가입번호 (마스킹 가능) |
+|       | --cmmn_se | 통신구분 | Y | String(2) | 정보주체가 가입한 통신 서비스 상품의 구분(코드) 01: 휴대폰(이동단말기) |
+|       | --join_se | 가입구분 | Y | String(2) | 정보주체의 가입 상태를 나타내는 구분(코드) 01: 정상/ 02: 고객정지/ 03: 연체정지/ 04: 기타 |
+---
+- 미완성: ... [다음 페이지에 계속]\n\n## Page 17\n\n- 주제목: (무선통신-002) 가입정보 조회
+- 중제목: 기본 정보, 요청메시지 명세, 응답메시지 명세
+
+|--------|--------|--------|
+| API ID | API CODE | 설명 |
+| API 제공자 | API 요청자 | Content-Type (요청) |
+| API URI | HTTP Method | Content-Type (응답) |
+| 항목명 | 항목설명 | 필수 | 타입(byte) | 설명 |
+| Header | Authorization | 인증정보 | Y | String(1500) | 정보요청용 접근토큰(Bearer) |
+| X-Src-Inst-Cd | API 요청기관 | Y | String(12) | API 요청메시지를 작성하는 기관코드 |
+| X-Dst-Inst-Cd | API 응답기관 | Y | String(12) | API 응답메시지를 작성하는 기관코드 |
+| X-Api-Type | API 유형 | Y | String(2) | 정기적/비정기적 전송 API 유형 |
+| X-Api-Tx-Id | 거래고유번호 | Y | String(36) | 거래고유번호 |
+| Body | search_timestamp | 조회일시 | N | String(14) | 가장 최근 조회한 시간 |
+| ctrt_mng_no | 계약관리번호 | Y | String(50) | 정보전송자가 정보주체에게 부여한 통신회선 식별자 |
+| Header | X-Api-Tx-Id | 거래고유번호 | Y | String(36) | 거래고유번호 |
+| Body | rsp_code | 세부 응답코드 | Y | String(5) | API 처리결과코드 |
+| rsp_msg | 세부 응답메시지 | Y | String(1550) | 응답코드에 해당하는 메시지 |
+| search_timestamp | 조회일시 | N | String(14) | API 처리 시점의 현재시각을 설정하여 회신 |
+| svc_plan_nm | 서비스요금제명 | Y | String(200) | 통신사업체가 제공하는 서비스 요금제명 |
+- 미완성: ... [다음 페이지에 계속]\n\n## Page 18\n\n## 무선통신-003 이용정보 조회
+### 기본 정보
+| API ID | 무선통신-003 |
+|--------|--------------|
+| API CODE | WC003 |
+| API 제공자 | 통신업권 |
+| API URI | /comms/mobile-usage |
+| HTTP Method | POST |
+| 설명 | 정보주체가 가입한 통신서비스의 월별 이용량 정보 조회 |
+| Content-Type (요청) | application/json; charset=UTF-8 |
+| Content-Type (응답) | application/json; charset=UTF-8 |
+### 요청메시지 명세
+| HTTP | 항목명 | 항목설명 | 필수 | 타입(byte) | 설명 |
+|------|--------|----------|------|------------|------|
+| Header | Authorization | 인증정보 | Y | String(1500) | 정보요청용 접근토큰(Bearer) |
+|        | X-Src-Inst-Cd | API 요청기관 | Y | String(12) | API 요청메시지를 작성하는 기관코드 |
+|        | X-Dst-Inst-Cd | API 응답기관 | Y | String(12) | API 응답메시지를 작성하는 기관코드 |
+|        | X-Api-Type | API 유형 | Y | String(2) | 정기적/비정기적 전송 API 유형 (01: 정기적, 02: 비정기적) |
+|        | X-Api-Tx-Id | 거래고유번호 | Y | String(36) | 거래고유번호 |
+| Body | search_ | 조회일시 | N | String(14) | 가장 최근 조회한 시간 |
+|       | ctrt_mng_no | 계약관리번호 | Y | String(50) | 정보전송자가 정보주체에게 부여한 통신회선 식별자 |
+|       | bngng_ym | 시작연월 | Y | String(6) | 조회 시작월(YYYYMM) |
+|       | end_ym | 종료연월 | Y | String(6) | 조회 종료월(YYYYMM) |
+### 응답메시지 명세
+| HTTP | 항목명 | 항목설명 | 필수 | 타입(byte) | 설명 |
+|------|--------|----------|------|------------|------|
+| Header | X-Api-Tx-Id | 거래고유번호 | Y | String(36) | 거래고유번호 |
+|       | rsp_code | 세부 응답코드 | Y | String(5) | API 처리결과코드 |
+|       | rsp_msg | 세부 응답메시지 | Y | String(1550) | 응답코드에 해당하는 메시지 |
+| Body | search_timestamp | 조회일시 | N | String(14) | API 처리 시점의 현재시각을 설정하여 회신 |
+|      | svrc_utztn_list_cnt | 서비스이용목록개수 | Y | String(3) | 서비스이용목록의 개수 |
+|      | svrc_utztn_dsctn_list | 서비스이용내역목록 | Y | Object | 조회기간 동안의 서비스 이용내역을 포함하는 데이터 항목의 배열형 객체 |
+|      | --svrc_utztn_ym | 서비스이용연월 | Y | String(6) | 서비스 이용연월(YYYYMM) |
+|      | --svrc_voice_utztn_qy | 서비스음성이용량 | Y | Integer(5) | 해당 연월에 발신으로 사용한 음성서비스 이용량(단위:분) |
+|      | --svrc_ltr_utztn_qy | 서비스문자이용량 | Y | Integer(5) | 해당 연월에 발신으로 사용한 문자서비스 이용량(단위:개) |
+|      | --svrc_data_utztn_qy | 서비스데이터이용량 | Y | Integer(10) | 해당 연월에 사용한 데이터 서비스 이용량(단위:KB) |\n\n## Page 19\n\n## 무선통신-004) 청구정보 조회
+### 기본 정보
+| API ID | 무선통신-004 | API CODE | WC004 |
+|--------|--------------|----------|-------|
+| API 제공자 | 통신업권 | API 요청자 | 정보수신자 |
+| API URI | /comms/mobile-bills | HTTP Method | POST |
+| 설명 | 가입된 통신서비스의 요금 청구 정보 조회 | - 기준시점) FROM과 TO를 확인하여 해당 기간의 정보를 회신(전월부터 최대 1년전까지) |
+| Content-Type (요청) | application/json; charset=UTF-8 | Content-Type (응답) | application/json; charset=UTF-8 |
+### 요청메시지 명세
+| HTTP | 항목명 | 항목설명 | 필수 | 타입(byte) | 설명 |
+|------|---------|-----------|------|------------|------|
+| Header | Authorization | 인증정보 | Y | String(1500) | 정보요청용 접근토큰(Bearer) |
+|        | X-Src-Inst-Cd | API 요청기관 | Y | String(12) | API 요청메시지를 작성하는 기관코드 |
+|        | X-Dst-Inst-Cd | API 응답기관 | Y | String(12) | API 응답메시지를 작성하는 기관코드 |
+|        | X-Api-Type | API 유형 | Y | String(2) | 정기적/비정기적 전송 API 유형 |
+|        | X-Api-Tx-Id | 거래고유번호 | Y | String(36) | 거래고유번호 |
+| Body | search_timestamp | 조회일시 | N | String(14) | 가장 최근 조회한 시간 |
+|        | crrt_mng_no | 계약관리번호 | Y | String(50) | 정보전송자가 정보주체에게 부여한 통신회선 식별자 |
+|        | bgng_ym | 시작연월 | Y | String(6) | 조회 시작월(YYYYMM) |
+|        | end_ym | 종료연월 | Y | String(6) | 조회 종료월(YYYYMM) |
+### 응답메시지 명세
+| HTTP | 항목명 | 항목설명 | 필수 | 타입(byte) | 설명 |
+|------|---------|-----------|------|------------|------|
+| Header | X-Api-Tx-Id | 거래고유번호 | Y | String(36) | 거래고유번호 |
+| Body | rsp_code | 세부 응답코드 | Y | String(5) | API 처리결과코드 |
+|        | rsp_msg | 세부 응답메시지 | Y | String(1550) | 응답코드에 해당하는 메시지 |
+|        | search_timestamp | 조회일시 | N | String(14) | API 처리 시점의 현재시각을 설정하여 회신 |
+|        | bll_list_cnt | 청구목록개수 | Y | String(3) | 청구내역목록의 개수 |
+|        | bll_dsctn_list | 청구내역목록 | Y | Object | 조회기간 동안의 청구내역을 포함하는 데이터 항목의 배열형 객체 |
+|        | --bll_ym | 청구연월 | Y | String(6) | 청구정보의 대상연월(YYYYMM) |
+|        | --bll_amt | 청구금액 | Y | Integer(15) | 청구연월에 청구되는 요금액(단위: 원) |
+|        | --pay_prnmnt_ymd | 납부예정일자 | Y | Date(8) | 청구정보에 등록된 납부 예정일자(YYYYMMDD) |
+---
+[이전 페이지에서 계속]\n\n## Page 20\n\n## 무선통신-005 납부정보 조회
+### 기본 정보
+| API ID | 무선통신-005 |
+|--------|--------------|
+| API CODE | WC005 |
+| API 제공자 | 통신업권 |
+| API 요청자 | 정보수신자 |
+| API URI | /comms/mobile-payments |
+| HTTP Method | POST |
+| 설명 | 가입된 통신서비스 요금 청구에 대한 납부 정보 조회 |
+| Content-Type (요청) | application/json; charset=UTF-8 |
+| Content-Type (응답) | application/json; charset=UTF-8 |
+### 요청메시지 명세
+| HTTP | 항목명 | 항목설명 | 필수 | 타입(byte) | 설명 |
+|------|---------|-----------|------|------------|-------|
+| Header | Authorization | 인증정보 | Y | String(1500) | 정보요청용 접근토큰(Bearer) |
+|       | X-Src-Inst-Cd | API 요청기관 | Y | String(12) | - 지원플랫폼 등록시 발급 |
+|       | X-Dst-Inst-Cd | API 응답기관 | Y | String(12) | - 전송지원-002(기관정보) 조회에서 확인 |
+|       | X-Api-Type | API 유형 | Y | String(2) | 정기적/비정기적 전송 API 유형 |
+|       | X-Api-Tx-Id | 거래고유번호 | Y | String(36) | 거래고유번호 |
+| Body | search_timestamp | 조회일시 | N | String(14) | 가장 최근 조회한 시간 |
+|       | ctr_mng_no | 계약관리번호 | Y | String(50) | 정보전송자가 정보주체에게 부여한 통신회선 식별자 |
+|       | bgng_ym | 시작연월 | Y | String(6) | 조회 시작월(YYYYMM) |
+|       | end_ym | 종료연월 | Y | String(6) | 조회 종료월(YYYYMM) |
+### 응답메시지 명세
+| HTTP | 항목명 | 항목설명 | 필수 | 타입(byte) | 설명 |
+|------|---------|-----------|------|------------|-------|
+| Header | X-Api-Tx-Id | 거래고유번호 | Y | String(36) | 거래고유번호 |
+|       | rsp_code | 세부 응답코드 | Y | String(5) | API 처리결과코드 |
+|       | rsp_msg | 세부 응답메시지 | Y | String(1550) | 응답코드에 해당하는 메시지 |
+|       | search_timestamp | 조회일시 | N | String(14) | API 처리 시점의 현재시각을 설정하여 회신 |
+| Body | pay_list_cnt | 납부목록개수 | Y | String(3) | 납부내역목록의 개수 |
+|       | pay_dsctn_list | 납부내역목록 | Y | Object | 조회기간 동안의 납부내역을 포함하는 데이터 항목의 배열형 객체 |
+|       | --pay_ym | 납부연월 | Y | String(6) | 납부정보의 대상연월(YYYYMM) |
+|       | --pay_amt | 납부금액 | Y | Integer(15) | 납부연월에 납부한 납부금액(단위: 원) |
+|       | --pay_mn | 납부수단 | N | String(2) | 실제 납부방법(미납시 공란) |
+|       |         |         |     |           | 01:신용카드 / 02:계좌이체 / 03:지로 / 99:기타 |
+---
+[이전 페이지에서 계속]\n\n## Page 21\n\n- 주제목: 3 전송지원 API 규격
+- 중제목: [전송지원-001] 연계지원용 접근토큰 발급
+
+| 항목명 | 항목설명 | 필수 | 타입(byte) | 설명 |
+|--------|----------|------|------------|-------|
+| X-Src-Inst-Cd | API 요청기관 | Y | String(12) | API 요청메시지를 작성하는 기관코드 |
+| X-Dst-Inst-Cd | API 응답기관 | Y | String(12) | API 응답메시지를 작성하는 기관코드 |
+| X-Api-Tx-Id | 거래고유번호 | Y | String(36) | 거래고유번호 |
+| grant_type | 권한부여방식 | Y | String(18) | 권한부여방식 ('client_credentials' 고정 값) |
+| client_id | 클라이언트 ID | Y | String(32) | 지원플랫폼에 등록된 자격증명 |
+| client_secret | 클라이언트 Secret | Y | String(50) | 지원플랫폼에 등록된 자격증명(보안을 위해 추가 확인하는 값) |
+| scope | 권한 | Y | String(7) | 권한값 ('support' 고정 값) |
+| 항목명 | 항목설명 | 필수 | 타입(byte) | 설명 |
+|--------|----------|------|------------|-------|
+| X-Api-Tx-Id | 거래고유번호 | Y | String(36) | 거래고유번호 |
+| rsp_code | 세부 응답코드 | Y | String(5) | API 처리결과코드 |
+| rsp_msg | 세부 응답메시지 | Y | String(1550) | 응답코드에 해당하는 메시지 |
+| token_type | 접근토큰 유형 | Y | String(6) | 접근토큰 유형 ('Bearer' 고정 값) |
+| access_token | 접근토큰 | Y | String(1500) | 발급된 접근토큰 |
+| expires_in | 접근토큰 유효기간 | Y | String(9) | 접근토큰의 유효기간(단위: 초) 23~24시간 중 무작위 값 |
+- 미완성: ... [다음 페이지에 계속]
+- 연속: [이전 페이지에서 계속]\n\n## Page 22\n\n## 전송지원-002 기관정보 조회
+### 기본 정보
+| API ID | 전송지원-002 |
+|--------|--------------|
+| API CODE | SU002 |
+| API 제공자 | 지원플랫폼 |
+| API URI | /support/insts |
+| HTTP Method | GET |
+| 설명 | 정보수신자/중계전문기관이 타 기관의 기관정보를 플랫폼으로부터 제공받기 위한 API |
+| - 수정내역이 없는 기관의 정보는 회신하지 않음 |
+| - 자격증명에 따라 요청자가 받을 수 있는 기관(조회대상 기관)의 정보만 제공 |
+| Content-Type (요청) | - |
+| Content_Type (응답) | application/json; charset=UTF-8 |
+### 요청메시지 명세
+| HTTP | 항목명 | 항목설명 | 필수 | 타입(byte) | 설명 |
+|------|---------|-----------|------|------------|-------|
+| Header | Authorization | 인증정보 | Y | String(1500) | 연계지원용 접근토큰(Bearer) |
+|        | X-Src-Inst-Cd | API 요청기관 | Y | String(12) | API 요청메시지를 작성하는 기관코드 |
+|        | X-Dst-Inst-Cd | API 응답기관 | Y | String(12) | API 응답메시지를 작성하는 기관코드 |
+|        | X-Api-Tx-Id | 거래고유번호 | Y | String(36) | 거래고유번호 |
+| Parameter | search_timestamp | 조회타임스탬프 | Y | String(14) | 요청자가 처리한 마지막 API 처리시간(YYYYMMDDhhmmss) |
+|          | next_page | 다음 페이지 기준개체 | N | String(1000) | 다음 페이지 요청을 위한 기준개체(설정 시 해당 개체 후 limit개 반환) |
+|          | limit | 최대조회갯수 | N | String(3) | 최대값 500 |
+### 응답메시지 명세
+| HTTP | 항목명 | 항목설명 | 필수 | 타입(byte) | 설명 |
+|------|---------|-----------|------|------------|-------|
+| Header | X-Api-Tx-Id | 거래고유번호 | Y | String(36) | 거래고유번호 |
+|        | rsp_code | 세부 응답코드 | Y | String(5) | API 처리결과코드 |
+|        | rsp_msg | 세부 응답메시지 | Y | String(1550) | 응답코드에 해당하는 메시지 |
+|        | search_timestamp | 조회 타임스탬프 | Y | String(14) | 처리 시각(YYYYMMDDhhmmss) |
+|        | next_page | 다음 페이지 기준개체 | N | String(1000) | 다음 페이지 요청을 위한 기준개체(다음 페이지 존재하지 않는 경우(마지막 페이지), 미회신) |
+|        | inst_cnt | 기관정보 개수 | Y | String(4) | 기관정보목록 |
+|        | inst_list | 기관정보목록 | N | Object | 기관공통정보(기관코드 오름차순) |
+| Body | --modification_flag | 정보변경플래그 | N | String(1) | 조회 대상 기관의 정보가 가장 최근의 API 처리 시간(search_timestamp)의 값을 기준으로 변경된 유형에 대한 구분자 |
+|       | --inst_cd | 기관코드 | N | String(12) | 조회 대상 기관코드 |
+|       | --inst_nm | 기관명 | N | String(60) | 조회 대상 기관의 이름 |
+|       | --tls_cert_fingerprint_info | TLS 인증서 지문정보 | N | String(64) | 중계전문기관/정보전송자/인증기관/지원플랫폼의 TLS인증서 지문정보 |
+|       | --renewal_tls_cert_fingerprint_info | 갱신예정 TLS 인증서 지문정보 | N | String(64) | 중계전문기관/정보전송자/인증기관/지원플랫폼의 갱신예정 TLS인증서 지문정보 |
+|       | --domain_nm | API서버 도메인명 | N | String(70) | 중계전문기관/정보전송자/인증기관/지원플랫폼의 API 제공 서버의 도메인 명 |
+|       | --domain_ip_addr_cnt | API서버 | N | String(4) | 중계전문기관/정보전송자/인증기관/지원플랫폼의 API 제공 서버의 공인 IP주소 및 포트(IP주소:포트) |
+---
+이 페이지가 이전 내용의 연속이라면 [이전 페이지에서 계속] 표시를 추가해주세요.\n\n## Page 23\n\n```markdown
+# 정보 전송자 정보 (조회 대상 유형)
+## 정보 전송자 정보
+|--------|--------|--------|
+| --trans_inst_cd | 중계전문기관 기관코드 | N String(12) 정보전송자를 대행하는 중계전문기관의 기관코드 |
+| --ident_mgt_tp | 식별자유형 | N String(1) 정보전송자의 정보주체 식별자유형에 대한 구분자 |
+| --idvd_auth_url | 개별인증 URL | N String(100) 정보주체 식별자가 개별식별자인 경우, 정보전송자의 개별인증 URL |
+| --np_time_cnt | 정기적 전송가능 시간대 개수 | N String(4) |
+| --np_time_list | 정기적 전송가능 시간대 목록 | N Object 정보전송자가 정기적 전송을 허용하는 Non-peak 시간대 목록 |
+| ----np_time | 정기적 전송 가능 시간 | N String(9) 정기적 전송가능시간(30분 단위) : "hhmm:hhmm" |
+| ----np_time_cnt | 정기적 전송 가능 시간대 개수 | N String(4) |
+| ----np_time_list | 정기적 전송 가능 시간대 목록 | N Object 정보전송자가 정기적 전송을 허용하는 Non-peak 시간대 목록 |
+| ----np_time | 정기적 전송 가능 시간 | N String(9) 정기적 전송가능시간(30분 단위) : "hhmm:hhmm" |
+| ----np_time_cnt | 정기적 전송 가능 시간대 개수 | N String(4) |
+| ----np_time_list | 정기적 전송 가능 시간대 목록 | N Object 정보전송자가 정기적 전송을 허용하는 Non-peak 시간대 목록 |
+| ----np_time | 정기적 전송 가능 시간 | N String(9) 정기적 전송가능시간(30분 단위) : "hhmm:hhmm" |
+| ----np_time_cnt | 정기적 전송 가능 시간대 개수 | N String(4) |
+| ----np_time_list | 정기적 전송 가능 시간대 목록 | N Object 정보전송자가 정기적 전송을 허용하는 Non-peak 시간대 목록 |
+| ----np_time | 정기적 전송 가능 시간 | N String(9) 정기적 전송가능시간(30분 단위) : "hhmm:hhmm" |
+| ----np_time_cnt | 정기적 전송 가능 시간대 개수 | N String(4) |
+| ----np_time_list | 정기적 전송 가능 시간대 목록 | N Object 정보전송자가 정기적 전송을 허용하는 Non-peak 시간대 목록 |
+| ----np_time | 정기적 전송 가능 시간 | N String(9) 정기적 전송가능시간(30분 단위) : "hhmm:hhmm" |
+| ----np_time_cnt | 정기적 전송 가능 시간대 개수 | N String(4) |
+| ----np_time_list | 정기적 전송 가능 시간대 목록 | N Object 정보전송자가 정기적 전송을 허용하는 Non-peak 시간대 목록 |
+| ----np_time | 정기적 전송 가능 시간 | N String(9) 정기적 전송가능시간(30분 단위) : "hhmm:hhmm" |
+| ----np_time_cnt | 정기적 전송 가능 시간대 개수 | N String(4) |
+| ----np_time_list | 정기적 전송 가능 시간대 목록 | N Object 정보전송자가 정기적 전송을 허용하는 Non-peak 시간대 목록 |
+| ----np_time | 정기적 전송 가능 시간 | N String(9) 정기적 전송가능시간(30분 단위) : "hhmm:hhmm" |
+| ----np_time_cnt | 정기적 전송 가능 시간대 개수 | N String(4) |
+| ----np_time_list | 정기적 전송 가능 시간대 목록 | N Object 정보전송자가 정기적 전송을 허용하는 Non-peak 시간대 목록 |
+| ----np_time | 정기적 전송 가능 시간 | N String(9) 정기적 전송가능시간(30분 단위) : "hhmm:hhmm" |
+| ----np_time_cnt | 정기적 전송 가능 시간대 개수 | N String(4) |
+| ----np_time_list | 정기적 전송 가능 시간대 목록 | N Object 정보전송자가 정기적 전송을 허용하는 Non-peak 시간대 목록 |
+| ----np_time | 정기적 전송 가능 시간 | N String(9) 정기적 전송가능시간(30분 단위) : "hhmm:hhmm" |
+| ----np_time_cnt | 정기적 전송 가능 시간대 개수 | N String(4) |
+| ----np_time_list | 정기적 전송 가능 시간대 목록 | N Object 정보전송자가 정기적 전송을 허용하는 Non-peak 시간대 목록 |
+| ----np_time | 정기적 전송 가능 시간 | N String(9) 정기적 전송가능시간(30분 단위) : "hhmm:hhmm" |
+| ----np_time_cnt | 정기적 전송 가능 시간대 개수 | N String(4) |
+| ----np_time_list | 정기적 전송 가능 시간대 목록 | N Object 정보전송자가 정기적 전송을 허용하는 Non-peak 시간대 목록 |
+| ----np_time | 정기적 전송 가능 시간 | N String(9) 정기적 전송가능시간(30분 단위) : "hhmm:hhmm" |
+| ----np_time_cnt | 정기적 전송 가능 시간대 개수 | N String(4) |
+| ----np_time_list | 정기적 전송 가능 시간대 목록 | N Object 정보전송자가 정기적 전송을 허용하는 Non-peak 시간대 목록 |
+| ----np_time | 정기적 전송 가능 시간 | N String(9) 정기적 전송가능시간(30분 단위) : "hhmm:hhmm" |
+| ----np_time_cnt | 정기적 전송 가능 시간대 개수 | N String(4) |
+| ----np_time_list | 정기적 전송 가능 시간대 목록 | N Object 정보전송자가 정기적 전송을 허용하는 Non-peak 시간대 목록 |
+| ----np_time | 정기적 전송 가능 시간 | N String(9) 정기적 전송가능시간(30분 단위) : "hhmm:hhmm" |
+| ----np_time_cnt | 정기적 전송 가능 시간대 개수 | N String(4) |
+| ----np_time_list | 정기적 전송 가능 시간대 목록 | N Object 정보전송자가 정기적 전송을 허용하는 Non-peak 시간대 목록 |
+| ----np_time | 정기적 전송 가능 시간 | N String(9) 정기적 전송가능시간(30분 단위) : "hhmm:hhmm" |
+| ----np_time_cnt | 정기적 전송 가능 시간대 개수 | N String(4) |
+| ----np_time_list | 정기적 전송 가능 시간대 목록 | N Object 정보전송자가 정기적 전송을 허용하는 Non-peak 시간대 목록 |
+| ----np_time | 정기적 전송 가능 시간 | N String(9) 정기적 전송가능시간(30분 단위) : "hhmm:hhmm" |
+| ----np_time_cnt | 정기적 전송 가능 시간대 개수 | N String(4) |
+| ----np_time_list | 정기적 전송 가능 시간대 목록 | N Object 정보전송자가 정기적 전송을 허용하는 Non-peak 시간대 목록 |
+| ----np_time | 정기적 전송 가능 시간 | N String(9) 정기적 전송가능시간(30분 단위) : "hhmm:hhmm" |
+| ----np_time_cnt | 정기적 전송 가능 시간대 개수 | N String(4) |
+| ----np_time_list | 정기적 전송 가능 시간대 목록 | N Object 정보전송자가 정기적 전송을 허용하는 Non-peak 시간대 목록 |
+| ----np_time | 정기적 전송 가능 시간 | N String(9) 정기적 전송가능시간(30분 단위) : "hhmm:hhmm" |
+| ----np_time_cnt | 정기적 전송 가능 시간대 개수 | N String(4) |
+| ----np_time_list | 정기적 전송 가능 시간대 목록 | N Object 정보전송자가 정기적 전송을 허용\n\n## Page 24\n\n```markdown
+# 정보 전송자 정보
+## 인증기관 정보 (인증서 본인확인기관 또는 전자서명 인증사업자)
+### 테이블: 인증기관 정보
+|-------|-------|-------|-------|
+| redirect_app_scheme_cnt | redirect 앱 스킴 개수 | N | String(4) |
+| redirect_app_scheme_list | redirect 앱 스킴 목록 | N | Object |
+| redirect_app_scheme | redirect 앱 스킴 | N | String(100) | 정보전송자의 개별인증 URL 호출 후 redirect될 정보수신자 서비스의 앱 스킴 |
+### 테이블: 인증기관 정보 (인증서 본인확인기관 또는 전자서명 인증사업자)
+|-------|-------|-------|-------|
+| iss_distu_name | 인증서발급기관명 | N | String(15) | 정보수신자의 정보주체, 인증 시, 인증서 본인확인이 가능한 인증기관의 인증서 발급기관 정보 - 인증서 발급자 DN의 o값 - (예시) SignKorea - 인증서 본인확인기관인 경우만 회신 |
+| certification_oid | 인증서식별값 | N | String(300) | 정보수신자의 정보주체, 인증 시, 인증서 본인확인이 가능한 인증기관의 인증서 발급기관 정보 - 인증서 OID - (예시) 1.2.410.200004.5.1.1.5 - 복수 개의 경우 "."로 구분 - 인증서 본인확인기관인 경우만 회신 |
+| ca_code | 전자서명인증사업자 코드 | N | String(20) | 전자서명인증사업자 코드 - (예시) kakao - 전자서명인증사업자인 경우만 회신 |
+---
+23
+```\n\n## Page 25\n\n## [전송지원-003] 자격증명 조회
+### 기본 정보
+| API ID | 전송지원-003 |
+|--------|--------------|
+| API CODE | SU003         |
+| API 제공자 | 지원플랫폼     |
+| API URI | /support/credentials |
+| HTTP Method | GET           |
+| 설명 | 전송지원/정보요청API를 호출하는 권한 및 scope를 제공 |
+| - 수정내역이 없는 자격증명의 정보는 회신하지 않음 |
+| - 요청자에 해당되는 정보만 전송 |
+| Content-Type (요청) | -            |
+| Content_Type (응답) | application/json; charset=UTF-8 |
+### 요청메시지 명세
+| HTTP | 항목명 | 항목설명 | 필수 | 타입(byte) | 설명 |
+|------|--------|----------|------|------------|------|
+| Header | Authorization | 인증정보 | Y | String(1500) | 연계지원용 접근토큰(Bearer) |
+|       | X-Src-Inst-Cd | API 요청기관 | Y | String(12) | 지원플랫폼 등록시 발급 |
+|       | X-Dst-Inst-Cd | API 응답기관 | Y | String(12) | 전송지원-002(기관정보) 조회에서 확인 |
+|       | X-Api-Tx-Id | 거래고유번호 | Y | String(36) | 거래고유번호 |
+| Parameter | search_timestamp | 조회타임스탬프 | Y | String(14) | 요청자가 처리한 마지막 API 처리시각(YYYYMMDDhhmmss) |
+|         | next_page | 다음페이지 기준개체 | N | String(1000) | 다음 페이지 요청을 위한 기준개체(설정 시 해당 개체 후 limit개 반환) |
+|         | limit | 최대조회개수 | N | String(3) | 최대값 500 |
+### 응답메시지 명세
+| HTTP | 항목명 | 항목 설명 | 필수 | 타입(길이, byte) | 설명 (비고) |
+|------|--------|-----------|------|------------------|-------------|
+| Header | X-Api-Tx-Id | 거래고유번호 | Y | String(36) | 거래고유번호 |
+|       | rsp_code | 세부 응답코드 | Y | String(5) | API 처리결과코드 |
+|       | rsp_msg | 세부 응답메시지 | Y | String(150) | 응답코드에 해당하는 메시지 |
+|       | search_timestamp | 조회타임스탬프 | Y | String(14) | 처리 시각(YYYYMMDDhhmmss) |
+|       | next_page | 다음페이지 기준개체 | N | String(1000) | 다음 페이지 요청을 위한 기준개체 (다음 페이지 존재하지 않는 경우(마지막 페이지), 미 회신) |
+|       | credentials_cnt | 자격증명 수 | Y | String(4) | - |
+|       | credentials_list | 자격증명 목록 | N | Object | -클라이언트ID 기준 오름차순 |
+| Body | --modification_flag | 정보변경플래그 | N | String(1) | 조회 대상 기관의 정보가 가장 최근의 API 처리 시각(search_timestamp의 값)을 기준으로 변경된 유형에 대한 구분자 |
+|       | --client_id | 클라이언트ID | N | String(32) | 지원플랫폼이 발급한 자격증명 ID |
+|       | --client_secret | 클라이언트Secret | N | String(50) | 지원플랫폼이 발급한 자격증명 시크릿값 |
+|       | --credential_type | 자격증명 유형 | N | String(1) | 자격증명의 유형 |
+|       | --server_inst_cd | 서버 기관코드 | N | String(12) | 해당 자격증명을 검증하여 접근토큰을 발급하는 기관코드 |
+|       | --server_service_cd | 서버 서비스코드 | N | String(16) | 해당 자격증명을 검증하여 접근토큰을 발급하는 |
+---
+### 📌 이전 페이지 컨텍스트
+- 마지막 문장 일부: ...```
+이 페이지가 이전 내용의 연속이라면 [이전 페이지에서 계속] 표시를 추가해주세요.\n\n## Page 26\n\n- 주제목: 정보수신자 서비스 코드
+
+|--------|--------|--------|--------|--------|
+| --client_inst_cd | 클라이언트 기관코드 | N | String(12) | 해당 자격증명을 이용하여 접근토큰 발급을 요청하는 기관코드 |
+| --client_service_cd | 클라이언트 서비스코드 | N | String(16) | 해당 자격증명을 이용하여 접근토큰 발급을 요청하는 정보수신자 서비스 코드 |
+| --scope | 권한범위 | N | String(500) | 이 자격증명의 권한범위(API 호출 기관이 접근 가능한 API그룹) |
+|                |                |                |                | 자격증명 유형이 “3”(정보전송용)인 경우만 해당. |
+|                |                |                |                | 공백으로 구분된 다중 권한 범위 |
+- 미완성: ... [다음 페이지에 계속]
+###
+- 인용: > 사용\n\n## Page 27\n\n- 주제목: (전송지원-004) CA 인증서 목록 조회
+- 중제목: 기본 정보
+- 소제목: 요청메시지 명세
+- 소제목: 응답메시지 명세
+
+| API ID | API CODE | API 제공자 | API URI | 설명 | Content-Type (요청) | Content_Type (응답) |
+|--------|----------|------------|---------|------|---------------------|--------------------|
+| 전송지원-004 | SU004 | 지원플랫폼 | /support/ca\_certs | mTLS 통신에 필요한 TLS인증서의 Root CA와 Intermediate CA의 인증서 목록을 조회 | - | application/json; charset=UTF-8 |
+| HTTP | 항목명 | 항목설명 | 필수 | 타입(byte) | 설명 |
+|------|---------|-----------|------|------------|------|
+| Header | Authorization | 인증정보 | Y | String(1500) | 연계지원용 접근토큰(Bearer) |
+|       | X-Src-Inst-Cd | API 요청기관 | Y | String(12) | API 요청메시지를 작성하는 기관코드 - 지원플랫폼 등록시 발급 |
+|       | X-Dst-Inst-Cd | API 응답기관 | Y | String(12) | API 응답메시지를 작성하는 기관코드 - 전송지원-002(기관정보) 조회에서 확인 |
+|       | X-Api-Tx-Id | 거래고유번호 | Y | String(36) | 거래고유번호 |
+| HTTP | 항목명 | 항목설명 | 필수 | 타입(길이, byte) | 설명 (비고) |
+|------|---------|-----------|------|------------------|--------------|
+| Header | X-Api-Tx-Id | 거래고유번호 | Y | String(36) | 거래고유번호 |
+|       | rsp_code | 세부 응답코드 | Y | String(5) | API 처리결과코드 |
+|       | rsp_msg | 세부 응답메세지 | Y | String(1550) | 응답코드에 해당하는 메시지 |
+| Body | ca_cert_cnt | CA인증서개수 | Y | String(4) | CA 인증서 개수 - 조회 대상이 없는 경우 0을 회신, 아래 항목은 미회신 |
+|       | ca_cert_list | CA인증서목록 | N | Object | CA 인증서 목록 |
+|       | --cert_content | CA인증서 | N | String(3000) | CA 인증서(pem 형식) |
+- 미완성: ... [다음 페이지에 계속]
+###
+- 인용: > 사용\n\n## Page 28\n\n- 주제목: (전송지원-005) 통계 전송
+- 중제목: 기본 정보, 요청메시지 명세, 응답메시지 명세
+
+| API ID | API CODE | API 제공자 | API URI | HTTP Method | 설명 |
+|--------|----------|------------|---------|-------------|------|
+| 전송지원-005 | SU005 | 지원플랫폼 | /support/statistics | POST | 중계전문기관이 관리하는 전송요구 및 정보전송 관련 통계를 제공하는 API |
+| 설명 | 기준일자는 일요일로 한정하며, 기준일자에 전주 7일간 일별 통계를 전송함 | - 예시 9.12(일)에 9.5(일)~9.11(토)까지의 일별 통계를 전송 | - 중계전문기관은 생성일자(일별)로 정보수신자 서비스와 정보전송자 간의 통계를 집계 | - 통계가 없는 경우에는 기준일자(criteria_ymd)와 서비스 개수(service_cnt)만을 전송 | - 기관코드와 서비스코드는 지원플랫폼에 등록된 값이어야 함 | - 집중항목 : 전송요구 신청 수, 전송요구 철회 수, API 호출 횟수, 정기적/비정기적 API 호출 횟수, 수신데이터 트래픽량 등 |
+| Content-Type (요청) | application/json; charset=UTF-8 | Content_Type (응답) | application/json; charset=UTF-8 |
+### 요청메시지 명세
+| HTTP | 항목명 | 항목설명 | 필수 | 타입(byte) | 설명 |
+|------|---------|-----------|------|------------|------|
+| Header | Authorization | 인증정보 | Y | String(1500) | 연계지원용 접근토큰(Bearer) |
+|       | X-Src-Inst-Cd | API 요청기관 | Y | String(12) | API 요청메시지를 작성하는 기관코드 |
+|       | X-Dst-Inst-Cd | API 응답기관 | Y | String(12) | API 응답메시지를 작성하는 기관코드 |
+|       | X-Api-Tx-Id | 거래고유번호 | Y | String(36) | 거래고유번호 |
+| Body | criteria_ymd | 기준일자 | Y | String(8) | 통계 전송의 기준일자(YYYYMMDD) |
+|       | service_cnt | 서비스 개수 | Y | String(4) | 통계가 없을 경우 0, 아래 항목은 미화신 |
+|       | service_list | 서비스목록 | N | object | 정보수신자 서비스코드 |
+|       | --service_cd | 서비스코드 | N | String(16) | 정보수신자(서비스)별 통계 |
+|       | --statistics_cnt | 목록 개수 | N | String(4) | 정보수신자(서비스)별 통계 |
+|       | --statistics_list | 목록 | N | Object | 정보수신자(서비스)별 통계 |
+|       | ----statistics_ymd | 생성일자 | N | String(8) | 통계정보 집계 대상 일자(YYYYMMDD) |
+|       | ----prv_cnt | 정보전송자 개수 | N | String(4) | 정보전송자 목록 |
+|       | ----prv_list | 정보전송자 목록 | N | Object | 정보전송자 목록 |
+|       | ----inst_cd | 기관코드 | N | String(12) | 정보전송자 기관코드 |
+|       | ----consent_new_cnt | 전송요구 신청 수 | N | String(10) | 전송요구API를 통해 발급한 접근토큰의 수 |
+|       | ----consent_revoke_cnt | 전송요구 철회 수 | N | String(10) | 전송요구API를 통해 철회한 접근토큰의 수 |
+|       | ----success_api_cnt | API 호출 횟수 | N | String(10) | 성공한 정보요청 API 호출 횟수 |
+|       | ----regular_api_cnt | 정기적 API 호출 횟수 | N | String(10) | 성공한 정기적 정보요청 API 호출 횟수 |
+|       | ----irregular_api_cnt | 비정기적 API 호출 횟수 | N | String(10) | 성공한 비정기적 정보요청 API 호출 횟수 |
+|       | ----receiv_traffic_amount | 수신데이터 트래픽량 | N | String(12) | 성공한 정보요청 API의 응답 데이터 합계 (단위: KB) |
+### 응답메시지 명세
+| HTTP | 항목명 | 항목 설명 | 필수 | 타입(길이, byte) | 설명 (비고) |
+|------|---------|------------|------|------------------|--------------|
+| Header | X-Api-Tx-Id | 거래고유번호 | Y | String(36) | 거래고유번호 |
+| Body | rsp_code | 세부 응답코드 | Y | String(5) | API 처리결과코드 |
+|       | rsp_msg | 세부 응답메세지 | Y | String(1550) | 응답코드에 해당하는 메시지 |
+---
+- 미완성: ... [다음 페이지에 계속]\n\n## Page 29\n\n- 주제목: (전송지원-101) 전송요구 내역 조회
+- 중제목: 기본 정보
+- 소제목: 요청메시지 명세
+- 소제목: 응답메시지 명세
+
+| API ID | API CODE | API 제공자 | API URI | 설명 | Content-Type (요청) | Content_Type (응답) |
+|--------|----------|------------|---------|------|---------------------|--------------------|
+| 전송지원-101 | SU101 | 중계전문기관 | /support/request/history | 중계전문기관이 보관하고 있는 정보주체의 전송요구 내역(정보수신자, 정보전송자, 요구일자 등)을 마이데이터 서비스별로 제공 | application/json; charset=UTF-8 | application/json; charset=UTF-8 |
+| HTTP | 항목명 | 항목설명 | 필수 | 타입(byte) | 설명 |
+|------|---------|-----------|------|------------|------|
+| Header | Authorization | 인증정보 | Y | String(1500) | 연계지원용 접근토큰(Bearer) |
+|        | X-Src-Inst-Cd | API 요청기관 | Y | String(12) | API 요청메시지를 작성하는 기관코드 - 지원플랫폼 등록시 발급 |
+|        | X-Dst-Inst-Cd | API 응답기관 | Y | String(12) | API 응답메시지를 작성하는 기관코드 - 전송지원-002(기관정보) 조회에서 확인 |
+|        | X-Api-Tx-Id | 거래고유번호 | Y | String(36) | 거래고유번호 |
+| Body | ci | 연계정보 | Y | String(100) | 정보주체 연계정보 |
+|        | from_date | 조회 시작일자 | Y | String(8) | 조회 시작 일자(전송요구 일자 기준)(YYYYMMDD) - 조회일자 기준 최대 3년 전까지 설정 가능 |
+|        | to_date | 조회 종료일자 | Y | String(8) | 조회 종료 일자(전송요구 일자 기준)(YYYYMMDD) - 조회 시작일자 기준 1년 단위로 설정 가능 |
+| HTTP | 항목명 | 항목 설명 | 필수 | 타입(길이, byte) | 설명 (비고) |
+|------|---------|-------------|------|------------------|--------------|
+| Header | X-Api-Tx-Id | 거래고유번호 | Y | String(36) | 거래고유번호 |
+|        | rsp_code | 세부 응답코드 | Y | String(5) | API 처리결과코드 |
+|        | rsp_msg | 세부 응답메세지 | Y | String(150) | 응답코드에 해당하는 메시지 |
+|        | service_cnt | 서비스 개수 | Y | String(4) | 조회 대상이 없으면 0, 아래 항목은 미회신 |
+|        | service_list | 서비스 목록 | N | Object | |
+|        | ----service_cd | 서비스코드 | N | String(16) | 정보수신자 서비스코드 |
+|        | ----request_cnt | 전송요구 내역 개수 | N | String(3) | 전송요구(동의) 내역 수 |
+|        | ----request_list | 전송요구 내역 목록 | N | Object | |
+|        | ----request_msg_id | 전송요구서ID | N | String(82) | 전송요구에 대해 중계전문기관이 관리하는 전송요구서별 고유ID |
+|        | ----prv_inst_cd | 정보전송자 기관코드 | N | String(12) | 정보전송자 기관코드 |
+|        | ----request_stcd | 전송요구 상태코드 | N | String(1) | 0:전송요구(동의) - 현재 이 전송요구서를 통해 정보전송이 이루어지고 있음 1:전송요구 철회 2:전송요구 종료 |
+|        | ----prov_consent_yn | 제3자 제공 동의여부 | N | String(1) | 해당 전송요구에 대한 제3자 제공 여부(Y/N) |
+|        | ----request_ymd | 전송요구 일자 | N | String(8) | 정보주체의 전송요구(동의) 일자(YYYYMMDD) |
+|        | ----request_revoke_ymd | 전송요구 철회일자 | N | String(8) | 전송요구 상태코드가 1일 경우에만 값 존재 |
+|        | ----request_end_ymd | 전송요구 종료일자 | N | String(8) | 정보주체의 전송요구(동의) 종료(예정) 일자(YYYYMMDD) |
+|        | ----purpose | 전송요구 목적 | N | String(150) | 전송을 요구하는 목적 |
+|        | ----request_cycle | 전송 주기 | N | String(3) | 정기적 전송 주기(정기적 전송인 경우에만 해당) -형식(횟수/기준) : (예시) “1/w”(주1회) -기준은 ‘m’(월 단위) / ‘w’(주 단위) / ‘d’(일 단위) |
+|        | ----request_period | 개인정보 보유기간 | N | String(8) | 개인정보의 보유기간에 따른 파기일자(YYYYMMDD) - ‘서비스 탈퇴시까지’ 등 파기일자를 특정하지 않은 경우는 ‘99991231’ |
+|        | ----scope | 권한 범위 | N | String(500) | 전송요구서의 권한범위(접근 가능한 API그룹) - 공백으로 구분된 다중 권한 범위 |
+- 미완성: ... [다음 페이지에 계속]\n\n## Page 30\n\n- 주제목: 전송 지원-102) 전송 이력 조회
+- 중제목: 기본 정보, 요청메시지 명세, 응답메시지 명세
+
+| HTTP | 항목명 | 항목설명 | 필수 | 타입(byte) | 설명 |
+|------|--------|----------|------|------------|------|
+| Header | Authorization | 인증정보 | Y | String(1500) | 연계지원용 접근토큰(Bearer) |
+|        | X-Src-Inst-Cd | API 요청기관 | Y | String(12) | API 요청메시지를 작성하는 기관코드 |
+|        | X-Dst-Inst-Cd | API 응답기관 | Y | String(12) | API 응답메시지를 작성하는 기관코드 |
+|        | X-Api-Tx-Id | 거래고유번호 | Y | String(36) | 거래고유번호 |
+| Body | request_msg_id | 전송요구서ID | Y | String(82) | 전송요구에 대해 중계전문기관이 관리하는 전송요구서별 고유ID |
+|        | from_date | 조회 시작일자 | Y | String(8) | 조회 시작 일자(전송요구 일자 기준)(YYYYMMDD) |
+|        | to_date | 조회 종료일자 | Y | String(8) | 조회 종료 일자(전송요구 일자 기준)(YYYYMMDD) |
+| HTTP | 항목명 | 항목설명 | 필수 | 타입(길이 ,byte) | 설명 (비고) |
+|------|--------|----------|------|------------------|--------------|
+| Header | X-Api-Tx-Id | 거래고유번호 | Y | String(36) | 거래고유번호 |
+|        | rsp_code | 세부 응답코드 | Y | String(5) | API 처리결과코드 |
+|        | rsp_msg | 세부 응답메시지 | Y | String(1550) | 응답코드에 해당하는 메시지 |
+|        | aggregate_cnt | 집계 개수 | Y | String(4) | 대상이 없으면 0, 아래 항목은 미회신 |
+|        | aggregate_list | 집계 목록 | N | Object | |
+|        | --aggregate_ymd | 집계 일자 | N | String(8) | 전송 내역 집계에 대한 기준 년월(YYYYMMDD) |
+|        | --api_code | API CODE | N | String(5) | API 규격의 기본 정보 중 API CODE 항목 예) [무선통신-001]의 경우 : WC001 |
+|        | --total_transmission_cnt | 총 전송 건수 | N | String(4) | 총 전송 건수 |
+|        | --total_transmission_success_cnt | 총 전송 성공 건수 | N | String(4) | 총 전송 성공 건수 |
+|        | --total_transmission_fail_cnt | 총 전송 실패 건수 | N | String(4) | 총 전송 실패 건수 |
+|        | --total_reg_transmission_cnt | 총 정기적 전송 건수 | N | String(4) | 총 정기적 전송 건수 |
+|        | --total_reg_transmission_success_cnt | 총 정기적 전송 성공 건수 | N | String(4) | 총 정기적 전송 성공 건수 |
+|        | --total_reg_transmission_fail_cnt | 총 정기적 전송 실패 건수 | N | String(4) | 총 정기적 전송 실패 건수 |
+|        | --total_irreg_transmission_cnt | 총 비정기적 전송 건수 | N | String(4) | 총 비정기적 전송 건수 |
+- 미완성: ... [다음 페이지에 계속]\n\n## Page 31\n\n```markdown
+### 테이블
+|--------|--------|--------|
+| --total_irregular_transmission_success_cnt | 총 비정기적 전송 성공 건수 | N | String(4) | 총 비정기적 전송 성공 건수 |
+| --total_irregular_transmission_fail_cnt | 총 비정기적 전송 실패 건수 | N | String(4) | 총 비정기적 전송 실패 건수 - 정상적 요청이었으나 에러코드 반환 등 정상적으로 처리하지 못한 건수 |\n\n## Page 32\n\n- 주제목: 전송지원-103) 전송요구 철회 요청
+### 기본 정보
+- API ID: 전송지원-103
+- API CODE: SU103
+- API 제공자: 중계전문기관
+- API URI: /support/request/revoke
+- API 요청자: 지원플랫폼
+- HTTP Method: POST
+- 설명: 정보주체가 전송요구를 지원플랫폼에서 철회하는 API. 전송요구 철회 요청 시 중계전문기관은 전송요구에 대한 접근토큰을 폐기해야 함
+- Content-Type (요청): application/json; charset=UTF-8
+- Content_Type (응답): application/json; charset=UTF-8
+### 요청메시지 명세
+| HTTP | 항목명 | 항목설명 | 필수 | 타입(byte) | 설명 |
+|------|--------|----------|------|------------|------|
+| Header | Authorization | 인증정보 | Y | String(1500) | 연계지원용 접근토큰(Bearer) |
+|        | X-Src-Inst-Cd | API 요청기관 | Y | String(12) | API 요청메시지를 작성하는 기관코드 - 지원플랫폼 등록시 발급 |
+|        | X-Dst-Inst-Cd | API 응답기관 | Y | String(12) | API 응답메시지를 작성하는 기관코드 - 전송지원-002(기관정보) 조회에서 확인 |
+|        | X-Api-Tx-Id | 거래고유번호 | Y | String(36) | 거래고유번호 |
+| Body | request_msg_id | 전송요구서ID | Y | String(82) | 전송요구에 대해 중계전문기관이 관리하는 전송요구서별 고유ID |
+### 응답메시지 명세
+| HTTP | 항목명 | 항목 설명 | 필수 | 타입(길이, byte) | 설명 (비고) |
+|------|--------|-----------|------|------------------|--------------|
+| Header | X-Api-Tx-Id | 거래고유번호 | Y | String(36) | 거래고유번호 |
+| Body | rsp_code | 세부 응답코드 | Y | String(5) | API 처리결과코드 |
+|       | rsp_msg | 세부 응답메세지 | Y | String(1550) | 응답코드에 해당하는 메시지 |
+- 미완성: ... [다음 페이지에 계속]\n\n## Page 33\n\n- 주제목: (전송지원-104) 제3자 제공동의 내역 조회
+### 기본 정보
+- API ID: 전송지원-104
+- API CODE: SU104
+- API 제공자: 중계전문기관
+- API URI: /support/agreements
+- 설명: 전송받은 개인정보를 제3자에게 제공한 경우, 정보수신자는 제3자 제공 동의내역을 중계전문기관에 제출하고, 중계전문기관이 관리하는 제3자 제공동의 내역을 확인하는 API
+- Content-Type (요청): application/json; charset=UTF-8
+- Content_Type (응답): application/json; charset=UTF-8
+### 요청메시지 명세
+- HTTP
+- Header
+- Authorization: 인증정보
+- 타입(byte): String(1500)
+- 설명: 연계지원용 접근토큰(Bearer)
+- X-Src-Inst-Cd: API 요청기관
+- 타입(byte): String(12)
+- 설명: API 요청메시지를 작성하는 기관코드
+- X-Dst-Inst-Cd: API 응답기관
+- 타입(byte): String(12)
+- 설명: API 응답메시지를 작성하는 기관코드
+- X-Api-Tx-Id: 거래고유번호
+- 타입(byte): String(36)
+- 설명: 거래고유번호
+- Body
+- request_msg_id: 전송요구서ID
+- 타입(byte): String(82)
+- 설명: 전송요구에 대해 중계전문기관이 관리하는 전송요구서별 고유ID
+### 응답메시지 명세
+- HTTP
+- Header
+- X-Api-Tx-Id: 거래고유번호
+- 타입(byte): String(36)
+- 설명: 거래고유번호
+- rsp_code: 세부 응답코드
+- 타입(byte): String(5)
+- 설명: API 처리결과코드
+- rsp_msg: 세부 응답메시지
+- 타입(byte): String(1550)
+- 설명: 응답코드에 해당하는 메시지
+- prov_consent_cnt: 동의 내역 개수
+- 타입(byte): String(4)
+- 설명: 동의 내역 개수
+- 대상이 없으면 0, 아래 항목은 미회신
+- prov_consent_list: 동의 내역 목록
+- 타입(byte): Object
+- --prov_consent_nm: 동서명
+- 타입(byte): String(100)
+- 설명: 정보주체가 동의한 동의서 이름
+- --prov_consent_dtime: 동의일시
+- 타입(byte): String(14)
+- 설명: 정보주체의 동의를 받은 정보수신자의 서비스코드
+- --snd_inst_cd: 제공하는자(서비스 코드)
+- 타입(byte): String(16)
+- 설명: 정보주체 동의서 이름
+- --consent_rcv_nm: 제공받는자
+- 타입(byte): String(200)
+- 설명: 정보주체 정보를 제공받은 제3자
+- 개인정보를 포함한 경우 비식별자 처리
+- 복수 개의 경우 ","로 구분
+- --prov_consent_purpose: 제공받는자의 이용목적
+- 타입(byte): String(1000)
+- 설명: 정보주체 동의 획득 시 안내한 이용 목적
+- --prov_consent_period: 보유 및 이용기간
+- 타입(byte): String(300)
+- 설명: 정보주체 동의 획득 시 안내한 보유 및 이용기간
+- --prov_consent_asset: 제공항목
+- 타입(byte): String(5000)
+- 설명: 정보주체 동의 획득 시 안내한 제공항목
+- Body\n\n## Page 34\n\n- 주제목: (전송지원-105) 제3자 제공동의 내역 전송
+- 중제목: 기본 정보
+- 소제목: 요청메시지 명세
+- 소제목: 응답메시지 명세
+
+| HTTP 항목명 | 항목설명 | 필수 | 타입(byte) | 설명 |
+|-------------|-----------|------|------------|-------|
+| Authorization | 인증정보 | Y | String(1500) | 연계지원용 접근토큰(Bearer) |
+| X-Src-Inst-Cd | API 요청기관 | Y | String(12) | API 요청메시지를 작성하는 기관코드 - 지원플랫폼 등록시 발급 |
+| X-Dst-Inst-Cd | API 응답기관 | Y | String(12) | API 응답메시지를 작성하는 기관코드 - 전송지원-002(기관정보) 조회에서 확인 |
+| X-Api-Tx-Id | 거래고유번호 | Y | String(36) | 거래고유번호 |
+| request_msg_id | 전송요구서ID | Y | String(82) | 전송요구서별 고유ID |
+| prov_consent_nm | 동의서명 | N | String(100) | 정보주체가 동의한 동의서 이름 |
+| prov_consent_dtime | 동의일시 | N | String(14) | 정보주체가 제3자 제공 동의에 동의한 일시 |
+| snd_inst_cd | 제공받는자(서비스코드) | N | String(16) | 정보주체의 동의를 받은 정보수신자의 서비스코드 |
+| consent_rcv_nm | 제공받는자 | N | String(200) | 정보주체 정보를 제공받은 제3자 - 개인의 경우 짝수 번째 글자 마스킹 <예시> 홍길동 -> 홍*동 제길응명 -> 제*공* 철수 -> 철* -복수 개의 경우 ","로 구분 |
+| prov_consent_purpose | 제공받는자의 이용목적 | N | String(1000) | 정보주체 동의의 획득 시 안내한 이용 목적 |
+| prov_consent_period | 보유 및 이용기간 | N | String(300) | 정보주체 동의의 획득 시 안내한 보유 및 이용기간 |
+| prov_consent_asset | 제공항목 | N | String(5000) | 정보주체 동의의 획득 시 안내한 제공항목 |
+| HTTP 항목명 | 항목설명 | 필수 | 타입(길이, byte) | 설명 (비고) |
+| Header | X-Api-Tx-Id | 거래고유번호 | Y | String(36) | 거래고유번호 |
+| Body | rsp_code | 세부 응답코드 | Y | String(5) | API 처리결과코드 |
+| Body | rsp_msg | 세부응답 메세지 | Y | String(1550) | 응답코드에 해당하는 메시지 |
+- 미완성: ... [다음 페이지에 계속]
+###
+- 인용: > 사용\n\n## Page 35\n\n- 주제목: [전송지원-106] 통계 재전송 요청
+### 기본 정보
+- API ID: 전송지원-106
+- API CODE: SU106
+- API 제공자: 중계전문기관
+- API URI: /support/re_statistics
+- 설명: 중계전문기관에게 기준일자 통계 재전송을 요청
+- Content-Type (요청): -
+- Content_Type (응답): application/json; charset=UTF-8
+### 요청메시지 명세
+- HTTP
+- Header
+- Authorization: 인증정보
+- X-Src-Inst-Cd: API 요청기관
+- X-Dst-Inst-Cd: API 응답기관
+- X-Api-Tx-Id: 거래고유번호
+- Parameter
+- criteria_ymd: 재전송 기준일자
+### 응답메시지 명세
+- HTTP
+- Header
+- X-Api-Tx-Id: 거래고유번호
+- Body
+- rsp_code: 세부 응답코드
+- rsp_msg: 세부 응답메세지\n\n## Page 36\n\n- 주제목: 4 전송요구 내역 및 전자서명 규격
+- 중제목: □ 전송요구 내역 생성 및 전송 규격
+
+| 항목 | 타입 (byte) | 설명 |
+|------|-------------|-------|
+| snd_inst_cd | String(12) | 정보전송자 기관코드(inst_cd) |
+| rcv_inst_cd | String(12) | 마이데이터사업자(정보수신자) 기관코드(inst_cd) |
+| is_scheduled | String(5) | 정기적 전송 여부("true" 또는 "false") |
+| fnd_cycle | String(5) | 기본 정보의 정기적 전송 주기(is_scheduled가 true인 경우 적용) |
+| end_date | String(8) | 전송요구의 종료시점("YYYYMMDD") |
+| purpose | String(150) | 전송을 요구하는 목적(한글 최대 50글자) |
+| period | String(8) | 개인정보의 보유기간에 따른 파기일자("YYYYMMDD") |
+| scope | String(500) | 자격증명내 정보전송 권한 (공백으로 구분, 예시 : "comms.member comms.mobilejoin") |
+| is_consents | Object | 민감정보 항목별 전송요구 여부 ("true" 또는 "false") |
+| 항목 | 타입 | 설명 |
+| Religion | String(5) | 정보주체의 종교 전송여부 |
+- 미완성: ... [다음 페이지에 계속]\n\n## Page 37\n\n## 전자서명 요청 및 응답 규격
+### ucpidRequestInfo
+| 항목 | 타입 | 설명 |
+|------|------|------|
+| orgCode | String | 정보전송자 기관코드 (inst_cd) |
+| userAgreement | String | (고정값) "전 분야 마이데이터 통합인증을 위한 인증서 본인확인서비스 이용약관, 개인정보 처리, 고유식별정보 수집·이용 및 위탁에 동의합니다." - UTF-8 |
+| userAgreeInfo | JSON | 요청하고자 하는 본인확인정보 |
+| ispUrlInfo | String | 마이데이터 서비스 도메인 정보 (마이데이터사업자가 제공하는 지원 API 서버 도메인) |
+| ucpidNonce | String | 마이데이터 서버가 생성한 Nonce (Base64 url-safe 인코딩 패딩(=) 포함) - 128 bits 숫자(인코딩 이전 원문 기준) - ucpid메시지 생성시에는 128 bits 숫자(인코딩 이전 원문) 상태로 적용 |
+| realName | Boolean | 실명 |
+| gender | Boolean | 성별 |
+| nationalInfo | Boolean | 국적 |
+| birthDate | Boolean | 생년월일 |
+| ci | Boolean | CI 정보 |
+| consentInfo | JSON | 전송요구내역 |
+| consent | JSON | "[첨부] 전송요구내역 생성 및 전송 규격" 참고 |
+| consentNonce | String | 마이데이터 서버가 생성한 Nonce (Base64 url-safe 인코딩 패딩(=) 포함) - 128 bits 숫자(인코딩 이전 원문 기준) |
+| signedDataList | JSON[] | UCPIDRequestInfo(PersonInfoReq에 인증모듈 정보 등을 추가)를 서명한 CMS SignedData (Base64 url-safe 인코딩) |
+| signedPersonInfoReq | String | 전송요구내역(consentinfo)을 서명(반드시 중괄호 '[]'를 포함하여 서명 생성)한 CMS SignedData (Base64 url-safe 인코딩) |
+| signedConsent | String | 전자서명에 사용된 고객 인증서 발급기관명(인증서 dn의 o값: yessign, SignKorea, KICA, CrossCert 등) |
+| caOrg | String | 마이데이터 사업자는 caOrg를 통합인증기관의 해당하는 ca_code(inst_cd)로 변경하여 통합인증-002 API를 호출하여야 함 |
+---
+- 미완성: ... [다음 페이지에 계속]\n\n## Page 38\n\n
+| 필드* | 형식(길이) |
+|-------|-------------|
+| 식별자 | 'AM' 고정 값 (2) |
+| 정보수신자 기관코드 | 정보수신자 기관코드 (12) |
+| 정보전송자 기관코드 | 정보전송자 기관코드 (12) |
+| 중계전문기관 기관코드 | 중계전문기관 기관코드(12) |
+| 인증기관 기관코드 | 인증기관 기관코드(12) |
+| 통합인증 요청 시간 | YYYYMMDDhhmmss (14) |
+| 일련번호** | 순차번호 (1씩 증가) (12) |
+- 각 필드는 '_'로 구분
+- **일련번호에 정보주체, 정보전송자, 중계전문기관에 상관없이 정보수신자가 통합 인증을 요청하는 건별로 1씩 증가(권고) 및 매일 자정 기준으로 초기화(권고). 단, 통합인증 요청 건별로 일련번호의 유일성은 반드시 보장되어야 함
+- (생성규칙) 정보주체가 한 번에 다수의 정보전송자를 대상으로 통합 인증을 요청 시 정보전송자 수만큼 '정보전송자 및 중계전문기관 기관코드' 가 상이한 tx_id를 생성
+### 소제목
+- ### 트랜잭션 ID 생성 예시
+- 2025년3월30일 자정 이후, 정보수신자(RCA100000001)의 첫 번째 고객이 A이통사 (PVA100000001)에 중계전문기관(TRA100000001)을 통해 인증기관(CCZ100000001) 통합인증 요청
+- tx_id : AM_RCA100000001_PVA100000001_TRA100000001_CCZ100000001_20250330000100_0000000000001
+- 2025년3월30일 자정 이후, 정보수신자(RCA100000001)의 두 번째 고객이 A이통사 (PVA100000002)에 중계전문기관(TRA100000001)을 통해 인증기관(CCZ100000001) 통합인증 요청
+- tx_id : AM_RCA100000001_PVA100000002_TRA100000001_CCZ100000001_20250330000100_0000000000002\n\n## Page 39\n\n
+| HTTP 응답 코드 | 세부응답코드 (rsp_code) | 응답메시지 (rsp_msg) | 상세설명 | 비고 |
+|----------------|------------------------|----------------------|----------|------|
+| 200 (Success)  | 20001                  | 자율                 | API 호출 및 회신 성공(정상) | 단, 이 경우에도 X-Api-Tx-Id, rsp_code, rsp_msg 회신 필요 |
+|                | 20002                  | 자율                 | (부하 개선을 위한 Timestamp 기능에 따라 회신 데이터가 없는 경우) |
+|                |                        |                      |          |      |
+|                | UCPIID_001             | 잘못된 요청입니다.   |          |      |
+|                | UCPIID_002             | 서버에 요청이 너무 많습니다. 잠시 후에 다시 시도하십시오. |          |      |
+|                | UCPIID_003             | 알 수 없는 에러 입니다. |          |      |
+|                | UCPIID_020             | 잘못된 메시지 구조입니다. |          |      |
+|                | UCPIID_021             | 지원하지 않는 버전의 메시지 구조입니다. |          |      |
+|                | UCPIID_022             | 디코딩에 실패했습니다. |          |      |
+|                | UCPIID_030             | 올바르지 않은 서명 값입니다. |          |      |
+|                | UCPIID_031             | 권한이 없습니다. (등록되지 않은 기관 요청 시) |          |      |
+|                | UCPIID_032             | 지원되지 않은 서명 알고리즘입니다. |          |      |
+|                | UCPIID_033             | 서명 값이 올바르지 않습니다. |          |      |
+|                | UCPIID_040             | UCPIID 서버에 문제가 발생하였습니다. 관리자에게 문의하십시오 |          |      |
+|                | UCPIID_041             | 유효하지 않은 인증서입니다. |          |      |
+|                | UCPIID_042             | UCPIID 서비스 제공기관 내 UCPIID 이용 제한된 사용자(혹은 인증서)입니다. (FDS 시스템에 의한 사용이 제한된 사용자의 요청인 경우) |          |      |
+|                | UCPIID_043             | CI생성기관 측 사용료 정보 제공이 제한된 사용자(허무인 등). |          |      |
+|                | UCPIID_050             | 허용하지 않는 인증 모듈 정보 (등록되지 않은 인증모듈 요청) |          |      |
+|                | UCPIID_100             | 전자서명 검증에 실패하였습니다. |          |      |
+|                | UCPIID_101             | 전자서명 메시지 디코딩에 실패하였습니다. |          |      |
+|                | UCPIID_110             | 인증서 경로 검증에 실패하였습니다. |          |      |
+|                | UCPIID_111             | 인증서가 만료되었습니다. |          |      |
+|                | UCPIID_112             | 인증서 유효기간 시작일시 미도래 |          |      |
+|                | UCPIID_113             | 인증서가 폐지되었습니다. |          |      |
+|                | UCPIID_114             | 인증서가 효력이 정지되었습니다. |          |      |
+|                | UCPIID_115             | 인증서 검증에 실패하였습니다. (UCPIID 110~114에 해당하지 않는 경우) |          |      |
+|                | UCPIID_120             | 통합인증에 허용된 인증서가 아닙니다. |          |      |
+|                | UCPIID_121             | 서명시간이 유효시간 범위를 초과하였습니다. |          |      |
+|                | UCPIID_122             | NONCE 검증에 실패하였습니다. |          |      |
+|                | SIGN_001               | 존재하지 않는 고객입니다. |          |      |
+|                | SIGN_002               | 정보주체 CI가 일치하지 않습니다. |          |      |
+|                | SIGN_100               | 전자서명 검증에 실패하였습니다. |          |      |
+|                | SIGN_101               | 전자서명 메시지 디코딩에 실패하였습니다. |          |      |
+|                | SIGN_110               | 인증서 경로 검증에 실패하였습니다. |          |      |
+|                | SIGN_111               | 인증서가 만료되었습니다. |          |      |
+|                | SIGN_112               | 인증서 유효기간 시작일시 미도래 |          |      |
+|                | SIGN_113               | 인증서가 폐지되었습니다. |          |      |
+|                | SIGN_114               | 인증서가 효력이 정지되었습니다. |          |      |
+|                | SIGN_115               | 서명을 완료하지 않았습니다. |          |      |
+|                | SIGN_116               | 인증서 검증에 실패하였습니다. (SIGN 110~115에 해당하지 않는 경우) |          |      |
+|                | SIGN_120               | 통합인증에 허용된 인증서가 아닙니다. |          |      |
+|                | SIGN_121               | 서명시간이 유효시간 범위를 초과하였습니다. |          |      |
+|                | SIGN_122               | NONCE 검증에 실패하였습니다. |          |      |
+|                | SIGN_130               | 본인확인 전자서명과 전송요구내역 전자서명에 사용된 인증서가 상이합니다. |          |      |
+|                | 400002                 | 자율                 | 요청 파라미터에 문제가 있는 경우 (데이터타입, 길이 에러 등) |          |      |
+- 미완성: ... [다음 페이지에 계속]
+###
+- 인용: > 사용\n\n## Page 40\n\n
+| HTTP 코드 | 코드 | 설명 | 예시 |
+|----------|------|------|------|
+| 40003    | 자율 | 헤더값 미존재 또는 잘못된 헤더값 | - |
+| 40101    | 자율 | 유효하지 않은 접근토큰 | - |
+| 40102    | 자율 | 허용되지 않은 원격지 IP | - |
+| 40103    | 자율 | TLS 인증서 지문 검증 실패 | - |
+| 40104    | 자율 | API 사용 권한 없음 | - |
+| 40105    | 자율 | 정보 조회 권한 없음 | - |
+| 40106    | 자율 | 전송요구 종료시점 경과 | - |
+| 40107    | 자율 | 철회된 전송요구 | - |
+| 40108    | 자율 | 접근토큰 갱신 필요 | - |
+| 40301    | 자율 | 올바르지 않은 API 호출 | - |
+| 40302    | 자율 | 일시적으로 클라이언트 요청 제한 | - |
+| 40303    | 자율 | 기관코드 확인 불가 | - |
+| 40304    | 자율 | 조회기간 오류 | - |
+| 40305    | 자율 | 조회 식별자 오류 | - |
+| 40306    | 자율 | 정기적 전송 불가 | - |
+| 40401    | 자율 | 요청한 엔드포인트 없음 | - |
+| 40402    | 자율 | 유효하지 않은 요청 목록 | - |
+| 40403    | 자율 | 정보주체(고객) 확인 불가 | - |
+| 40501    | 자율 | 허용되지 않은 HTTP Method | - |
+| 40801    | 자율 | 요청 처리 시간 초과 | - |
+- 미완성: ... [다음 페이지에 계속]
+###
+- 인용: > 사용\n\n## Page 41\n\n
+|-------|-------|-------|
+| 429 (TooManyRequests) | 42901 | 자율 |
+| 500 (InternalServerError) | 50001 | 자율 |
+| 50005 | 자율 | 정보전송자 서비스 불가(중계전문기관용) |
+| 50007 | 자율 | 전문변환에러(중계전문기관용) |
+| 50008 | 자율 | 시스템 정기점검 |
+| 503 (ServiceUnavailable) | 50301 | 자율 |
+| 요청 횟수 한도 초과 | 서버 오류 발생 | 중계시스템은 정상이지만 정보전송자 서비스가 불가능한 경우 |
+| | | 중계시스템이 정보전송자로부터 받은 전문에 오류가 있어(필수값 누락, 전문 포맷 에러 등) 변환에 실패한 경우 |
+| | | 서버가 일시적인 부하 등으로 서비스가 불가한 경우로써 서버가 헤더에 "Retry-After"를 회신하면 추후 다시 접근토큰 폐기 요청 필요 |
+- 미완성: ... [다음 페이지에 계속]
+###
+- 인용: > 사용

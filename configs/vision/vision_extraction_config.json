@@ -1,0 +1,26 @@
+{
+  "vision_extraction_v3": {
+    "prompt_version": "v3_enhanced",
+    "enable_empty_page_detection": true,
+    "min_text_length": 20,
+    "min_word_count": 5,
+    "skip_header_footer_only": true,
+    "output_format": "markdown",
+    "temperature": 0.1,
+    "max_tokens": 2000
+  },
+  "empty_page_patterns": [
+    "NO_TEXT_CONTENT",
+    "^[\\s\\-\\*]*$",
+    "^[0-9\\s\\-\\.]*$",
+    "^제[0-9]+장$",
+    "^제[0-9]+절$",
+    "^- [0-9]+ -$"
+  ],
+  "meaningful_text_criteria": {
+    "min_sentences": 1,
+    "min_words": 5,
+    "min_characters": 20,
+    "require_complete_sentence": true
+  }
+}

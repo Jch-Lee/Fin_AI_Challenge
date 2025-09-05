@@ -1,0 +1,8 @@
+{
+  "total_samples": 3000,
+  "average_answer_length": 147.8,
+  "min_answer_length": 52,
+  "max_answer_length": 463,
+  "processing_time": "4시간 56분 26초",
+  "average_speed": "5.93초/질문"
+}

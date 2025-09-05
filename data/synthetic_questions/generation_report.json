@@ -1,0 +1,30 @@
+{
+  "generation_time": "20250821_140845",
+  "total_questions": 3000,
+  "total_batches": 10,
+  "type_distribution": {
+    "definition": 500,
+    "process": 500,
+    "regulation": 500,
+    "example": 500,
+    "comparison": 500,
+    "application": 500
+  },
+  "temperature_sets": [
+    {
+      "temperature": 0.1,
+      "top_p": 0.9
+    },
+    {
+      "temperature": 0.3,
+      "top_p": 0.9
+    },
+    {
+      "temperature": 0.4,
+      "top_p": 0.9
+    }
+  ],
+  "success_rate": "100.0%",
+  "unique_questions": 3000,
+  "duplicate_rate": "0.0%"
+}

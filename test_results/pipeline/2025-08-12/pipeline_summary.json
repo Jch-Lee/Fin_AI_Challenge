@@ -1,0 +1,16 @@
+{
+  "experiment_timestamp": "2025-08-12T21:07:35.223077",
+  "steps_completed": 7,
+  "pdf_file": "data/raw/금융분야 AI 보안 가이드라인.pdf",
+  "total_chunks": 88,
+  "embedding_model": "nlpai-lab/KURE-v1",
+  "embedding_dimension": 1024,
+  "embedding_shape": [
+    88,
+    1024
+  ],
+  "test_question": "금융 AI 시스템의 보안을 위해 어떤 조치들이 필요한가요?",
+  "retrieval_top_k": 5,
+  "pipeline_success": true,
+  "output_directory": "pipeline_results_20250812_210723"
+}
