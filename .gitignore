@@ -25,23 +25,28 @@ venv.bak/
 # Jupyter Notebook
 .ipynb_checkpoints
 */.ipynb_checkpoints/*
-*.ipynb
+# *.ipynb  # 분석 노트북은 공유 가능
 
 # IPython
 profile_default/
 ipython_config.py
 
-# Data files (보안상 중요)
-*.json
-*.pkl
-*.pickle
+# Data files (보안상 중요하지만 일부는 공유 필요)
+# *.json  # 설정 파일과 메타데이터는 공유 필요
+# *.pkl   # RAG 인덱스는 공유 필요
+# *.pickle
 *.h5
 *.hdf5
 *.parquet
 *.feather
 *.tar.xz
-*.txt
-*.csv
+# *.txt   # requirements.txt 등은 공유 필요
+# *.csv   # test.csv, submission 파일들은 공유 필요
+
+# 민감한 데이터만 제외
+data/raw/
+data/private/
+data/sensitive/
 
 # Models and weights (용량이 큰 파일들)
 *.model
@@ -110,28 +115,87 @@ temp/
 *.temp
 
 # Config files with secrets
-config.json
+# config.json  # 일반 설정 파일은 공유 가능
 secrets.yaml
 credentials.json
+*.secret
+*.key
+*.pem
 
 # Large files and databases
 *.db
 *.sqlite
 *.sqlite3
 
-# Compressed files
+# Compressed files (모델 파일 제외)
 *.zip
 *.tar.gz
 *.rar
 *.7z
 
-# Output directories
+# 하지만 데이터셋은 포함
+!data/**/*.tar.gz
+!data/**/*.zip
+
+# Output directories (일부는 공유 필요)
 output/
-results/
-submissions/
+# results/  # 결과 파일은 공유 필요
+# submissions/  # 제출 파일은 공유 필요
+
+# 임시 출력만 제외
+temp_output/
+debug_output/
 
 # Test outputs
 test_output/nul
 *.tmp
 __pycache__/
 powerline-fonts/
+
+# ===========================
+# 명시적으로 포함하는 파일들
+# ===========================
+
+# 프로젝트 핵심 파일
+!README.md
+!CLAUDE.md
+!requirements.txt
+!setup.py
+!.gitignore
+
+# 테스트 데이터
+!test.csv
+!submission*.csv
+
+# RAG 인덱스 (팀원 공유용)
+!data/rag/chunks_2300.json
+!data/rag/metadata_2300.json
+!data/rag/bm25_index_2300.pkl
+!data/rag/faiss_index_2300.index
+
+# 합성 데이터 (팀원 공유용)
+!data/synthetic_questions/combined_3000_questions.csv
+
+# 스크립트
+!scripts/*.py
+
+# DistiLLM-2 프레임워크
+!distillm-2/**/*.py
+!distillm-2/**/*.md
+!distillm-2/**/*.yaml
+
+# 문서
+!docs/**/*.md
+
+# 설정 파일 (민감정보 제외)
+!*.yaml
+!*.yml
+!*.toml
+
+# 하지만 여전히 제외할 파일들
+secrets.yaml
+credentials.json
+*.secret
+*.key
+*.pem
+.env*
