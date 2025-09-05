@@ -68,6 +68,7 @@ logs/
 
 # Environment variables
 .env
+.mcp.json
 .env.local
 .env.production
 .env.test
